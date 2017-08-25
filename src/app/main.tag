@@ -1,7 +1,8 @@
 <main>
-    <h1> Hello world </h1>
-    <account-status></account-status>
-    <view ref="view"></view>
+    <h1>STIR</h1>
+    <a href="/sleeper">Sleeper</a>
+    <a href="/sleeper/alarms">Sleeper alarms</a>
+    <role ref="role"></role>
 
     <style>
         main {
@@ -12,14 +13,11 @@
 
     <script>
         import { mount } from 'riot'
-        import './account-status.tag'
-        import './mall.tag'
-        import './login.tag'
 
         this.on('mount', () => {
             console.log("Main mounted");
-            console.log("Current view ", this.state.main.view);
-            mount(this.refs.view, this.state.main.view);
+            console.log("Current role ", this.state.main.role);
+            //mount(this.refs.view, this.state.main.view);
 
             this.state.main.on('main_state_updated', this.viewUpdated);
         });
@@ -30,7 +28,7 @@
 
         viewUpdated(view) {
             console.log("Main state update!", view);
-            mount(this.refs.view, view);
+            //mount(this.refs.view, view);
         }
     </script>
 </main>

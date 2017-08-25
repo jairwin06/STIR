@@ -1,7 +1,7 @@
 'use strict';
 
 import { mount,mixin } from 'riot';
-import '../app/components/main.tag'
+import '../app/main.tag'
 import page from 'page';
 import Routes from '../app/routes';
 import pageExpressMapper from 'page.js-express-mapper.js';

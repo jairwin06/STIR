@@ -4,7 +4,7 @@ import socketio from 'feathers-socketio'
 import Routes from '../app/routes';
 
 import { render,mixin } from 'riot';
-import '../app/components/main.tag'
+import '../app/main.tag'
 
 //import feathersPassport from 'feathers-passport';
 //import hooks from 'feathers-hooks';

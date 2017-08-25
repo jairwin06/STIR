@@ -5,20 +5,43 @@ class Routes {
     constructor() {
         this.populateQueue = [];
     }
-    go(next, req) {
+    go(next, req, res) {
         req.handledRoute = true;
         if (next) {
             next();
+        } else if(res) {
+            req.handled = true;
+            res();
         }
     }
 
     runRoutingTable(app,appState) {
         app.route('/').get((req, res, next) => {
             console.log("Default route!")
-            req.appState.main.mall();
-            req.appState.fruit.clearFruit();
-            this.go(next, req);
+            req.appState.main.setRole(null)
+            this.go(next, req, res);
         });
+
+        app.route('/sleeper*').get((req, res, next) => {
+            console.log("Sleeper route!");
+            req.appState.main.setRole("sleeper");
+            this.go(next, req, res);
+        });
+
+        app.route('/sleeper/alarms').get((req, res, next) => {
+            console.log("Sleeper alarms!");
+            this.go(next, req, null);
+        });
+
+        /*
+         app.route('/apple').get((req, res, next) => {
+             console.log("Apple route!", req.appState.fruit);
+             req.appState.main.mall();
+             req.populateQueue.push(
+                 req.appState.fruit.setFruit("apple")
+             );
+             this.go(next, req);
+         });
 
         app.route('/apple').get((req, res, next) => {
             console.log("Apple route!", req.appState.fruit);
