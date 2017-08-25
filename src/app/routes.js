@@ -30,7 +30,7 @@ class Routes {
 
         app.route('/sleeper/alarms').get((req, res, next) => {
             console.log("Sleeper alarms!");
-            this.go(next, req, null);
+            this.go(next, req, res);
         });
 
         /*

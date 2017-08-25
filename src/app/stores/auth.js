@@ -10,6 +10,11 @@ export default class AuthStore extends Store {
         this.user = null;
     }     
 
+    setAcessToken(accessToken) {
+        console.log("Setting access token");
+        this.accessToken = accessToken;
+    }
+
     async login(loginData) {
         try {
             loginData.strategy = "local";

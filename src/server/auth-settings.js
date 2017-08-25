@@ -1,3 +1,8 @@
 export default {
-    secret: 'takadanobaba'
+    secret: 'takadanoSTIR',
+    cookie : {
+        enabled: true,
+        name: 'STIR-jwt',
+        secure: false
+    }
 }

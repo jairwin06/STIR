@@ -9,23 +9,25 @@ import '../app/main.tag'
 //import feathersPassport from 'feathers-passport';
 //import hooks from 'feathers-hooks';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import compress from 'compression'
 import cors from 'cors'
 import FS from 'fs';
 
-import fruitService from './services/fruit'
-import userService from './services/users'
-
-import TasteService from './services/taste'
+import mongoose from 'mongoose'
+import service from 'feathers-mongoose'
 
 import State from '../app/state';
-
 import hooks from 'feathers-hooks'
 import authentication from 'feathers-authentication'
-import local from 'feathers-authentication-local'
+//import local from 'feathers-authentication-local'
+import jwt from 'feathers-authentication-jwt'
 import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
+import AuthService from './services/auth'
+
+import UserModel from './models/user'
 
 global.fetch = require('node-fetch');
 
@@ -39,18 +41,23 @@ const app = feathers()
 .options('*', cors())
 .use(cors())
 .use(feathers.static(process.env.APP_BASE_PATH + "/public"))
+.use(cookieParser())
 .use(bodyParser.json())
-.use(bodyParser.urlencoded({ extended: true  }))
+.use(bodyParser.urlencoded({ extended: true  }));
 
-//
+// Auth middleware
+app.use(AuthService);
+
 // Services
-.use('/fruit', fruitService)
-.use('/taste', new TasteService())
-.use('/users', userService); 
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
+
+app
+.use('/users', service({Model: UserModel})); 
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
-app.configure(local());
+app.configure(jwt());
 
 
 // Setup a hook to only allow valid JWTs or successful 
@@ -58,44 +65,22 @@ app.configure(local());
 app.service('authentication').hooks({
   before: {
     create: [
-      authentication.hooks.authenticate(['local', 'jwt'])
+      authentication.hooks.authenticate(['jwt'])
     ]
   }
 });
-
-
-// Hash the user's passwrd
-app.service('users').hooks({
-  before: {
-    create: [
-      local.hooks.hashPassword()
-    ]
-  }
-});
-
-// Fixtures
-const fruits = app.service('/fruit');
-const users = app.service('/users');
-
-Promise.all([
-    fruits.create({ name: 'apple',
-                types: ["Pink Lady", "Gala", "Fuji","Granny Smith"]
-    }),
-    fruits.create({ name: 'banana',
-                types: ["cavendish", "lady finger", "pisang raja", "williams"]
-    }),
-    users.create({ email: 'test@fruits.com',
-                   password: '1234'
-    })
-])
-.catch(err => console.log('Error occurred while creating fruit:', err));
 
 // Client routes
 app.use(function (req, res, next) {
-    console.log("Init state");
-    req.appState = new State();
-    req.populateQueue = [];
-    next();
+    try {
+        console.log("Init state");
+        req.appState = new State();
+        req.populateQueue = [];
+        req.appState.auth.setAcessToken(req.accessToken);
+        next();
+    } catch (e) {
+        console.log("Error in middleware!", e);
+    }
 });
 
 Routes.runRoutingTable(app);
