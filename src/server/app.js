@@ -30,7 +30,12 @@ import AuthService from './services/auth'
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
 
+import SocketUtil from '../app/util/socket'
+
 global.fetch = require('node-fetch');
+global.io = require('socket.io-client');
+
+SocketUtil.initWithUrl("http://localhost:3000");
 
 const app = feathers()
 .set('views', process.env.APP_BASE_PATH + "/src/server/views")
