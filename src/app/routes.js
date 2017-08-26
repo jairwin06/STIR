@@ -25,6 +25,7 @@ class Routes {
         app.route('/sleeper*').get((req, res, next) => {
             console.log("Sleeper route!");
             req.appState.main.setRole("sleeper");
+            req.appState.sleeper.getAlarms();
             this.go(next, req, res);
         });
 

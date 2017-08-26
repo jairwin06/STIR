@@ -15,18 +15,19 @@ export default class AuthStore extends Store {
         this.accessToken = accessToken;
     }
 
-    async login(loginData) {
+    async login() {
         try {
-            loginData.strategy = "local";
-            console.log("User login: ", loginData);
+            console.log("User login");
             //let response = await fetchUtil.postJSON("http://localhost:3000/authentication", loginData);
-            let response = await SocketUtil.rpc("authenticate", loginData);
+            let response = await SocketUtil.rpc("authenticate", {
+                strategy: "jwt",
+                accessToken: this.accessToken
+            });
             console.log("Login reply: ", response);
             if (response.errors) {
                 this.trigger("login_error", response.message);
             } else {
                 this.accessToken = response.accessToken;
-                this.user = loginData;
                 // Reconnect the socket to gain session auth
                 //socketUtil.reconnect();
                 this.trigger("login_success", response.accessToken);

@@ -11,6 +11,9 @@ import SocketUtil from '../app/util/socket'
 
 console.log("Client loading!");
 
+window.IS_SERVER = false
+window.IS_CLIENT = true
+
 SocketUtil.initWithUrl(window.location.protocol + "//" + window.location.host);
 
 window.page = page;

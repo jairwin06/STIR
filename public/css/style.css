@@ -1,54 +1,47 @@
+main {
+  display: block;
+  background-color: #FC87FF; }
 
-     account-status p {
-         color:red;
-         font-size:20px;
-     }
-     account-status a {
-         font-size:16px;
-     }
- 
+account-status p {
+  color: red;
+  font-size: 20px; }
 
-     .apple h1 {
-         color: green;
-     }
-     .apple li {
-         color: #aaffaa;
-     }
- 
+account-status a {
+  font-size: 16px; }
 
-     .banana h1 {
-         color: yellow;
-     }
-     .banana li {
-         color: #eeff00;
-     }
- 
+.apple h1 {
+  color: green; }
 
-     .login {
-         color: black;
-     } 
+.apple li {
+  color: #aaffaa; }
 
-     .login .login-field {
-         width: 100px;
-         display: inline-block;
-         margin: 5px;
-     }
+.banana h1 {
+  color: yellow; }
 
-     .login .note {
-         font-size: 14px;
-     }
+.banana li {
+  color: #eeff00; }
 
-     .login .login-error {
-         color: red;
-         font-weight: bold;
-     }
+.login {
+  color: black; }
 
-    
+.login .login-field {
+  width: 100px;
+  display: inline-block;
+  margin: 5px; }
 
-     .mall {
-        a {
-            display: -ms-flexbox;
-            display: flex;
-        }
-     }
- 
+.login .note {
+  font-size: 14px; }
+
+.login .login-error {
+  color: red;
+  font-weight: bold; }
+
+.mall a {
+  display: -ms-flexbox;
+  display: flex; }
+
+#sleeper alarms h1 {
+  color: red; }
+
+#sleeper h1 {
+  color: yellow; }

@@ -1,8 +1,11 @@
 <main>
     <h1>STIR</h1>
-    <a href="/sleeper">Sleeper</a>
-    <a href="/sleeper/alarms">Sleeper alarms</a>
     <role ref="role"></role>
+
+    <div if="{!state.main.role}">
+        <a href="/sleeper">Sleeper</a>
+        <a href="/rouser">Rouser</a>
+    </div>
 
     <style>
         main {
@@ -13,22 +16,36 @@
 
     <script>
         import { mount } from 'riot'
+        import './sleeper/index.tag'
 
         this.on('mount', () => {
             console.log("Main mounted");
             console.log("Current role ", this.state.main.role);
-            //mount(this.refs.view, this.state.main.view);
+            if (this.state.main.role) {
+                this.roleTag = mount(this.refs.role, this.state.main.role)[0];
+            }
 
-            this.state.main.on('main_state_updated', this.viewUpdated);
+            this.state.main.on('main_role_updated', this.roleUpdated);
+
+            if (IS_CLIENT) {
+                this.state.auth.login();
+            }
         });
 
         this.on('unmount', () => {
-            this.state.main.off('main_state_updated', this.viewUpdated);
+            this.state.main.off('main_role_updated', this.roleUpdated);
         })
 
-        viewUpdated(view) {
-            console.log("Main state update!", view);
-            //mount(this.refs.view, view);
+        roleUpdated(role) {
+            console.log("Main role updated!", role);
+            if (role) {
+                this.roleTag = mount(this.refs.role, role)[0];
+            }
+            else if (this.roleTag) {
+                this.roleTag.unmount(true);
+            }
+
+            this.update();
         }
     </script>
 </main>

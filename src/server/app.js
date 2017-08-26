@@ -21,13 +21,14 @@ import service from 'feathers-mongoose'
 import State from '../app/state';
 import hooks from 'feathers-hooks'
 import authentication from 'feathers-authentication'
-//import local from 'feathers-authentication-local'
 import jwt from 'feathers-authentication-jwt'
+import authHooks from 'feathers-authentication-hooks';
 import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
 
 import UserModel from './models/user'
+import AlarmModel from './models/alarm'
 
 global.fetch = require('node-fetch');
 
@@ -53,7 +54,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 
 app
-.use('/users', service({Model: UserModel})); 
+.use('/users', service({Model: UserModel}))
+.use('/alarms', service({Model: AlarmModel}));
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
@@ -68,6 +70,12 @@ app.service('authentication').hooks({
       authentication.hooks.authenticate(['jwt'])
     ]
   }
+});
+
+app.service('alarms').before({
+  find: [
+    authHooks.queryWithCurrentUser()
+  ]
 });
 
 // Client routes
@@ -94,14 +102,14 @@ app.use(function (req, res, next) {
             console.log("Render riot");
             mixin({state: req.appState}); // Global state mixin
             res.render('index', {
-              initialData: JSON.stringify(req.appState),
+              initialData: JSON.stringify(req.appState, (key,value) => {return (key == '_state' ? function() {} : value); }),
               body: render('main', req.appState)
             })
         })
     }
 });
 
-app.use(errorHandler());
+//app.use(errorHandler());
 
 
 console.log("Starting server");

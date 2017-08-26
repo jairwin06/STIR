@@ -17,6 +17,7 @@ var buble = require( 'rollup-plugin-buble');
 var riot = require('rollup-plugin-riot');
 var nodent = require('rollup-plugin-nodent');
 var nodemon = require('gulp-nodemon');
+var sass = require('gulp-sass');
 
 var server;
 var watchEvent;
@@ -31,36 +32,17 @@ gulp.task('env', function() {
 
 gulp.task('css', function() {
     // Extract the CSS from the JS Files and place into a single style with autoprefixer
-    return gulp.src('src/app/components/**/*.tag')
+    return gulp.src('src/app/**/*.tag')
     .pipe(replace(/(^[\s\S]*<style>|<\/style>[\s\S]*$)/gm, ''))
-    .pipe(concat('style.css'))
+    .pipe(concat('style.scss'))
+    .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({browsers: ['last 2 versions']}))
     .pipe(gulp.dest('public/css'));
 });
 
-
-gulp.task('public',['public-css','public-lib','browserify'], function() {
-    return gulp.src('build/client/bundle.js')
-    .pipe(gulp.dest('public/build/client'));
+gulp.task('css-watch',['css'], function() {
+      gulp.watch(['./src/app/**/*.tag'], ['css']);
 });
-
-gulp.task('public-css', ['css'], function() {
-    return gulp.src('build/app/**/*.css')
-    .pipe(gulp.dest('public/build/app'));
-});
-
-gulp.task('public-lib', function() {
-    return gulp.src('lib/**/*.js')
-    .pipe(gulp.dest('public/lib'));
-});
-
-
-gulp.task('js-app', function() {
-    return gulp.src('src/app/**/*.js')
-      // remove the styles (they were extracted)
-      .pipe(replace(/<style>[\s\S]*<\/style>/gm, ''))
-      .pipe(gulp.dest('build/app'));
-})
 
 gulp.task('rollup', function() {
 
@@ -69,7 +51,7 @@ gulp.task('rollup', function() {
     cache: rollupCache,
     format: 'umd',
     plugins: [
-      riot(),
+      riot({skip: 'css'}),
       nodent({runtime: true}),
       buble(),
       commonjs(),
@@ -97,14 +79,8 @@ gulp.task('rollup-watch',['rollup'], function() {
 
 });
 
-// HTML
-gulp.task('html', function() {
-  gulp.src(['./index.html'])
-    .pipe(gulp.dest('./build'));
-});
-
 // serve task
-gulp.task('serve', ['env','rollup-watch', 'css'] , function(cb) {
+gulp.task('serve', ['env','rollup-watch', 'css-watch'] , function(cb) {
 
    return nodemon({
         exec: './node_modules/.bin/babel-node --presets es2015-riot,stage-2',
