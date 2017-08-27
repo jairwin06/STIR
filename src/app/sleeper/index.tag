@@ -15,9 +15,12 @@
 
     this.on('mount', () => {
         console.log("Sleeper mounted");
+        
     });
 
     this.on('unmount', () => {
     });
+
+
  </script>
 </sleeper>

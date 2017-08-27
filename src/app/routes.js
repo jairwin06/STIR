@@ -15,6 +15,10 @@ class Routes {
         }
     }
 
+
+    // TODO: Router based tags? 
+    // TODO: Webpack lazy loading?
+
     runRoutingTable(app,appState) {
         app.route('/').get((req, res, next) => {
             console.log("Default route!")
@@ -25,14 +29,19 @@ class Routes {
         app.route('/sleeper*').get((req, res, next) => {
             console.log("Sleeper route!");
             req.appState.main.setRole("sleeper");
-            req.appState.sleeper.getAlarms();
+            req.appState.sleeper.setAction("show");
+            req.populateQueue.push(
+                req.appState.sleeper.getAlarms()
+            )
             this.go(next, req, res);
         });
 
-        app.route('/sleeper/alarms').get((req, res, next) => {
-            console.log("Sleeper alarms!");
+        app.route('/sleeper/alarms/add').get((req, res, next) => {
+            req.appState.sleeper.setAction("add");
+            req.appState.sleeper.setAddAlarmStage("time");
             this.go(next, req, res);
         });
+
 
         /*
          app.route('/apple').get((req, res, next) => {

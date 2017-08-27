@@ -2,46 +2,11 @@ main {
   display: block;
   background-color: #FC87FF; }
 
-account-status p {
-  color: red;
-  font-size: 20px; }
-
-account-status a {
-  font-size: 16px; }
-
-.apple h1 {
-  color: green; }
-
-.apple li {
-  color: #aaffaa; }
-
-.banana h1 {
-  color: yellow; }
-
-.banana li {
-  color: #eeff00; }
-
-.login {
-  color: black; }
-
-.login .login-field {
-  width: 100px;
-  display: inline-block;
-  margin: 5px; }
-
-.login .note {
-  font-size: 14px; }
-
-.login .login-error {
-  color: red;
-  font-weight: bold; }
-
-.mall a {
-  display: -ms-flexbox;
-  display: flex; }
-
 #sleeper alarms h1 {
   color: red; }
 
 #sleeper h1 {
   color: yellow; }
+
+#sleeper alarms add-alarm h1 {
+  color: green; }

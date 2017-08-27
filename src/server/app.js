@@ -27,6 +27,8 @@ import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
 
+import TasteService from './services/taste'
+
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
 
@@ -60,7 +62,8 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 
 app
 .use('/users', service({Model: UserModel}))
-.use('/alarms', service({Model: AlarmModel}));
+.use('/alarms', service({Model: AlarmModel}))
+.use('/taste', new TasteService());
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
@@ -79,6 +82,7 @@ app.service('authentication').hooks({
 
 app.service('alarms').before({
   find: [
+    authentication.hooks.authenticate(['jwt']),
     authHooks.queryWithCurrentUser()
   ]
 });

@@ -1,5 +1,6 @@
 export default {
     secret: 'takadanoSTIR',
+    header: 'authorization',
     cookie : {
         enabled: true,
         name: 'STIR-jwt',

@@ -18,12 +18,14 @@ class FetchUtil {
         })
     }
 
-    get(target) {
+    get(target, accessToken) {
+        console.log("Fetching " + target + " with accessToken " + accessToken);
         return fetch(target, {
              method: 'GET',
              credentials: 'include',
              headers: {
-                 'Accept': 'application/json'
+                 'Accept': 'application/json',
+                 'authorization': accessToken
              }
         })
         .then((response) => {
