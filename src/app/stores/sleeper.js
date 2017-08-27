@@ -11,6 +11,7 @@ export default class SleeperStore extends Store {
         super(state);
         console.log("Init SleeperStore", this._state);
         this.addAlarmStage = "time";
+        this.newAlarm = {};
     }     
     async getAlarms(fruit) { 
         if (!this.alarms)  {
@@ -30,6 +31,9 @@ export default class SleeperStore extends Store {
 
     setAction(action) {
         this.action = action;
+        if (action == "add") {
+            this.newAlarm = {};
+        }
         this.trigger("sleeper_action_updated");
     }
 

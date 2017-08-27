@@ -10,6 +10,8 @@
  </style>
  <script>
     import './time.tag'
+    import './personality.tag'
+
     import { mount } from 'riot'
 
     this.on('mount', () => {

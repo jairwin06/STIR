@@ -7,11 +7,12 @@
  <style>
  </style>
  <script>
-    import moment from 'moment'
-
     this.on('mount', () => {
         console.log("add-alarm-time mounted");
-        this.nowDate = moment().format('YYYY-MM-DDTHH:mm:00.00');
+        //this.nowDate = moment().format('YYYY-MM-DDTHH:mm:00.00');
+        this.nowDate = new Date().toLocaleISOString();
+        console.log("Min date", this.nowDate);
+        this.update();
     });
 
     this.on('unmount', () => {
@@ -20,9 +21,25 @@
 
     addAlarm(e) {
         e.preventDefault();
-        let date = moment(this.refs.dateTime.value).toDate();
+        let date = this.refs.dateTime.value;
         console.log("Add alarm!", date);
-        this.state.sleeper.addAlarm(date);
+        this.state.sleeper.newAlarm.time = date;
+        this.state.sleeper.setAddAlarmStage("personality");
+        //this.state.sleeper.addAlarm(date);
     }
+
+
+    Date.prototype.toLocaleISOString = function() {
+            var pad = function(num) {
+                var norm = Math.abs(Math.floor(num));
+                return (norm < 10 ? '0' : '') + norm;
+            };
+        return this.getFullYear() +
+            '-' + pad(this.getMonth() + 1) +
+            '-' + pad(this.getDate()) +
+            'T' + pad(this.getHours()) +
+            ':' + pad(this.getMinutes()) +
+            ':' + pad(this.getSeconds());
+        }
  </script>
 </time>

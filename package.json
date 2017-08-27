@@ -63,7 +63,6 @@
     "feathers-nedb": "^2.7.0",
     "feathers-rest": "^1.8.0",
     "feathers-socketio": "^2.0.0",
-    "moment": "^2.18.1",
     "mongoose": "^4.11.8",
     "nedb": "^1.8.0",
     "node-fetch": "^1.7.2",
