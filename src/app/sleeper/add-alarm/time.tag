@@ -38,8 +38,8 @@
             '-' + pad(this.getMonth() + 1) +
             '-' + pad(this.getDate()) +
             'T' + pad(this.getHours()) +
-            ':' + pad(this.getMinutes()) +
-            ':' + pad(this.getSeconds());
+            ':' + pad(this.getMinutes()) + ':00';
+        //    ':' + pad(this.getSeconds());
         }
  </script>
 </time>
