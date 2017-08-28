@@ -1,4 +1,5 @@
 import graph from 'fbgraph'
+import WastonUtil from '../util/watson'
 
 const FB_APP_ID = '679489015579803';
 const FB_APP_SECRET = 'e820e06015e5dbf80982c72400433dde';
@@ -17,9 +18,12 @@ export default class FBAnalyzeService {
             return this.getPosts(params.query.fbaccessToken);
         })
         .then((posts) => {
-            console.log(posts);
+            console.log("Analyzing")
+            let oneLine = posts.join(" ");
+            return WastonUtil.profile(oneLine);
         })
         .catch((err) => {
+            console.log("Error in FBAnalyzerService", err);
             return Promise.reject(err);
         });
     }

@@ -46,8 +46,12 @@ export default class FacebookStore extends Store {
         })
     }
     async analyze() {
-        console.log("Analyzing");
-        let result = await SocketUtil.rpc('fbanalyze::find', {fbaccessToken: this.accessToken});
-        console.log("Result");
+        try {
+            console.log("Analyzing");
+            let result = await SocketUtil.rpc('fbanalyze::find', {fbaccessToken: this.accessToken});
+            console.log("Result", result);
+        } catch(e) {
+            console.log("Error analyzing", e);
+        }
     }
 };

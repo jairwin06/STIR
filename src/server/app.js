@@ -118,7 +118,7 @@ app.use(function (req, res, next) {
     }
 });
 
-//app.use(errorHandler());
+app.use(errorHandler());
 
 
 console.log("Starting server");
