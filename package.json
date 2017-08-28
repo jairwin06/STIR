@@ -52,6 +52,7 @@
     "ejs": "^2.5.7",
     "express": "^4.12.3",
     "express-session": "^1.11.1",
+    "fbgraph": "^1.4.1",
     "feathers": "^2.1.7",
     "feathers-authentication": "git+https://github.com/Avnerus/feathers-authentication.git",
     "feathers-authentication-hooks": "^0.1.4",

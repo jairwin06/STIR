@@ -1,0 +1,53 @@
+import SocketUtil from '../util/socket';
+import Store from './store';
+
+export default class FacebookStore extends Store {
+    constructor() {
+        super();
+        console.log("Init Facebook store");
+        this.apiLoaded = false;
+        this.connected = false;
+    }     
+
+    loadAPI() {
+        return new Promise((resolve, reject) => {
+            if (this.apiLoaded) {
+                resolve();
+            } else {
+                console.log("Loading Facebook API using JQuery");
+                $.ajaxSetup({ cache: true });
+                $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+                    FB.init({
+                      appId: '679489015579803',
+                      version: 'v2.8',
+                      cookie : true,
+                      xfbml : true
+                    });     
+                    FB.AppEvents.logPageView();
+                    resolve();
+                });
+            }
+        });
+    }
+
+    login() {
+        return new Promise((resolve, reject) => {
+            FB.login((response) => {
+                console.log("Login response", response);
+                if (response.status == "connected") {
+                    this.connected = true;
+                    this.accessToken = response.authResponse.accessToken;
+                    resolve();
+                } else {
+                    this.connected = false;
+                    reject(response.status);
+                }
+            }, {scope: 'public_profile,email,user_posts'});
+        })
+    }
+    async analyze() {
+        console.log("Analyzing");
+        let result = await SocketUtil.rpc('fbanalyze::find', {fbaccessToken: this.accessToken});
+        console.log("Result");
+    }
+};

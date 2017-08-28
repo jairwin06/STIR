@@ -1,6 +1,3 @@
-'use strict'
-'use nodent';
-
 import Store from './store';
 import SocketUtil from '../util/socket'
 import FetchUtil from '../util/fetch'

@@ -48,6 +48,10 @@ gulp.task('rollup', function() {
 
  var stream = rollup({
     entry: 'src/client/index.js',
+    external: ['jquery'],
+    globals: {
+        jquery: '$'
+    },
     cache: rollupCache,
     format: 'umd',
     plugins: [

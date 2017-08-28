@@ -27,7 +27,7 @@ import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
 
-import TasteService from './services/taste'
+import FBAnalyzeService from './services/fbanalyze'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
@@ -63,7 +63,7 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 app
 .use('/users', service({Model: UserModel}))
 .use('/alarms', service({Model: AlarmModel}))
-.use('/taste', new TasteService());
+.use('/fbanalyze', new FBAnalyzeService());
 
 //Setup authentication
 app.configure(authentication(AuthSettings));

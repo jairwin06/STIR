@@ -1,5 +1,3 @@
-'use strict'
-//import fetchUtil from '../util/fetch';
 import SocketUtil from '../util/socket';
 import Store from './store';
 
