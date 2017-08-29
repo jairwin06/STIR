@@ -63,7 +63,7 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 
 app
 .use('/users', service({Model: UserModel}))
-.use('/alarms', service({Model: AlarmModel}))
+.use('/sleeper/alarms', service({Model: AlarmModel}))
 .use('/fbanalyze', new FBAnalyzeService());
 
 //Setup authentication
@@ -81,7 +81,7 @@ app.service('authentication').hooks({
   }
 });
 
-app.service('alarms').before({
+app.service('/sleeper/alarms').before({
   create: [
     authHooks.associateCurrentUser(),
     GeneratePrompt

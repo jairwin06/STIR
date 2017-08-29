@@ -10,6 +10,8 @@ const AlarmSchema = new mongoose.Schema({
     }
 }, {timestamps: true})
 
+mongoose.set('debug', true)
+
 const Model = mongoose.model('Alarm', AlarmSchema);
 
 export default Model;

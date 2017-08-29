@@ -14,7 +14,7 @@ export default class SleeperStore extends Store {
         if (!this.alarms)  {
             try {
                 console.log("Getting alarms");
-                let result = await SocketUtil.rpc('alarms::find', {accessToken: this._state.auth.accessToken});
+                let result = await SocketUtil.rpc('sleeper/alarms::find', {accessToken: this._state.auth.accessToken});
                 //let result = await FetchUtil.get("/taste", this._state.auth.accessToken);
                 console.log("Alarms result", result);
                 this.alarms = result;
@@ -37,7 +37,7 @@ export default class SleeperStore extends Store {
     async addAlarm() {
         try {
             console.log("Create the alarm!", this.newAlarm);
-            let result = await SocketUtil.rpc('alarms::create', this.newAlarm);
+            let result = await SocketUtil.rpc('sleeper/alarms::create', this.newAlarm);
             console.log("Alarm create result", result);
         }
 
