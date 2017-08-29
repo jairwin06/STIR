@@ -13,6 +13,7 @@ export default class FBAnalyzeService {
     }
     find(params) {
         console.log("FB Analyze service! params: ", params);
+
         return this.verifyToken(params.query.fbaccessToken)
         .then(() => {
             return this.getPosts(params.query.fbaccessToken);

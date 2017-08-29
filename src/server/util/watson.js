@@ -24,7 +24,6 @@ class WatsonUtil {
                     reject(new Error(err));
                   }
                   else {
-                    console.log("Result", response);
                     resolve(response);
                   }
             });
