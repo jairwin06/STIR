@@ -1,6 +1,6 @@
 <time>
  <h1 class="title">Add Alarm time</h1>
-  <form onsubmit="{ addAlarm }">
+  <form onsubmit="{ next }">
     Date/Time:<input ref="dateTime" type="datetime-local" min="{nowDate}">
     <input type="submit" value="Next">
   </form>
@@ -19,13 +19,12 @@
     });
 
 
-    addAlarm(e) {
+    next(e) {
         e.preventDefault();
         let date = this.refs.dateTime.value;
-        console.log("Add alarm!", date);
+        console.log("Alarm time", date);
         this.state.sleeper.newAlarm.time = date;
         this.state.sleeper.setAddAlarmStage("personality");
-        //this.state.sleeper.addAlarm(date);
     }
 
 

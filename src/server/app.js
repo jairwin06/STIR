@@ -31,6 +31,7 @@ import FBAnalyzeService from './services/fbanalyze'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
+import GeneratePrompt from './services/generate-prompt'
 
 import SocketUtil from '../app/util/socket'
 
@@ -81,6 +82,10 @@ app.service('authentication').hooks({
 });
 
 app.service('alarms').before({
+  create: [
+    authHooks.associateCurrentUser(),
+    GeneratePrompt
+  ],
   find: [
     authentication.hooks.authenticate(['jwt']),
     authHooks.queryWithCurrentUser()

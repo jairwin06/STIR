@@ -1,5 +1,6 @@
 import graph from 'fbgraph'
 import WastonUtil from '../util/watson'
+import Session from '../models/session'
 
 const FB_APP_ID = '679489015579803';
 const FB_APP_SECRET = 'e820e06015e5dbf80982c72400433dde';
@@ -22,6 +23,12 @@ export default class FBAnalyzeService {
             console.log("Analyzing")
             let oneLine = posts.join(" ");
             return WastonUtil.profile(oneLine);
+        })
+        .then((personality) => {
+            // Save the personality in the session
+            console.log("Done");
+            Session.for(params.user._id).personality = personality;
+            return Promise.resolve({status: "success"});
         })
         .catch((err) => {
             console.log("Error in FBAnalyzerService", err);

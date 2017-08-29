@@ -7,6 +7,7 @@ export default class FacebookStore extends Store {
         console.log("Init Facebook store");
         this.apiLoaded = false;
         this.connected = false;
+        this.analysisStatus = null;
     }     
 
     loadAPI() {
@@ -50,6 +51,8 @@ export default class FacebookStore extends Store {
             console.log("Analyzing");
             let result = await SocketUtil.rpc('fbanalyze::find', {fbaccessToken: this.accessToken});
             console.log("Result", result);
+            this.analysisStatus = result.status;
+            this.trigger('analysis_status_updated');
         } catch(e) {
             console.log("Error analyzing", e);
         }
