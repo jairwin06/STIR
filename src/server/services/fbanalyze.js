@@ -53,7 +53,7 @@ export default class FBAnalyzeService {
     getPosts(accessToken) {
         return new Promise((resolve, reject) => {
             console.log("Getting posts");
-            graph.get('me/feed', {limit: 1000, access_token: accessToken}, function(err, res) {
+            graph.get('me/posts', {limit: 1000, access_token: accessToken}, function(err, res) {
                 // TODO: Paging
                 let posts = [];
                 res.data.forEach((post) => {
