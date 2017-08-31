@@ -26,8 +26,10 @@ import authHooks from 'feathers-authentication-hooks';
 import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
+import {disallow} from 'feathers-hooks-common'
 
 import FBAnalyzeService from './services/fbanalyze'
+import UserStatusService from './services/user-status'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
@@ -64,11 +66,19 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 app
 .use('/users', service({Model: UserModel}))
 .use('/sleeper/alarms', service({Model: AlarmModel}))
-.use('/fbanalyze', new FBAnalyzeService());
+.use('/fbanalyze', new FBAnalyzeService())
+.use('/user/status', new UserStatusService());
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
 app.configure(jwt());
+
+app.service('users').before({
+  create: disallow('external'),
+  find: disallow('external'),
+  update: disallow('external'),
+  remove: disallow('external')
+});
 
 
 // Setup a hook to only allow valid JWTs or successful 
@@ -86,6 +96,13 @@ app.service('/sleeper/alarms').before({
     authHooks.associateCurrentUser(),
     GeneratePrompt
   ],
+  find: [
+    authentication.hooks.authenticate(['jwt']),
+    authHooks.queryWithCurrentUser()
+  ]
+});
+
+app.service('/user/status').before({
   find: [
     authentication.hooks.authenticate(['jwt']),
     authHooks.queryWithCurrentUser()
@@ -116,7 +133,9 @@ app.use(function (req, res, next) {
             console.log("Render riot");
             mixin({state: req.appState}); // Global state mixin
             res.render('index', {
-              initialData: JSON.stringify(req.appState, (key,value) => {return (key == '_state' ? function() {} : value); }),
+              initialData: JSON.stringify(req.appState, (key,value) => {
+                  return ((key == '_state' || key == 'debug') ? function() {} : value); 
+              }),
               body: render('main', req.appState)
             })
         })

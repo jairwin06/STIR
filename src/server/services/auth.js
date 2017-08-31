@@ -31,7 +31,6 @@ export default function(req,res,next) {
 
     function createNewUser() {
         req.app.service('users').create({
-          device: 'I dunno'
         }).then(function(user) {
           console.log("Creating JWT token");
           req.user = user;

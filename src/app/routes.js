@@ -42,39 +42,15 @@ class Routes {
             this.go(next, req, res);
         });
 
-
-        /*
-         app.route('/apple').get((req, res, next) => {
-             console.log("Apple route!", req.appState.fruit);
-             req.appState.main.mall();
-             req.populateQueue.push(
-                 req.appState.fruit.setFruit("apple")
-             );
-             this.go(next, req);
-         });
-
-        app.route('/apple').get((req, res, next) => {
-            console.log("Apple route!", req.appState.fruit);
-            req.appState.main.mall();
+        app.route('/rouser*').get((req, res, next) => {
+            console.log("Rouser route");
+            req.appState.main.setRole("rouser");
             req.populateQueue.push(
-                req.appState.fruit.setFruit("apple")
-            );
-            this.go(next, req);
+                req.appState.rouser.getStatus()
+            )
+            this.go(next, req, res);
         });
 
-        app.route('/banana').get( (req, res, next) => {
-            console.log("Banana route!", req.appState.fruit);
-            req.appState.main.mall();
-            req.populateQueue.push(
-                req.appState.fruit.setFruit("banana")
-            );
-            this.go(next, req);
-        });
-
-        app.route('/login').get((req, res, next) => {
-            req.appState.main.login();
-            this.go(next, req);
-        });
         /*
 
         app.route('*').get((req, res, next) => {

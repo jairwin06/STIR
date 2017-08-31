@@ -2,6 +2,9 @@ main {
   display: block;
   background-color: #FC87FF; }
 
+#sleeper h1 {
+  color: blue; }
+
 #sleeper alarms h1 {
   color: red; }
 

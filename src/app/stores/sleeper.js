@@ -1,6 +1,5 @@
 import Store from './store';
 import SocketUtil from '../util/socket'
-import FetchUtil from '../util/fetch'
 
 export default class SleeperStore extends Store {
 
