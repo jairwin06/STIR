@@ -7,6 +7,7 @@ export default class RouserStore extends Store {
         super(state);
         console.log("Init RouserStore", this._state);
         this.status = null;
+        this.signUpStage = "contact";
     }
     async getStatus() { 
         if (!this.status)  {
@@ -14,6 +15,7 @@ export default class RouserStore extends Store {
                 let result = await SocketUtil.rpc('user/status::find', {accessToken: this._state.auth.accessToken});
                 console.log("Router status", result);
                 this.status = result;
+                this.trigger("status_updated");
             }
 
             catch (e) {

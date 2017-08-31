@@ -2,7 +2,7 @@ main {
   display: block;
   background-color: #FC87FF; }
 
-#sleeper h1 {
+#rouser h1 {
   color: blue; }
 
 #sleeper alarms h1 {
@@ -10,6 +10,9 @@ main {
 
 #sleeper h1 {
   color: yellow; }
+
+#rouser #sign-up h1 {
+  color: green; }
 
 #sleeper alarms add-alarm h1 {
   color: green; }
