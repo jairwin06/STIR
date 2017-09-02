@@ -57,8 +57,6 @@ export default class AlarmManager {
                 } else {
                     return result;
                 }
-            }).then((alarms) => {
-                console.log("Alarms queue", alarms);
             })
         }
     }
