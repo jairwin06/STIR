@@ -51,6 +51,15 @@ class Routes {
             this.go(next, req, res);
         });
 
+        app.route('/rouser/alarms').get((req, res, next) => {
+            console.log("Rouser alarms route");
+            req.appState.rouser.setAction("alarm-queue");
+            req.populateQueue.push(
+                req.appState.rouser.getAlarms()
+            )
+            this.go(next, req, res);
+        });
+
         /*
 
         app.route('*').get((req, res, next) => {

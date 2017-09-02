@@ -2,6 +2,12 @@ main {
   display: block;
   background-color: #FC87FF; }
 
+#rouser #alarm-queue h1 {
+  color: purple; }
+
+#rouser h1 {
+  color: blue; }
+
 #rouser h1 {
   color: blue; }
 

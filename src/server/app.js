@@ -10,7 +10,6 @@ import '../app/main.tag'
 //import hooks from 'feathers-hooks';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import compress from 'compression'
 import cors from 'cors'
 import FS from 'fs';
@@ -29,11 +28,12 @@ import AuthService from './services/auth'
 import {disallow} from 'feathers-hooks-common'
 
 import FBAnalyzeService from './services/fbanalyze'
-import UserStatusService from './services/user-status'
+import UserContactService from './services/user-contact'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
 import GeneratePrompt from './services/generate-prompt'
+import AlarmManager from './services/alarm-manager'
 
 import SocketUtil from '../app/util/socket'
 
@@ -45,7 +45,7 @@ SocketUtil.initWithUrl("http://localhost:3000");
 const app = feathers()
 .set('views', process.env.APP_BASE_PATH + "/src/server/views")
 .set('view engine', 'ejs')
-.configure(rest())
+//.configure(rest())
 .configure(socketio({wsEngine: 'uws'}))
 .configure(hooks())
 .use(compress())
@@ -66,18 +66,16 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 app
 .use('/users', service({Model: UserModel}))
 .use('/sleeper/alarms', service({Model: AlarmModel}))
+.use('/rouser/alarms', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
-.use('/user/status', new UserStatusService());
+.use('/user/contact', new UserContactService());
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
 app.configure(jwt());
 
 app.service('users').before({
-  create: disallow('external'),
-  find: disallow('external'),
-  update: disallow('external'),
-  remove: disallow('external')
+  all: disallow('external')
 });
 
 
@@ -102,10 +100,16 @@ app.service('/sleeper/alarms').before({
   ]
 });
 
-app.service('/user/status').before({
+app.service('/user/contact').before({
   find: [
     authentication.hooks.authenticate(['jwt']),
     authHooks.queryWithCurrentUser()
+  ]
+});
+
+app.service('/rouser/alarms').before({
+  find: [
+    authentication.hooks.authenticate(['jwt'])
   ]
 });
 
@@ -142,7 +146,7 @@ app.use(function (req, res, next) {
     }
 });
 
-app.use(errorHandler());
+//app.use(errorHandler());
 
 
 console.log("Starting server");

@@ -12,18 +12,26 @@
  </style>
  <script>
     import './sign-up/index.tag'
+    import './alarm-queue.tag'
     import {mount} from 'riot'
 
     this.on('mount', () => {
         console.log("Rouser mounted");
-        this.state.rouser.on('status_updated', this.statusUpdated);
         if (this.state.rouser.status && !this.state.rouser.status.signedUp) {
              mount(this.refs.action,'sign-up');
+        } else {
+            if (this.state.rouser.action) {
+                mount(this.refs.action, this.state.rouser.action);
+            }
         }
+
+        this.state.rouser.on('status_updated', this.statusUpdated);
+        this.state.rouser.on('action_updated', this.actionUpdated);
     });
 
     this.on('unmount', () => {
         this.state.rouser.off('status_updated', this.statusUpdated);
+        this.state.rouser.off('action_updated', this.actionUpdated);
     });
 
     statusUpdated() {
@@ -31,6 +39,10 @@
         if (!this.state.rouser.status.signedUp) {
              mount(this.refs.action,'sign-up');
         }
+    }
+
+    actionUpdated() {
+        console.log("Rouser action updated", this.state.rouser.action);
     }
 
 

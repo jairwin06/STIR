@@ -77,6 +77,7 @@
     "riot": "^3.6.1",
     "socket.io-client": "^2.0.3",
     "tracery-grammar": "^2.7.3",
+    "twilio": "^3.6.4",
     "uws": "^8.14.1",
     "watson-developer-cloud": "^2.39.0"
   }

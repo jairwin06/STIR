@@ -5,6 +5,8 @@ const AlarmSchema = new mongoose.Schema({
     name: {type: String, required: true},
     prompt: {type: String, required: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    assignedTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
+    fulfilled: {type: Boolean, default: false},
     debug: {
         watson: String
     }

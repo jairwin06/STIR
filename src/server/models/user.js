@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
     status : {
         signedUp: {type: Boolean, default: false},
         phoneValidated: {type: Boolean, default: false}
-    }
+    },
+    verificationCode: Number
 },{timestamps: true})
 
 const Model = mongoose.model('User', UserSchema);
