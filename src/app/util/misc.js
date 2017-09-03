@@ -18,6 +18,15 @@ class MiscUtil {
         });
         return uuid;
     }
+
+    findById(collection, id) {
+        for (let i = 0; i < collection.length; i++) {
+            if (collection[i]._id == id) {
+                return collection[i];
+            }
+        }
+        return null;
+    }
 };
 
 // Singleton

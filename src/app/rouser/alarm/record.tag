@@ -4,7 +4,7 @@
   {state.rouser.currentAlarm.prompt}
   </div>
   <form onsubmit="{next}">
-    Recording:<input type="file" accept="audio/*" capture="microphone">
+    Recording:<input type="file" accept="audio/*;capture=microphone">
     <input type="submit" value="Next">
   </form>
  <style>

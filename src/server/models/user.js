@@ -4,7 +4,6 @@ const UserSchema = new mongoose.Schema({
     email: String,
     phone: String,
     status : {
-        signedUp: {type: Boolean, default: false},
         phoneValidated: {type: Boolean, default: false}
     },
     verificationCode: Number

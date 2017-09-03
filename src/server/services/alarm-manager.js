@@ -1,6 +1,6 @@
 import Alarm from '../models/alarm'
 
-const ALARMS_IN_QUEUE = 2;
+const ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt"
 
 export default class AlarmManager {
@@ -10,7 +10,7 @@ export default class AlarmManager {
     find(params) {
         // First get the alarms that this user was assigend to
         console.log("Alarm manager for rouser", params.user);
-        if (!params.user.status.signedUp) {
+        if (!params.user.status.phoneValidated) {
             // Can't assign alarms if they didn't sign up
             return Promise.resolve([]);
         } else {

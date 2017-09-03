@@ -1,6 +1,6 @@
 import Store from './store';
 import SocketUtil from '../util/socket'
-import find from 'lodash-es/find'
+import MiscUtil from '../util/misc'
 
 export default class RouserStore extends Store {
 
@@ -64,7 +64,7 @@ export default class RouserStore extends Store {
 
     chooseAlarm(id) {
         console.log("Rouser chooses alarm ", id);
-        this.currentAlarm = find(this.alarms, {_id: id});
+        this.currentAlarm = MiscUtil.findById(this.alarms,id);
         console.log("Current alarm", this.currentAlarm);
     }
 };
