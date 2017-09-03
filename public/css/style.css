@@ -17,6 +17,9 @@ main {
 #sleeper h1 {
   color: yellow; }
 
+#rouser #alarm h1 {
+  color: yellow; }
+
 #rouser #sign-up h1 {
   color: green; }
 

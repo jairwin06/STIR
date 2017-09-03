@@ -18,7 +18,6 @@
     this.on('mount', () => {
         console.log("alarm-queue mounted");
         this.state.rouser.on('queue_updated', this.queueUpdated);
-        this.update();
     });
 
     this.on('unmount', () => {

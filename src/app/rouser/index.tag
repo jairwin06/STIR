@@ -13,6 +13,8 @@
  <script>
     import './sign-up/index.tag'
     import './alarm-queue.tag'
+    import './alarm/index.tag'
+
     import {mount} from 'riot'
 
     this.on('mount', () => {
@@ -43,6 +45,7 @@
 
     actionUpdated() {
         console.log("Rouser action updated", this.state.rouser.action);
+        mount(this.refs.action, this.state.rouser.action);
     }
 
 

@@ -1,15 +1,16 @@
 import Store from './store';
 import SocketUtil from '../util/socket'
+import find from 'lodash-es/find'
 
 export default class RouserStore extends Store {
 
     constructor(state) {
         super(state);
-        console.log("Init RouserStore", this._state);
         this.status = null;
         this.signUpStage = "contact";
         this.action = null;
         this.alarms = null;
+        this.currentAlarm = null;
     }
     async getStatus() { 
         if (!this.status)  {
@@ -53,5 +54,17 @@ export default class RouserStore extends Store {
     setAction(action) {
         this.action = action;
         this.trigger('action_updated', action);
+    }
+
+    setRecordStage(stage) {
+        console.log("Set record stage", stage);
+        this.recordStage = stage;
+        this.trigger('record_stage_updated');
+    }
+
+    chooseAlarm(id) {
+        console.log("Rouser chooses alarm ", id);
+        this.currentAlarm = find(this.alarms, {_id: id});
+        console.log("Current alarm", this.currentAlarm);
     }
 };

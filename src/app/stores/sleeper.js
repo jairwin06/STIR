@@ -5,7 +5,6 @@ export default class SleeperStore extends Store {
 
     constructor(state) {
         super(state);
-        console.log("Init SleeperStore", this._state);
         this.addAlarmStage = "time";
         this.newAlarm = {};
     }     
