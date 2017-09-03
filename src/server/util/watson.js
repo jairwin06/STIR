@@ -1,7 +1,7 @@
 import PersonalityInsights from 'watson-developer-cloud/personality-insights/v3'
 
-const PERSONALITY_INSIGHTS_USER = "01eb874e-0db5-4031-8258-7d85b4e00791";
-const PERSONALITY_INSIGHTS_PASSWORD = "WNiGtOpqUAqN";
+const PERSONALITY_INSIGHTS_USER = process.env['PERSONALITY_INSIGHTS_USER'];
+const PERSONALITY_INSIGHTS_PASSWORD = process.env['PERSONALITY_INSIGHTS_PASSWORD']
 
 class WatsonUtil {
     constructor() {

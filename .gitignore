@@ -37,3 +37,5 @@ jspm_packages
 #VIM
 *.swp
 *.swo
+
+start.sh

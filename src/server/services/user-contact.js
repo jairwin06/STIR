@@ -1,8 +1,8 @@
 import twilio from 'twilio'
 
-const TWILIO_ACCOUNT_SID = "AC8f51fced58dca14ba3c9ccc454bbcd9f"
-const TWILIO_AUTH_TOKEN = "94c2577dc5cd179af8652d4d5bff432c"
-const TWILIO_PHONE_NUMNER = "+14154172576"
+const TWILIO_ACCOUNT_SID = process.env['TWILIO_ACCOUNT_SID'];
+const TWILIO_AUTH_TOKEN = process.env['TWILIO_AUTH_TOKEN'];
+const TWILIO_PHONE_NUMBER = process.env['TWILIO_PHONE_NUMBER']
 
 export default class UserContactService {
     setup(app) {
@@ -32,8 +32,9 @@ export default class UserContactService {
            return this.twilioClient.messages.create({
                 body: 'Your STIR code is ' + result.verificationCode,
                 to: result.phone,  
-                from: TWILIO_PHONE_NUMNER
+                from: TWILIO_PHONE_NUMBER
            })
+           //return Promise.resolve({});
         })
         .then((result) => {
             console.log("SMS result", result);
