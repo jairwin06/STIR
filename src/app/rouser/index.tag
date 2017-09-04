@@ -19,21 +19,17 @@
 
     this.on('mount', () => {
         console.log("Rouser mounted");
-        if (this.state.rouser.status && !this.state.rouser.status.phoneValidated) {
-             mount(this.refs.action,'sign-up');
-        } else {
-            if (this.state.rouser.action) {
-                mount(this.refs.action, this.state.rouser.action);
-            }
-        }
+        this.validatedCheck();
 
         this.state.rouser.on('status_updated', this.statusUpdated);
         this.state.rouser.on('action_updated', this.actionUpdated);
+        this.state.auth.on('user_code_verified', this.codeVerified);
     });
 
     this.on('unmount', () => {
         this.state.rouser.off('status_updated', this.statusUpdated);
         this.state.rouser.off('action_updated', this.actionUpdated);
+        this.state.auth.off('user_code_verified', this.codeVerified);
     });
 
     statusUpdated() {
@@ -45,7 +41,22 @@
 
     actionUpdated() {
         console.log("Rouser action updated", this.state.rouser.action);
-        mount(this.refs.action, this.state.rouser.action);
+        this.validatedCheck();
+    }
+    
+    codeVerified() {
+        mount(this.refs.action, 'alarm-queue');
+    }
+
+    validatedCheck() {
+        if (this.state.rouser.status && !this.state.rouser.status.phoneValidated) {
+             mount(this.refs.action,'sign-up');
+        } else {
+            if (this.state.rouser.action) {
+                mount(this.refs.action, this.state.rouser.action);
+            }
+        }
+
     }
 
 

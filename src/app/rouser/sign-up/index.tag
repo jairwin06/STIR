@@ -12,6 +12,7 @@
  </style>
  <script>
     import './contact.tag'
+    import '../../common/verify.tag'
     import { mount } from 'riot'
 
     this.on('mount', () => {

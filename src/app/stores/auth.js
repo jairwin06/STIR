@@ -36,4 +36,25 @@ export default class AuthStore extends Store {
         }
         
     }
+
+    async setContact(contact) {
+        console.log("Set contact", contact);
+        let result = await SocketUtil.rpc('user/contact::create',contact);
+        console.log("Rouser contact status", result);
+        return result;
+    }
+
+    async verifyCode(code) {
+        try {
+            console.log("Verify code ", code);
+            let result = await SocketUtil.rpc('user/contact::create',{code: code});
+            console.log("Verify result", result);
+            if (result.status == "success") {
+                this.trigger("user_code_verified");
+            }
+        } catch (e) {
+            console.log("Error verifying code", e);
+        }
+    }
+
 };

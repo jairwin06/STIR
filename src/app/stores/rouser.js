@@ -52,6 +52,12 @@ export default class RouserStore extends Store {
         this.trigger('action_updated', action);
     }
 
+    setSignUpStage(stage) {
+        console.log("Set sign up stage", stage);
+        this.signUpStage = stage;
+        this.trigger('rouser_sign_up_stage');
+    }
+
     setRecordStage(stage) {
         console.log("Set record stage", stage);
         this.recordStage = stage;
@@ -62,5 +68,15 @@ export default class RouserStore extends Store {
         console.log("Rouser chooses alarm ", id);
         this.currentAlarm = MiscUtil.findById(this.alarms,id);
         console.log("Current alarm", this.currentAlarm);
+    }
+
+    async verifyCode(code) {
+        try {
+            console.log("Verify code ", code);
+            let result = await SocketUtil.rpc('user/contact::create',{code: code});
+            console.log("Verify result", result);
+        } catch (e) {
+            console.log("Error verifying code", e);
+        }
     }
 };

@@ -16,8 +16,14 @@ export default class UserContactService {
 
     create(data,params) {
         console.log("set user contact", data,params);
+        if (data.code && params.user.verificationCode) {
+            return this.verify(data,params)
+        } else {
+            return this.generateVerficationCode(data,params);
+        }
+    }
 
-        // TODO: Generate a verification code and send
+    generateVerficationCode(data, params) {
         if (!data.phone) {
             return Promise.reject(new Error("Data does not contain a phone number"));
         }
@@ -47,6 +53,18 @@ export default class UserContactService {
            console.log("Error updating contact", err);
            return Promise.reject(err);
         }) 
+    }
+
+    verify(data,params) {
+        console.log("Verify code service", data,params);
+        if (data.code == params.user.verificationCode) {
+            return this.app.service("users").patch(params.user._id, {status: {phoneValidated: true}})
+            .then((result) => {
+               return {status: "success"}
+            })
+        } else {
+            return Promise.reject(new Error("Code is incorrect"));
+        }
     }
 
 

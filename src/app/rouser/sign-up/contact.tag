@@ -1,6 +1,6 @@
 <contact>
  <h1 class="title">Your contact details</h1>
-  <form onsubmit="{next}">
+  <form onsubmit="{setContact}">
     Email:<input ref="email" type="email">
     Phone number:<input ref="phone" pattern="[+\d]*" type="tel" required>
     <input type="submit" value="Next">
@@ -15,14 +15,14 @@
     this.on('unmount', () => {
     });
 
-   async next(e) {
+   async setContact(e) {
         e.preventDefault();
         try {
-            let result = await this.state.rouser.setContact({
+            let result = await this.state.auth.setContact({
                 phone: this.refs.phone.value,
                 email: this.refs.email.value
             })
-            console.log("Setting contact result!", result);
+            this.state.rouser.setSignUpStage("verify");
         }
         catch (err) {
            console.log("Setting contact error!", err);
