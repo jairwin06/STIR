@@ -13,7 +13,6 @@ export default class SleeperStore extends Store {
             try {
                 console.log("Getting alarms");
                 let result = await SocketUtil.rpc('sleeper/alarms::find', {accessToken: this._state.auth.accessToken});
-                //let result = await FetchUtil.get("/taste", this._state.auth.accessToken);
                 console.log("Alarms result", result);
                 this.alarms = result;
             }

@@ -87,8 +87,8 @@ gulp.task('rollup-watch',['rollup'], function() {
 gulp.task('serve', ['env','rollup-watch', 'css-watch'] , function(cb) {
 
    return nodemon({
-        exec: './node_modules/.bin/babel-node --presets es2015-riot,stage-2',
-        //exec: 'node --presets es2015-riot,stage-2',
+        //exec: './node_modules/.bin/babel-node --presets es2015-riot,stage-2',
+        exec: 'node',
         script: './src/server/index.js',
         watch: './src/server/'
    });

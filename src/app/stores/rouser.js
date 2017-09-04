@@ -28,14 +28,10 @@ export default class RouserStore extends Store {
     }
 
     async setContact(contact) {
-        try {
-            console.log("Set contact", contact);
-            let result = await SocketUtil.rpc('user/contact::create',contact);
-            console.log("Rouser contact status", result);
-        }
-        catch (e) {
-            console.log("Error setting contact details", e);                    
-        }
+        console.log("Set contact", contact);
+        let result = await SocketUtil.rpc('user/contact::create',contact);
+        console.log("Rouser contact status", result);
+        return result;
     }
 
     async getAlarms(contact) {

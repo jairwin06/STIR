@@ -15,13 +15,18 @@
     this.on('unmount', () => {
     });
 
-
-    next(e) {
+   async next(e) {
         e.preventDefault();
-        this.state.rouser.setContact({
-            phone: this.refs.phone.value,
-            email: this.refs.email.value
-        });
+        try {
+            let result = await this.state.rouser.setContact({
+                phone: this.refs.phone.value,
+                email: this.refs.email.value
+            })
+            console.log("Setting contact result!", result);
+        }
+        catch (err) {
+           console.log("Setting contact error!", err);
+        }
     }
  </script>
 </contact>

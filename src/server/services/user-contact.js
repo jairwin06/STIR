@@ -28,13 +28,14 @@ export default class UserContactService {
         
         return this.app.service("users").update(params.user._id, data)
         .then((result) => {
+            /*
            console.log("User updated sending text");
            return this.twilioClient.messages.create({
                 body: 'Your STIR code is ' + result.verificationCode,
                 to: result.phone,  
                 from: TWILIO_PHONE_NUMBER
-           })
-           //return Promise.resolve({});
+           })*/
+           return Promise.resolve({});
         })
         .then((result) => {
             console.log("SMS result", result);
