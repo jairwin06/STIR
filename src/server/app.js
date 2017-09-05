@@ -26,6 +26,7 @@ import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
 import {disallow} from 'feathers-hooks-common'
+import TwiMLService from './services/twiml'
 
 import FBAnalyzeService from './services/fbanalyze'
 import UserContactService from './services/user-contact'
@@ -69,6 +70,9 @@ app
 .use('/rouser/alarms', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
 .use('/user/contact', new UserContactService());
+
+// TWIML
+app.get('/twiml', TwiMLService)
 
 //Setup authentication
 app.configure(authentication(AuthSettings));

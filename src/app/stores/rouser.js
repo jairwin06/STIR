@@ -27,13 +27,6 @@ export default class RouserStore extends Store {
         }
     }
 
-    async setContact(contact) {
-        console.log("Set contact", contact);
-        let result = await SocketUtil.rpc('user/contact::create',contact);
-        console.log("Rouser contact status", result);
-        return result;
-    }
-
     async getAlarms(contact) {
         try {
             if (!this.alarms) {
@@ -70,13 +63,4 @@ export default class RouserStore extends Store {
         console.log("Current alarm", this.currentAlarm);
     }
 
-    async verifyCode(code) {
-        try {
-            console.log("Verify code ", code);
-            let result = await SocketUtil.rpc('user/contact::create',{code: code});
-            console.log("Verify result", result);
-        } catch (e) {
-            console.log("Error verifying code", e);
-        }
-    }
 };
