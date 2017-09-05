@@ -9,7 +9,6 @@ var concat = require('gulp-concat');
 var autoprefixer = require ('gulp-autoprefixer');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var file = require('gulp-file');
 var rollup = require('rollup-stream');
 var nodeResolve = require('rollup-plugin-node-resolve');
 var commonjs = require('rollup-plugin-commonjs');
