@@ -41,7 +41,7 @@ import SocketUtil from '../app/util/socket'
 global.fetch = require('node-fetch');
 global.io = require('socket.io-client');
 
-SocketUtil.initWithUrl("http://localhost:3000");
+SocketUtil.initWithUrl("http://localhost:3030");
 
 const app = feathers()
 .set('views', process.env.APP_BASE_PATH + "/src/server/views")
@@ -157,14 +157,10 @@ console.log("Starting server");
 
 // Server routes
 let server = 
-    app.listen(3000, () => {
+    app.listen(3030, () => {
 
     let host = server.address().address
     let port = server.address().port
 
     console.log('Node/Feathers app listening at http://%s:%s', host, port);
-
-
-    // Init the loopback socket connection
-    // socketUtil.initWithUrl('http://localhost:3000');
 });
