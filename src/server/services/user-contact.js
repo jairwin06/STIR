@@ -1,13 +1,8 @@
-import twilio from 'twilio'
-
-const TWILIO_ACCOUNT_SID = process.env['TWILIO_ACCOUNT_SID'];
-const TWILIO_AUTH_TOKEN = process.env['TWILIO_AUTH_TOKEN'];
-const TWILIO_PHONE_NUMBER = process.env['TWILIO_PHONE_NUMBER']
+import TwilioUtil from '../util/twilio'
 
 export default class UserContactService {
     setup(app) {
         this.app = app;
-        this.twilioClient = new twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
     }
     find(params) {
         // Return just the status
@@ -36,10 +31,10 @@ export default class UserContactService {
         .then((result) => {
             /*
            console.log("User updated sending text");
-           return this.twilioClient.messages.create({
+           return TwilioUtil.client.messages.create({
                 body: 'Your STIR code is ' + result.verificationCode,
                 to: result.phone,  
-                from: TWILIO_PHONE_NUMBER
+                from: TwilioUtil.TWILIO_PHONE_NUMBER
            })*/
            return Promise.resolve({});
         })

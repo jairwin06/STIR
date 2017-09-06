@@ -30,9 +30,11 @@ import TwiMLService from './services/twiml'
 
 import FBAnalyzeService from './services/fbanalyze'
 import UserContactService from './services/user-contact'
+import RecordingsService from './services/recordings'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
+
 import GeneratePrompt from './services/generate-prompt'
 import AlarmManager from './services/alarm-manager'
 
@@ -69,10 +71,11 @@ app
 .use('/sleeper/alarms', service({Model: AlarmModel}))
 .use('/rouser/alarms', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
-.use('/user/contact', new UserContactService());
+.use('/user/contact', new UserContactService())
+.use('/recordings',new RecordingsService());
 
 // TWIML
-app.get('/twiml', TwiMLService)
+app.post('/twiml.xml', TwiMLService.getTwiML)
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
@@ -114,6 +117,18 @@ app.service('/user/contact').before({
 app.service('/rouser/alarms').before({
   find: [
     authentication.hooks.authenticate(['jwt'])
+  ]
+});
+
+app.service('/recordings').before({
+  create: [
+      authHooks.associateCurrentUser({ as: 'rouserId'})
+  ]
+});
+
+app.service('/recordings').after({
+  create: [
+      TwiMLService.dispatchCall
   ]
 });
 

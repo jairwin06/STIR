@@ -63,4 +63,10 @@ export default class RouserStore extends Store {
         console.log("Current alarm", this.currentAlarm);
     }
 
+    async requestCall() {
+        console.log("Requesting a call for alarm", this.currentAlarm);
+        let result = await SocketUtil.rpc("recordings::create",{alarmId: this.currentAlarm._id});
+        return result;
+    }
+
 };
