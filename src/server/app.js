@@ -43,6 +43,8 @@ import SocketUtil from '../app/util/socket'
 global.fetch = require('node-fetch');
 global.io = require('socket.io-client');
 
+global.SERVER_URL = process.env['SERVER_URL'];
+
 SocketUtil.initWithUrl("http://localhost:3030");
 
 const app = feathers()
@@ -59,9 +61,6 @@ const app = feathers()
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({ extended: true  }));
 
-// Auth middleware
-app.use(AuthService);
-
 // Services
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
@@ -76,6 +75,7 @@ app
 
 // TWIML
 app.post('/twiml.xml', TwiMLService.getTwiML)
+app.post('/twiml/recording-status/:userId', TwiMLService.getRecordingStatus)
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
@@ -133,6 +133,10 @@ app.service('/recordings').after({
 });
 
 // Client routes
+
+// Auth middleware
+app.use(AuthService);
+
 app.use(function (req, res, next) {
     try {
         console.log("Init state");

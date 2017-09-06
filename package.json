@@ -68,6 +68,7 @@
     "mongoose": "^4.11.8",
     "nedb": "^1.8.0",
     "node-fetch": "^1.7.2",
+    "node-persist": "^2.1.0",
     "nodent-runtime": "^3.0.4",
     "page": "^1.7.1",
     "page.js-express-mapper.js": "^1.0.5",
