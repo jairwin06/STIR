@@ -1,6 +1,9 @@
 import Session from '../models/session-persistent'
 
 export default class RecordingsService {
+    constructor() {
+        this.events = ['ready'];
+    }
     setup(app) {
         this.app = app;
     }
@@ -15,5 +18,11 @@ export default class RecordingsService {
         Session.setFor(params.user._id, {pendingRecording : data});
 
         return Promise.resolve({status: "success"});
+    }
+
+
+    ready(data) {
+        console.log("Recording file is ready!");
+        this.emit('ready', data);
     }
 }

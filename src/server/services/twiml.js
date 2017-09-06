@@ -58,6 +58,7 @@ export default {
                 DownloadUtil.saveUrl(req.body.RecordingUrl, 'public/recordings/' + sessionData.pendingRecording.alarmId + '.wav')
                 .then(() => {
                     console.log("Finished download!");
+                    req.app.service('recordings').ready(sessionData.pendingRecording);
                 })
                 .catch((err) => {
                     console.log("Error downloading file!", err);

@@ -11,6 +11,10 @@ export default class RouserStore extends Store {
         this.action = null;
         this.alarms = null;
         this.currentAlarm = null;
+
+        SocketUtil.socket.on('recordings ready', () => {
+            console.log("REALLY RECORDING READY!");
+        })
     }
     async getStatus() { 
         if (!this.status)  {
