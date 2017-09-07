@@ -33,7 +33,8 @@ class WatsonUtil {
             console.log("Running profile");
             this.personalityInsights.profile({
               text: text,
-              consumption_preferences: true
+              consumption_preferences: true,
+              raw_scores: true
               },
               (err, response) => {
                   if (err) {
