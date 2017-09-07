@@ -12,8 +12,9 @@ export default class RouserStore extends Store {
         this.alarms = null;
         this.currentAlarm = null;
 
-        SocketUtil.socket.on('recordings ready', () => {
-            console.log("REALLY RECORDING READY!");
+        SocketUtil.socket.on('recordings ready', (data) => {
+            this.recording = data;
+            this.trigger('recording_ready', data);
         })
     }
     async getStatus() { 
@@ -36,7 +37,7 @@ export default class RouserStore extends Store {
             if (!this.alarms) {
                 console.log("Get rouser alarms");
                 this.alarms = await SocketUtil.rpc('rouser/alarms::find', {accessToken: this._state.auth.accessToken});
-                console.log("Rouser alarms queue", this.alarms);
+                this.trigger('queue_updated')
             }
         }
         catch (e) {
@@ -45,8 +46,10 @@ export default class RouserStore extends Store {
     }
 
     setAction(action) {
-        this.action = action;
-        this.trigger('action_updated', action);
+        if (this.action != action) {
+            this.action = action;
+            this.trigger('action_updated', action);
+        }
     }
 
     setSignUpStage(stage) {

@@ -22,7 +22,12 @@ export default class RecordingsService {
 
 
     ready(data) {
-        console.log("Recording file is ready!");
+        console.log("Recording file is ready!",data);
+        // Save it in session and db
+        Session.setFor(data.rouserId, {pendingRecording : data});
+        let recording = Object.assign({}, data);
+        delete recording.alarmId;
+        this.app.service('/sleeper/alarms').patch(data.alarmId,{recording: recording})
         this.emit('ready', data);
     }
 }

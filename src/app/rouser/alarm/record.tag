@@ -16,9 +16,11 @@
  <script>
     this.on('mount', () => {
         console.log("alarm record mounted");
+        this.state.rouser.on('recording_ready', this.onRecordingReady);
     });
 
     this.on('unmount', () => {
+        this.state.rouser.off('recording_ready', this.onRecordingReady);
     });
 
 
@@ -32,6 +34,11 @@
         catch(e) {
             console.log("Error requesting call", e);
         }
+    }
+
+    onRecordingReady() {
+        console.log("Recording ready!", this.state.rouser.recording);
+        this.state.rouser.setRecordStage('mix');
     }
  </script>
 </record>

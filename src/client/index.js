@@ -33,10 +33,6 @@ Object.keys(state).forEach((key) => {
     }
 });
 
-console.log("Initial state", state);
-mixin({state: state}); // Global state mixin
-mount('main',state);
-
 page('*', function(ctx,next) {
     console.log("Set state in page context");
     ctx.appState = state;
@@ -45,5 +41,10 @@ page('*', function(ctx,next) {
 });
 
 Routes.runRoutingTable(window.app);
+
+console.log("Initial state", state);
+mixin({state: state}); // Global state mixin
+mount('main',state);
+
 
 page();

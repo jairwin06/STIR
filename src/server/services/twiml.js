@@ -21,10 +21,11 @@ export default {
                     response.say({}, "Thank you mister");
                 } else {
                     console.log("Session data", sessionData);
-                    response.say({}, "It's STIR time! Record something for 10 seconds");
+                    response.say({}, "It's S T I R time! Record something for 10 seconds and then press hash");
                     response.record({
                             timeout: 10,
-                            recordingStatusCallback: '/twiml/recording-status/' + user._id
+                            recordingStatusCallback: '/twiml/recording-status/' + user._id,
+                            endOnKey: '#'
                     });
                 }
             } else {
@@ -44,9 +45,13 @@ export default {
                 url: 'http://stir.avner.us/twiml.xml',
                 to: hook.params.user.phone,
                 from: TwilioUtil.TWILIO_PHONE_NUMBER
+        }).then((response) => {
+            return hook; 
+        })
+        .catch((err) => {
+            throw new Error(err);
         })
 
-        return hook; 
     },
 
     getRecordingStatus: function(req,res) {
@@ -55,9 +60,11 @@ export default {
             let sessionData = Session.getFor(req.params.userId);
             if (sessionData.pendingRecording) {
                 console.log("Downloading recording!");
-                DownloadUtil.saveUrl(req.body.RecordingUrl, 'public/recordings/' + sessionData.pendingRecording.alarmId + '.wav')
+                let recordingUrl = '/recordings/' + sessionData.pendingRecording.alarmId + '-rec.wav';
+                DownloadUtil.saveUrl(req.body.RecordingUrl, 'public' + recordingUrl)
                 .then(() => {
                     console.log("Finished download!");
+                    sessionData.pendingRecording.recordingUrl = recordingUrl + '?t=' + (new Date).getTime();
                     req.app.service('recordings').ready(sessionData.pendingRecording);
                 })
                 .catch((err) => {

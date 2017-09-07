@@ -1,4 +1,4 @@
-<alarm-queue>
+<alarms>
  <div section id="alarm-queue">
      <h1 class="title">Alarm Queue</h1>
         <ul>
@@ -25,8 +25,9 @@
 
 
     queueUpdated() {
+        console.log("Queue updated");
         this.update();
     }
 
  </script>
-</alarm-queue>
+</alarms>

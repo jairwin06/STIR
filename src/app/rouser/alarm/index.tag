@@ -12,6 +12,7 @@
  </style>
  <script>
     import './record.tag'
+    import './mix.tag'
     import { mount } from 'riot'
 
     this.on('mount', () => {
