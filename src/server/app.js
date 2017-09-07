@@ -30,9 +30,11 @@ import TwiMLService from './services/twiml'
 
 import FBAnalyzeService from './services/fbanalyze'
 import UserContactService from './services/user-contact'
+import RecordingsService from './services/recordings'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
+
 import GeneratePrompt from './services/generate-prompt'
 import AlarmManager from './services/alarm-manager'
 
@@ -40,6 +42,8 @@ import SocketUtil from '../app/util/socket'
 
 global.fetch = require('node-fetch');
 global.io = require('socket.io-client');
+
+global.SERVER_URL = process.env['SERVER_URL'];
 
 SocketUtil.initWithUrl("http://localhost:3030");
 
@@ -57,9 +61,6 @@ const app = feathers()
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({ extended: true  }));
 
-// Auth middleware
-app.use(AuthService);
-
 // Services
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
@@ -69,10 +70,12 @@ app
 .use('/sleeper/alarms', service({Model: AlarmModel}))
 .use('/rouser/alarms', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
-.use('/user/contact', new UserContactService());
+.use('/user/contact', new UserContactService())
+.use('/recordings',new RecordingsService());
 
 // TWIML
-app.get('/twiml', TwiMLService)
+app.post('/twiml.xml', TwiMLService.getTwiML)
+app.post('/twiml/recording-status/:userId', TwiMLService.getRecordingStatus)
 
 //Setup authentication
 app.configure(authentication(AuthSettings));
@@ -117,7 +120,31 @@ app.service('/rouser/alarms').before({
   ]
 });
 
+app.service('/recordings').before({
+  create: [
+      authHooks.associateCurrentUser({ as: 'rouserId'})
+  ]
+});
+
+app.service('/recordings').after({
+  create: [
+      TwiMLService.dispatchCall
+  ]
+});
+
+app.service('/recordings').filter('ready', function(data, connection, hook) {
+    if (connection.user._id.toString() == data.rouserId) {
+        return data;
+    } else {
+        return false;
+    }
+});
+
 // Client routes
+
+// Auth middleware
+app.use(AuthService);
+
 app.use(function (req, res, next) {
     try {
         console.log("Init state");

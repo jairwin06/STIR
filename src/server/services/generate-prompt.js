@@ -1,4 +1,4 @@
-import Session from '../models/session'
+import Session from '../models/session-persistent'
 import tracery from 'tracery-grammar'
 import WatsonUtil from '../util/watson'
 
@@ -35,7 +35,7 @@ export default function (hook) {
       "prompt_sentence": null
     };
 
-    let sessionData = Session.for(hook.data.userId); 
+    let sessionData = Session.getFor(hook.data.userId); 
 
     if (sessionData.location) {
         addLocation(promptSyntax, sessionData.location);

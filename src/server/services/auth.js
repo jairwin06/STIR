@@ -2,7 +2,7 @@ import AuthSettings from '../auth-settings'
 
 export default function(req,res,next) {
     try {
-        console.log("Authentication middleware!")
+        console.log("Authentication middleware!", req.method, req.originalUrl)
         if (!req.cookies[AuthSettings.cookie.name]) {
             console.log("No token! creating user");
             createNewUser();

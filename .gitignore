@@ -39,3 +39,7 @@ jspm_packages
 *.swo
 
 start.sh
+
+public/recordings
+
+.node-persist

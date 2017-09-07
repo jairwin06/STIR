@@ -1,6 +1,6 @@
 import graph from 'fbgraph'
 import WastonUtil from '../util/watson'
-import Session from '../models/session'
+import Session from '../models/session-persistent'
 
 const FB_APP_ID = '679489015579803';
 const FB_APP_SECRET = 'e820e06015e5dbf80982c72400433dde';
@@ -27,7 +27,7 @@ export default class FBAnalyzeService {
         .then((personality) => {
             // Save the personality in the session
             console.log("Done");
-            Session.for(params.user._id).personality = personality;
+            Session.setFor(params.user._id, {personality : personality});
             return Promise.resolve({status: "success"});
         })
         .catch((err) => {
