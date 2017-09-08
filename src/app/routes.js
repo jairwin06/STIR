@@ -31,6 +31,7 @@ class Routes {
             req.appState.main.setRole("sleeper");
             req.appState.sleeper.setAction("show");
             req.populateQueue.push(
+                req.appState.auth.getStatus(),
                 req.appState.sleeper.getAlarms()
             )
             this.go(next, req, res);
@@ -46,7 +47,7 @@ class Routes {
             console.log("Rouser route");
             req.appState.main.setRole("rouser");
             req.populateQueue.push(
-                req.appState.rouser.getStatus()
+                req.appState.auth.getStatus()
             )
             this.go(next, req, res);
         });

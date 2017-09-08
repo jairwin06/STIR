@@ -17,6 +17,10 @@ export default class FBAnalyzeService {
 
         return this.verifyToken(params.query.fbaccessToken)
         .then(() => {
+            return this.getName(params.query.fbaccessToken);
+        })
+        .then((name) => {
+            params.user.name = name;
             return this.getPosts(params.query.fbaccessToken);
         })
         .then((posts) => {
@@ -27,8 +31,8 @@ export default class FBAnalyzeService {
         .then((personality) => {
             // Save the personality in the session
             console.log("Done");
-            Session.setFor(params.user._id, {personality : personality});
-            return Promise.resolve({status: "success"});
+            Session.setFor(params.user._id, {name: params.user.name, personality : personality});
+            return Promise.resolve({status: "success", userName: params.user.name});
         })
         .catch((err) => {
             console.log("Error in FBAnalyzerService", err);
@@ -62,6 +66,15 @@ export default class FBAnalyzeService {
                     }
                     resolve(posts);
                 })
+            });
+        });
+    }
+    getName(accessToken) {
+        return new Promise((resolve, reject) => {
+            console.log("Getting first name");
+            graph.get('me?fields=first_name', {access_token: accessToken}, function(err, res) {
+                console.log("First name data: ",  res);
+                resolve(res.first_name);
             });
         });
     }

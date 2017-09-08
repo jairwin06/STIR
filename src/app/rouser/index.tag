@@ -20,7 +20,7 @@
     this.on('mount', () => {
         console.log("Rouser mounted. current action", this.state.rouser.action);
 
-        this.state.rouser.on('status_updated', this.statusUpdated);
+        this.state.auth.on('status_updated', this.statusUpdated);
         this.state.rouser.on('action_updated', this.actionUpdated);
         this.state.auth.on('user_code_verified', this.codeVerified);
 
@@ -32,14 +32,14 @@
     });
 
     this.on('unmount', () => {
-        this.state.rouser.off('status_updated', this.statusUpdated);
+        this.state.auth.off('status_updated', this.statusUpdated);
         this.state.rouser.off('action_updated', this.actionUpdated);
         this.state.auth.off('user_code_verified', this.codeVerified);
     });
 
     statusUpdated() {
-        console.log("Rouser status updated", this.state.rouser.status);
-        if (!this.state.rouser.status.phoneValidated) {
+        console.log("Rouser status updated", this.state.auth.user.status);
+        if (!this.state.auth.user.status.phoneValidated) {
              mount(this.refs.action,'sign-up');
         }
     }
@@ -55,7 +55,7 @@
     }
 
     validatedCheck() {
-        if (this.state.rouser.status && !this.state.rouser.status.phoneValidated) {
+        if (this.state.auth.user.status && !this.state.auth.user.status.phoneValidated) {
             if (IS_CLIENT) {
                 page.show("/rouser/sign-up", null, false);
             }

@@ -1,7 +1,7 @@
 <sleeper>
  <section id="sleeper">
      <h1>Sleeper</h1>
-     <alarms></alarms>
+     <clock></clock>
  </section>
  <style>
  #sleeper {
@@ -11,7 +11,7 @@
  }
  </style>
  <script>
-    import './alarms.tag'
+    import './clock.tag'
 
     this.on('mount', () => {
         console.log("Sleeper mounted");

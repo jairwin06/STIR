@@ -22,7 +22,7 @@
                 phone: this.refs.phone.value,
                 email: this.refs.email.value
             })
-            this.state.rouser.setSignUpStage("verify");
+            this.state.auth.setSignUpStage("verify");
         }
         catch (err) {
            console.log("Setting contact error!", err);

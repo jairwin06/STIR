@@ -7,7 +7,7 @@
  <add-alarm show="{state.sleeper.action == 'add'}"></add-alarm>
  
  <style>
-  #sleeper alarm-clock {
+  #sleeper clock {
     h1 {
      color: red;
     }

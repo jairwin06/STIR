@@ -4,9 +4,10 @@
     <button type="submit">Analyze My Facebook posts</button>
   </form>
 
-  <form onsubmit="{done}">
+  <b>Opt-out and answer some questions</b>
+  <form onsubmit="{submitQuestions}">
     Your name <input type="text" name="name" ref="name">
-    <button show ="{this.state.facebook.analysisStatus == 'success'}" type="submit">Done</button>
+    <button type="submit">Submit</button>
   </form>
   
  <style>
@@ -37,10 +38,18 @@
     }
 
     analysisStatusUpdated() {
-        this.update();
+        console.log("Facebook analysis status", this.state.facebook.analysisStatus);
+        if (this.state.facebook.analysisStatus.userName) {
+            this.state.auth.setUserName(this.state.facebook.analysisStatus.userName);
+        }
+        if (!this.state.auth.user.status.phoneValidated) {
+            this.state.sleeper.setAddAlarmStage('sign-up');
+        } else {
+            console.log("Done");
+        }
     }
 
-    done(e) {
+    submitQuestions(e) {
         e.preventDefault();
         this.state.sleeper.newAlarm.name = this.refs.name.value;
         this.state.sleeper.addAlarm();

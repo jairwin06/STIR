@@ -11,6 +11,7 @@
  <script>
     import './time.tag'
     import './personality.tag'
+    import '../../common/sign-up/index.tag'
 
     import { mount } from 'riot'
 

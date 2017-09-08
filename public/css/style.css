@@ -8,20 +8,20 @@ main {
 #rouser h1 {
   color: blue; }
 
-#rouser h1 {
-  color: blue; }
+#sleeper alarm-clock h1 {
+  color: red; }
 
-#sleeper alarms h1 {
+#sleeper clock h1 {
   color: red; }
 
 #sleeper h1 {
   color: yellow; }
 
+main #sign-up h1 {
+  color: green; }
+
 #rouser #alarm h1 {
   color: yellow; }
-
-#rouser #sign-up h1 {
-  color: green; }
 
 #sleeper alarms add-alarm h1 {
   color: green; }

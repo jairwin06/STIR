@@ -5,7 +5,8 @@ export default class AuthStore extends Store {
     constructor() {
         super();
         console.log("Init AuthStore");
-        this.user = null;
+        this.user = {};
+        this.signUpStage = "contact";
     }     
 
     setAcessToken(accessToken) {
@@ -36,7 +37,20 @@ export default class AuthStore extends Store {
         }
         
     }
+    async getStatus() { 
+        if (!this.status)  {
+            try {
+                let result = await SocketUtil.rpc('user/contact::find', {accessToken: this.accessToken});
+                console.log("User contact status", result);
+                this.user.status = result;
+                this.trigger("status_updated");
+            }
 
+            catch (e) {
+                console.log("Error getting rouser status  ", e);                    
+            }
+        }
+    }
     async setContact(contact) {
         console.log("Set contact", contact);
         let result = await SocketUtil.rpc('user/contact::create',contact);
@@ -50,11 +64,23 @@ export default class AuthStore extends Store {
             let result = await SocketUtil.rpc('user/contact::create',{code: code});
             console.log("Verify result", result);
             if (result.status == "success") {
+                this.user.status.phoneValidated = true;
                 this.trigger("user_code_verified");
             }
         } catch (e) {
             console.log("Error verifying code", e);
         }
+    }
+
+    setSignUpStage(stage) {
+        console.log("Set sign up stage", stage);
+        this.signUpStage = stage;
+        this.trigger('sign_up_stage');
+    }
+
+    setUserName(name) {
+        console.log("Setting user name to", name);
+        this.user.name = name;
     }
 
 };

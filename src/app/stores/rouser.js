@@ -7,7 +7,6 @@ export default class RouserStore extends Store {
     constructor(state) {
         super(state);
         this.status = null;
-        this.signUpStage = "contact";
         this.action = null;
         this.alarms = null;
         this.currentAlarm = null;
@@ -16,20 +15,6 @@ export default class RouserStore extends Store {
             this.recording = data;
             this.trigger('recording_ready', data);
         })
-    }
-    async getStatus() { 
-        if (!this.status)  {
-            try {
-                let result = await SocketUtil.rpc('user/contact::find', {accessToken: this._state.auth.accessToken});
-                console.log("Rouser contact status", result);
-                this.status = result;
-                this.trigger("status_updated");
-            }
-
-            catch (e) {
-                console.log("Error getting rouser status  ", e);                    
-            }
-        }
     }
 
     async getAlarms(contact) {
@@ -52,11 +37,6 @@ export default class RouserStore extends Store {
         }
     }
 
-    setSignUpStage(stage) {
-        console.log("Set sign up stage", stage);
-        this.signUpStage = stage;
-        this.trigger('rouser_sign_up_stage');
-    }
 
     setRecordStage(stage) {
         console.log("Set record stage", stage);
