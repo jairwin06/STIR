@@ -11,7 +11,7 @@
  }
  </style>
  <script>
-    import './sign-up/index.tag'
+    import '../common/sign-up/index.tag'
     import './alarms.tag'
     import './alarm/index.tag'
 
