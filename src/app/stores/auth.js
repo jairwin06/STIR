@@ -38,9 +38,12 @@ export default class AuthStore extends Store {
         
     }
     async getStatus() { 
-        if (!this.user.status)  {
+        if (!this.user.status && !this.gettingStatus)  {
             try {
+                this.gettingStatus = true;
+                console.log("Getting user status");
                 let result = await SocketUtil.rpc('user/contact::find', {accessToken: this.accessToken});
+                this.gettingStatus = false;
                 console.log("User contact status", result);
                 this.user.status = result;
                 this.trigger("status_updated");
@@ -48,6 +51,7 @@ export default class AuthStore extends Store {
 
             catch (e) {
                 console.log("Error getting rouser status  ", e);                    
+                this.gettingStatus = false;
             }
         }
     }

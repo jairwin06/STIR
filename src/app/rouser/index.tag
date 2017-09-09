@@ -49,13 +49,13 @@
 
     
     codeVerified() {
-        this.state.rouser.setAction("alarms")
+        page.show("/rouser/alarms");
     }
 
     validatedCheck() {
         if (this.state.auth.user.status && !this.state.auth.user.status.phoneValidated) {
             if (IS_CLIENT) {
-                page.show("/rouser/sign-up", null, false);
+                page.show("/rouser/sign-up");
             }
         } else {
             if (this.state.rouser.action != 'alarms') {

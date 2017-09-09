@@ -12,7 +12,7 @@ export default class AlarmManager {
         console.log("Alarm manager for rouser", params.user);
         if (!params.user.status.phoneValidated) {
             // Can't assign alarms if they didn't sign up
-            return Promise.resolve([]);
+            return Promise.reject(new Error("Phone not validated"));
         } else {
             // First get alarms assigned to this rouser and not fulfilled
             return Alarm.find({
