@@ -39,9 +39,7 @@
 
     statusUpdated() {
         console.log("Rouser status updated", this.state.auth.user.status);
-        if (!this.state.auth.user.status.phoneValidated) {
-             mount(this.refs.action,'sign-up');
-        }
+        this.validatedCheck();
     }
 
     actionUpdated() {
@@ -62,7 +60,9 @@
         } else {
             if (this.state.rouser.action != 'alarms') {
                 if (IS_CLIENT) {
-                    page.show("/rouser/alarms", null, false);
+                    console.log("Redirecting to alarms");
+                    //page.show("/rouser/alarms", null, false);
+                    page.show("/rouser/alarms");
                 }
             }
         }

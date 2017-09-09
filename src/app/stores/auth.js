@@ -38,7 +38,7 @@ export default class AuthStore extends Store {
         
     }
     async getStatus() { 
-        if (!this.status)  {
+        if (!this.user.status)  {
             try {
                 let result = await SocketUtil.rpc('user/contact::find', {accessToken: this.accessToken});
                 console.log("User contact status", result);
