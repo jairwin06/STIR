@@ -43,17 +43,21 @@
             this.state.auth.setUserName(this.state.facebook.analysisStatus.userName);
             this.state.sleeper.newAlarm.name = this.state.facebook.analysisStatus.userName;
         }
-        if (!this.state.auth.user.status.phoneValidated) {
-            this.state.sleeper.setAddAlarmStage('sign-up');
-        } else {
-            this.state.sleeper.addAlarm();
-        }
+        this.validateCheck();
     }
 
     submitQuestions(e) {
         e.preventDefault();
         this.state.sleeper.newAlarm.name = this.refs.name.value;
-        this.state.sleeper.addAlarm();
+        this.validateCheck();
+    }
+
+    validateCheck() {
+        if (!this.state.auth.user.status.phoneValidated) {
+            this.state.sleeper.setAddAlarmStage('sign-up');
+        } else {
+            this.state.sleeper.addAlarm();
+        }
     }
  </script>
 </personality>

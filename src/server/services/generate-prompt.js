@@ -36,17 +36,18 @@ export default function (hook) {
     };
 
     let sessionData = Session.getFor(hook.data.userId); 
+    if (sessionData) {
+        if (sessionData.location) {
+            addLocation(promptSyntax, sessionData.location);
+        }
 
-    if (sessionData.location) {
-        addLocation(promptSyntax, sessionData.location);
-    }
+        if (sessionData.personality) {
+            addPersonality(promptSyntax, sessionData.personality);
 
-    if (sessionData.personality) {
-        addPersonality(promptSyntax, sessionData.personality);
-
-        // Debug
-        hook.data.debug = {
-            watson: JSON.stringify(sessionData.personality)
+            // Debug
+            hook.data.debug = {
+                watson: JSON.stringify(sessionData.personality)
+            }
         }
     }
 
