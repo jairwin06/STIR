@@ -25,7 +25,7 @@ import authHooks from 'feathers-authentication-hooks';
 import errorHandler from 'feathers-errors/handler';
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
-import {disallow} from 'feathers-hooks-common'
+import {disallow, pluck} from 'feathers-hooks-common'
 import TwiMLService from './services/twiml'
 
 import FBAnalyzeService from './services/fbanalyze'
@@ -103,8 +103,15 @@ app.service('/sleeper/alarms').before({
   ],
   find: [
     authentication.hooks.authenticate(['jwt']),
-    authHooks.queryWithCurrentUser()
+    authHooks.queryWithCurrentUser(),
+    (hook) => {hook.params.query.$select = ['id','time']; return hook}
   ]
+});
+
+app.service('/sleeper/alarms').after({
+  create: [
+    pluck('_id', 'time') 
+  ],
 });
 
 app.service('/user/contact').before({

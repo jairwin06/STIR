@@ -41,11 +41,12 @@
         console.log("Facebook analysis status", this.state.facebook.analysisStatus);
         if (this.state.facebook.analysisStatus.userName) {
             this.state.auth.setUserName(this.state.facebook.analysisStatus.userName);
+            this.state.sleeper.newAlarm.name = this.state.facebook.analysisStatus.userName;
         }
         if (!this.state.auth.user.status.phoneValidated) {
             this.state.sleeper.setAddAlarmStage('sign-up');
         } else {
-            console.log("Done");
+            this.state.sleeper.addAlarm();
         }
     }
 

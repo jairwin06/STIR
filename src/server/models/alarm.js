@@ -8,7 +8,7 @@ const AlarmSchema = new mongoose.Schema({
     assignedTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
     fulfilled: {type: Boolean, default: false},
     recording: {
-        rouserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+        rouserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         recordingUrl: {type: String, default: null},
         mixUrl: {type: String, default: null},
     },

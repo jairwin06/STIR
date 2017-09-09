@@ -22,7 +22,7 @@
     next(e) {
         e.preventDefault();
         let date = this.refs.dateTime.value;
-        console.log("Alarm time", date);
+        console.log("Alarm time", date, typeof(date));
         this.state.sleeper.newAlarm.time = date;
         this.state.sleeper.setAddAlarmStage("personality");
     }
