@@ -1,6 +1,6 @@
 <time>
  <h1 class="title">Add Alarm time</h1>
-  <b>Alarm will be set for: {state.sleeper.newAlarm.time.toString()}</b>
+  <b>Alarm will be set for: {state.sleeper.newAlarm.time}</b>
   <form onsubmit="{ next }">
     Date/Time:<input ref="time" type="time" change="{onTimeChange}" required>
     <input type="submit" value="Next">
