@@ -64,6 +64,7 @@
     "feathers-nedb": "^2.7.0",
     "feathers-rest": "^1.8.0",
     "feathers-socketio": "^2.0.0",
+    "intl-tel-input": "^12.0.2",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.8",
     "nedb": "^1.8.0",
