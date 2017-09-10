@@ -25,7 +25,7 @@ export default {
                     response.record({
                             timeout: 10,
                             recordingStatusCallback: '/twiml/recording-status/' + user._id,
-                            endOnKey: '#'
+                            finishOnKey: '#'
                     });
                 }
             } else {
