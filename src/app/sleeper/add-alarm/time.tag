@@ -1,7 +1,8 @@
 <time>
  <h1 class="title">Add Alarm time</h1>
+  <b>Alarm will be set for: {state.sleeper.newAlarm.time.toString()}</b>
   <form onsubmit="{ next }">
-    Date/Time:<input ref="dateTime" type="datetime-local" min="{nowDate}">
+    Date/Time:<input ref="time" type="time" change="{onTimeChange}" required>
     <input type="submit" value="Next">
   </form>
  <style>
@@ -18,12 +19,22 @@
     this.on('unmount', () => {
     });
 
+    onTimeChange() {
+        let time = this.refs.time.value;
+        let timeComponents = time.split(":");
+        let alarmTime = new Date(new Date().setHours(timeComponents[0],timeComponents[1],0));
+
+        if (alarmTime.getTime() < new Date().getTime()) {
+            console.log("Alarm will be set for tomorrow");
+            alarmTime.setDate(alarmTime.getDate() + 1);
+        }
+        this.state.sleeper.newAlarm.time = alarmTime;
+        this.update();
+
+    }
 
     next(e) {
         e.preventDefault();
-        let date = this.refs.dateTime.value;
-        console.log("Alarm time", date, typeof(date));
-        this.state.sleeper.newAlarm.time = date;
         this.state.sleeper.setAddAlarmStage("personality");
     }
 
