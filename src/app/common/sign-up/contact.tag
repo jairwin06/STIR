@@ -1,5 +1,8 @@
 <contact>
  <h1 class="title">Your contact details</h1>
+  <p>
+    Welcome {state.auth.user.name}!
+  </p>
   <form onsubmit="{setContact}">
     Email:<input ref="email" type="email"><br>
     Phone number:<input id="phone" ref="phone" type="tel" required>
@@ -29,7 +32,8 @@
         try {
             let result = await this.state.auth.setContact({
                 phone: joinedPhone,
-                email: this.refs.email.value
+                email: this.refs.email.value,
+                name:  this.state.auth.user.name
             })
             this.state.auth.setSignUpStage("verify");
         }

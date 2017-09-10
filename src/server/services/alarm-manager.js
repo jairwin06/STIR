@@ -4,6 +4,9 @@ const ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt"
 
 export default class AlarmManager {
+    constructor() {
+        console.log("Alarm manager starting, getting alarms to fulfill");
+    }
     setup(app) {
         this.app = app;
     }
