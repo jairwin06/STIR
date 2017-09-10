@@ -5,7 +5,34 @@ const FIELDS_TO_RETURN = "_id time name prompt"
 
 export default class AlarmManager {
     constructor() {
-        console.log("Alarm manager starting, getting alarms to fulfill");
+        console.log("Alarm manager starting");
+        this.getPendingAlarms();
+    }
+    getPendingAlarms() {
+        console.log("Get pending alarms");
+        Alarm.find({
+            time: {$gt: new Date()},
+            'recording.recordingUrl': {$ne: null}
+        }).sort({time: 1})
+        .then((result) => {
+           console.log("Result:", result.length + " Alarms");
+            this.pendingAlarms = result;
+
+            if (this.pendingAlarms.length > 0) {
+                // Get the next one (it was sorted so first in line)
+                this.nextAlarm = this.pendingAlarms[0];
+                console.log("Next alarm at", this.nextAlarm.time);
+                
+                // TODO: Support for multiple alarms at the same time!
+            }
+        })
+
+        // Start the clock
+        setInterval(() => {
+            this.tick();
+        },1000);
+    }
+    tick() {
     }
     setup(app) {
         this.app = app;

@@ -17,6 +17,7 @@ var riot = require('rollup-plugin-riot');
 var nodent = require('rollup-plugin-nodent');
 var nodemon = require('gulp-nodemon');
 var sass = require('gulp-sass');
+var todo = require('gulp-todo');
 
 var server;
 var watchEvent;
@@ -28,6 +29,12 @@ gulp.task('env', function() {
   process.env.APP_BASE_PATH = __dirname;
 });
 
+gulp.task('todo', function() {
+    gulp.src('src/**/*.js')
+    .pipe(todo())
+    .pipe(gulp.dest('./'));
+    // -> Will output a TODO.md with your todos
+});
 
 gulp.task('css', function() {
     // Extract the CSS from the JS Files and place into a single style with autoprefixer
