@@ -1,4 +1,5 @@
 import Alarm from '../models/alarm'
+import TwilioUtil from '../util/twilio'
 
 const ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt"
@@ -13,18 +14,11 @@ export default class AlarmManager {
         Alarm.find({
             time: {$gt: new Date()},
             'recording.recordingUrl': {$ne: null}
-        }).sort({time: 1})
+        }).sort({time: -1})
         .then((result) => {
-           console.log("Result:", result.length + " Alarms");
+            console.log("Result:", result.length + " Alarms");
             this.pendingAlarms = result;
-
-            if (this.pendingAlarms.length > 0) {
-                // Get the next one (it was sorted so first in line)
-                this.nextAlarm = this.pendingAlarms[0];
-                console.log("Next alarm at", this.nextAlarm.time);
-                
-                // TODO: Support for multiple alarms at the same time!
-            }
+            this.popAlarm();
         })
 
         // Start the clock
@@ -33,6 +27,24 @@ export default class AlarmManager {
         },1000);
     }
     tick() {
+        if (this.nextAlarm && this.nextAlarm.time.getTime() <= new Date().getTime()) {
+            console.log("Time to wake up " + this.nextAlarm.name);
+
+            // Already pop the next alarm to continue processing
+
+        }
+    }
+    popAlarm() {
+        if (this.pendingAlarms.length > 0) {
+            // Get the next one (it was sorted so first in line)
+            this.nextAlarm = this.pendingAlarms.pop();
+            console.log("Next alarm at", this.nextAlarm.time);
+           
+            // TODO: Support for multiple alarms at the same time!
+        } else {
+            this.nextAlarm = null;
+        }
+
     }
     setup(app) {
         this.app = app;
@@ -47,7 +59,8 @@ export default class AlarmManager {
             // First get alarms assigned to this rouser and not fulfilled
             return Alarm.find({
                 assignedTo: params.user._id,
-                fulfilled: false
+                fulfilled: false,
+                time: {$gt: new Date()}
             }).select(FIELDS_TO_RETURN)
             .then((result) => {
                 if (result.length < ALARMS_IN_QUEUE) {
@@ -56,7 +69,8 @@ export default class AlarmManager {
 
                     console.log("Still need to find " + alarmsToGo + " more alarms");
                     return Alarm.find({
-                        assignedTo: null
+                        assignedTo: null,
+                        time: {$gt: new Date()}
                     }).select("_id").limit(alarmsToGo)
                     .then((newIds) => {
                         alarmIds = newIds;
@@ -79,7 +93,8 @@ export default class AlarmManager {
                                 [{_id: {$in: alarmIds}},
                                 {$and : [{
                                     assignedTo: params.user._id,
-                                    fulfilled: false
+                                    fulfilled: false,
+                                    time: {$gt: new Date()}
                                 }]}]
                             }
                         ).select(FIELDS_TO_RETURN)                        

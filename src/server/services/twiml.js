@@ -5,7 +5,7 @@ import Session from '../models/session-persistent'
 import DownloadUtil from '../util/download'
 
 export default { 
-    getTwiML: function(req,res) {
+    getRecordingTwiML: function(req,res) {
         console.log("TWIML SERVICE CALLED!", req.body);
         // Get the user by phone number
         User.findOne({phone: req.body.Called})
@@ -39,19 +39,19 @@ export default {
         })
     },
 
-    dispatchCall: function(hook) {
+    dispatchRecordingCall: function(hook) {
         console.log("TWIML Dispatch call hook!", hook.data, hook.params);
         TwilioUtil.client.calls.create({
-                url: 'http://stir.avner.us/twiml.xml',
+                url: 'http://stir.avner.us/twiml-rec.xml',
                 to: hook.params.user.phone,
                 from: TwilioUtil.TWILIO_PHONE_NUMBER
         }).then((response) => {
             return hook; 
         })
         .catch((err) => {
+            console.log("Error dispatching call", )
             throw new Error(err);
         })
-
     },
 
     getRecordingStatus: function(req,res) {

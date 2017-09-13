@@ -74,7 +74,7 @@ app
 .use('/recordings',new RecordingsService());
 
 // TWIML
-app.post('/twiml.xml', TwiMLService.getTwiML)
+app.post('/twiml-rec.xml', TwiMLService.getRecordingTwiML)
 app.post('/twiml/recording-status/:userId', TwiMLService.getRecordingStatus)
 
 //Setup authentication
@@ -135,7 +135,7 @@ app.service('/recordings').before({
 
 app.service('/recordings').after({
   create: [
-      TwiMLService.dispatchCall
+      TwiMLService.dispatchRecordingCall
   ]
 });
 
