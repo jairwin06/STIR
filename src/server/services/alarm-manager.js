@@ -33,6 +33,7 @@ export default class AlarmManager {
     tick() {
         if (this.nextAlarm && this.nextAlarm.time.getTime() <= new Date().getTime()) {
             console.log("Time to wake up " + this.nextAlarm.name);
+            
 
             // Already pop the next alarm to continue processing
 

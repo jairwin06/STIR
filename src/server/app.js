@@ -37,6 +37,7 @@ import AlarmModel from './models/alarm'
 
 import GeneratePrompt from './services/generate-prompt'
 import AlarmManager from './services/alarm-manager'
+import patchAlarmHook from './services/patch-alarm'
 
 import SocketUtil from '../app/util/socket'
 
@@ -107,7 +108,8 @@ app.service('/sleeper/alarms').before({
     (hook) => {hook.params.query.$select = ['id','time']; return hook}
   ],
   patch: [
-      disallow('external')
+      authHooks.restrictToOwner({ ownerField: 'userId' }),
+      patchAlarmHook
   ]
 });
 
@@ -115,6 +117,9 @@ app.service('/sleeper/alarms').after({
   create: [
     pluck('_id', 'time') 
   ],
+  patch: [
+    pluck('_id', 'time') 
+  ]
 });
 
 app.service('/user/contact').before({

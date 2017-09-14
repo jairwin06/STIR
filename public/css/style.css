@@ -8,11 +8,11 @@ main {
 #rouser h1 {
   color: blue; }
 
-#sleeper alarm-clock h1 {
-  color: red; }
-
 #sleeper clock h1 {
   color: red; }
+
+#sleeper alarms edit-alarm h1 {
+  color: green; }
 
 #sleeper h1 {
   color: yellow; }

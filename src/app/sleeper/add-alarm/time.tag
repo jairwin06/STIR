@@ -1,6 +1,6 @@
 <time>
  <h1 class="title">Add Alarm time</h1>
-  <b>Alarm will be set for: {state.sleeper.newAlarm.time}</b>
+  <b>Alarm will be set for: {state.sleeper.currentAlarm.time}</b>
   <form onsubmit="{ next }">
     Date/Time:<input ref="time" type="time" change="{onTimeChange}" required>
     <input type="submit" value="Next">
@@ -28,14 +28,26 @@
             console.log("Alarm will be set for tomorrow");
             alarmTime.setDate(alarmTime.getDate() + 1);
         }
-        this.state.sleeper.newAlarm.time = alarmTime;
+        this.state.sleeper.currentAlarm.time = alarmTime;
         this.update();
 
     }
 
-    next(e) {
+    async next(e) {
         e.preventDefault();
-        this.state.sleeper.setAddAlarmStage("personality");
+        if (this.state.sleeper.action == "add-alarm") {
+            this.state.sleeper.setAddAlarmStage("personality");
+        } else {
+            try {
+                let result = await this.state.sleeper.saveAlarm();
+                console.log("Save result", result);
+                if (IS_CLIENT) {
+                    page("/sleeper");
+                }
+            } catch (e) {
+                console.log("Error saving alarm!", e);
+            }
+        }
     }
 
 

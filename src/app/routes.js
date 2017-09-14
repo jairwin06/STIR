@@ -29,7 +29,7 @@ class Routes {
         app.route('/sleeper*').get((req, res, next) => {
             console.log("Sleeper route!");
             req.appState.main.setRole("sleeper");
-            req.appState.sleeper.setAction("show");
+            req.appState.sleeper.setAction("clock");
             req.populateQueue.push(
                 req.appState.auth.getStatus(),
                 req.appState.sleeper.getAlarms()
@@ -38,8 +38,14 @@ class Routes {
         });
 
         app.route('/sleeper/alarms/add').get((req, res, next) => {
-            req.appState.sleeper.setAction("add");
+            req.appState.sleeper.setAction("add-alarm");
             req.appState.sleeper.setAddAlarmStage("time");
+            this.go(next, req, res);
+        });
+
+        app.route('/sleeper/alarm/:id').get((req, res, next) => {
+            req.appState.sleeper.chooseAlarm(req.params.id);
+            req.appState.sleeper.setAction("edit-alarm");
             this.go(next, req, res);
         });
 

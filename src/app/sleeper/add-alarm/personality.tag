@@ -43,13 +43,13 @@
 
             this.state.auth.setUserName(this.state.facebook.analysisStatus.userName);
         }
-        this.state.sleeper.newAlarm.name = this.state.facebook.analysisStatus.userName;
+        this.state.sleeper.currentAlarm.name = this.state.facebook.analysisStatus.userName;
         this.validateCheck();
     }
 
     submitQuestions(e) {
         e.preventDefault();
-        this.state.sleeper.newAlarm.name = this.refs.name.value;
+        this.state.sleeper.currentAlarm.name = this.refs.name.value;
         if (!this.state.auth.user.name) {
             this.state.auth.setUserName(this.refs.name.value);
         }

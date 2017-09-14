@@ -19,7 +19,6 @@
         console.log("add-alarm mounted", this.state.sleeper.addAlarmStage);
         this.state.sleeper.on('sleeper_add_alarm_stage', this.stageUpdated);
         this.state.auth.on('user_code_verified', this.onCodeVerified);
-        this.stageTag = mount(this.refs.stage,this.state.sleeper.addAlarmStage)[0];
     });
 
     this.on('unmount', () => {
