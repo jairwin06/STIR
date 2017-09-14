@@ -105,6 +105,9 @@ app.service('/sleeper/alarms').before({
     authentication.hooks.authenticate(['jwt']),
     authHooks.queryWithCurrentUser(),
     (hook) => {hook.params.query.$select = ['id','time']; return hook}
+  ],
+  patch: [
+      disallow('external')
   ]
 });
 
@@ -184,7 +187,7 @@ app.use(function (req, res, next) {
     }
 });
 
-//app.use(errorHandler());
+app.use(errorHandler());
 
 
 console.log("Starting server");

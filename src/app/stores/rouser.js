@@ -19,14 +19,17 @@ export default class RouserStore extends Store {
 
     async getAlarms(contact) {
         try {
-            if (!this.alarms) {
+            if (!this.alarms && !this.gettingAlarms) {
+                this.gettingAlarms = true;
                 console.log("Get rouser alarms");
                 this.alarms = await SocketUtil.rpc('rouser/alarms::find', {accessToken: this._state.auth.accessToken});
+                this.gettingAlarms = false;
                 this.trigger('queue_updated')
             }
         }
         catch (e) {
             console.log("Error getting alarm queue", e);                    
+            this.gettingAlarms = false;
         }
     }
 
@@ -58,7 +61,7 @@ export default class RouserStore extends Store {
     async finalizeAlarm() {
         console.log("Finalizing alarm");
         let result = await SocketUtil.rpc(
-            "sleeper/alarms::patch",
+            "recordings::patch",
             this.currentAlarm._id, 
             {'recording.finalized': true}
         );

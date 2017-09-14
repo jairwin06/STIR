@@ -27,7 +27,8 @@
             e.preventDefault();
             try {
                 console.log("Finalizing alarm");
-                this.state.rouser.finalizeAlarm();            
+                let result = await this.state.rouser.finalizeAlarm();            
+                console.log("Result", result);
             }
             catch (e) {
                 console.log("Error finalizing alarm!", e);
