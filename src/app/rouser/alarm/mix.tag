@@ -5,6 +5,11 @@
             <source src={state.rouser.recording.recordingUrl} type="audio/wav">
         </audio>
     </p>
+    <p>
+      <form onsubmit="{finalize}">
+       <input type="submit" value="Finalize rouse">
+    </p>
+  </form>
 
     <style>
     </style>
@@ -17,6 +22,17 @@
         this.on('unmount', () => {
 
         });
+
+        async finalize(e) {
+            e.preventDefault();
+            try {
+                console.log("Finalizing alarm");
+                this.state.rouser.finalizeAlarm();            
+            }
+            catch (e) {
+                console.log("Error finalizing alarm!", e);
+            }
+        }
     </script>
 </mix>
 

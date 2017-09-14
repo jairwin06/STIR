@@ -71,7 +71,7 @@ class Routes {
             console.log("Rouser alarm record route", req);
             req.appState.rouser.setAction("alarm");
             req.appState.rouser.chooseAlarm(req.params.id);
-            req.appState.rouser.setRecordStage('record');
+            req.appState.rouser.setRecordStage('mix');
             this.go(next, req, res);
         });
 

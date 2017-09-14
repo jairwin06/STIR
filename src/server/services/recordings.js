@@ -20,6 +20,10 @@ export default class RecordingsService {
         return Promise.resolve({status: "success"});
     }
 
+    patch(id, data, params) {
+        console.log("Finalize alarm!");
+    }
+
 
     ready(data) {
         console.log("Recording file is ready!",data);

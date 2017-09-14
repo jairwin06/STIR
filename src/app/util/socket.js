@@ -22,16 +22,18 @@ class SocketUtil {
         this.initWithUrl(this.url);*/
     }
 
-    rpc(service, args) {
+    rpc(...args) {
         return new Promise((resolve, reject) => {
-            console.log("Socket util sending ",args," to ", service);
-            this.socket.emit(service,args, function(error, result) {
+            console.log("Socket util sending ",args);
+            args.push( (error, result) => {
                 if (error) { 
                     reject(error)
                 } else {
                     resolve(result);
                 }
             });
+                
+            this.socket.emit.apply(this.socket,args);
         });
     }
 };

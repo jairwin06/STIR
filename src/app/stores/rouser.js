@@ -37,7 +37,6 @@ export default class RouserStore extends Store {
         }
     }
 
-
     setRecordStage(stage) {
         console.log("Set record stage", stage);
         this.recordStage = stage;
@@ -56,4 +55,13 @@ export default class RouserStore extends Store {
         return result;
     }
 
+    async finalizeAlarm() {
+        console.log("Finalizing alarm");
+        let result = await SocketUtil.rpc(
+            "sleeper/alarms::patch",
+            this.currentAlarm._id, 
+            {'recording.finalized': true}
+        );
+        return result;
+    }
 };

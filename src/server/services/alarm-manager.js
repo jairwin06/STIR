@@ -9,6 +9,10 @@ export default class AlarmManager {
         console.log("Alarm manager starting");
         this.getPendingAlarms();
     }
+    setup(app) {
+        this.app = app;
+        app.service('sleeper/alarms').on('created', alarm => onAlarmCreated(alarm));
+    }
     getPendingAlarms() {
         console.log("Get pending alarms");
         Alarm.find({
@@ -46,9 +50,10 @@ export default class AlarmManager {
         }
 
     }
-    setup(app) {
-        this.app = app;
+    onAlarmCreated(alarm) {
+        console.log("New alarm created!", alarm);
     }
+
     find(params) {
         // First get the alarms that this user was assigend to
         console.log("Alarm manager for rouser", params.user);
@@ -56,10 +61,10 @@ export default class AlarmManager {
             // Can't assign alarms if they didn't sign up
             return Promise.reject(new Error("Phone not validated"));
         } else {
-            // First get alarms assigned to this rouser and not fulfilled
+            // First get alarms assigned to this rouser and not finalized
             return Alarm.find({
                 assignedTo: params.user._id,
-                fulfilled: false,
+                'recording.finalized': false,
                 time: {$gt: new Date()}
             }).select(FIELDS_TO_RETURN)
             .then((result) => {
@@ -93,7 +98,7 @@ export default class AlarmManager {
                                 [{_id: {$in: alarmIds}},
                                 {$and : [{
                                     assignedTo: params.user._id,
-                                    fulfilled: false,
+                                    'recording.finalized': false,
                                     time: {$gt: new Date()}
                                 }]}]
                             }

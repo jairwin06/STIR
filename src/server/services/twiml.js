@@ -16,7 +16,7 @@ export default {
             // Get the session
             let sessionData = Session.getFor(user._id);
 
-            if (sessionData.pendingRecording) {
+            if (sessionData && sessionData.pendingRecording) {
                 if (req.body.RecordingSid) {
                     response.say({}, "Thank you mister");
                 } else {
@@ -35,6 +35,7 @@ export default {
             res.send(response.toString());
         })
         .catch((err) => {
+            console.log("Error in twiml service!", err);
             res.send("Error" + err);
         })
     },
@@ -42,14 +43,14 @@ export default {
     dispatchRecordingCall: function(hook) {
         console.log("TWIML Dispatch call hook!", hook.data, hook.params);
         TwilioUtil.client.calls.create({
-                url: 'http://stir.avner.us/twiml-rec.xml',
+                url: SERVER_URL + '/twiml-rec.xml',
                 to: hook.params.user.phone,
                 from: TwilioUtil.TWILIO_PHONE_NUMBER
         }).then((response) => {
             return hook; 
         })
         .catch((err) => {
-            console.log("Error dispatching call", )
+            console.log("Error dispatching call", err )
             throw new Error(err);
         })
     },
