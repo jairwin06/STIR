@@ -3,7 +3,7 @@ import Session from '../models/session-persistent'
 
 export default class RecordingsService {
     constructor() {
-        this.events = ['ready'];
+        this.events = ['ready', 'finalized'];
     }
     setup(app) {
         this.app = app;
@@ -30,13 +30,18 @@ export default class RecordingsService {
             console.log("Found alarm", alarm);            
             if (alarm.recording.rouserId.toString() == params.user._id.toString()) {
                 console.log("Patching");
-                return this.app.service('/sleeper/alarms').patch(id, data);
+                let query = {};
+                query['recording.finalized'] = data['recording.finalized'];
+                return this.app.service('/sleeper/alarms').patch(id, query);
             } else {
                 throw new Error("Invalid rouser id for this alarm!")
             }
         })
         .then((result) => {
-            console.log("Alarm set!");
+            if (data['recording.finalized'] == true) {
+                console.log("Alarm set!", result);
+                this.emit('finalized', result);
+            }
         });
     }
 

@@ -11,7 +11,7 @@ export default class AlarmManager {
     }
     setup(app) {
         this.app = app;
-        app.service('sleeper/alarms').on('created', alarm => onAlarmCreated(alarm));
+        app.service('recordings').on('finalized', alarm => this.onAlarmSet(alarm));
     }
     getPendingAlarms() {
         console.log("Get pending alarms");
@@ -50,8 +50,8 @@ export default class AlarmManager {
         }
 
     }
-    onAlarmCreated(alarm) {
-        console.log("New alarm created!", alarm);
+    onAlarmSet(alarm) {
+        console.log("New alarm set!", alarm);
     }
 
     find(params) {
