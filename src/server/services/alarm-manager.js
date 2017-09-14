@@ -17,7 +17,7 @@ export default class AlarmManager {
         console.log("Get pending alarms");
         Alarm.find({
             time: {$gt: new Date()},
-            'recording.recordingUrl': {$ne: null}
+            'recording.finalized': true
         }).sort({time: -1})
         .then((result) => {
             console.log("Result:", result.length + " Alarms");
@@ -52,6 +52,7 @@ export default class AlarmManager {
     }
     onAlarmSet(alarm) {
         console.log("New alarm set!", alarm);
+        this.getPendingAlarms();
     }
 
     find(params) {
