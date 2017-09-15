@@ -84,6 +84,7 @@ export default class AlarmManager {
     alarmDelivered(alarm) {
         console.log("ALARM DELIVERED!", alarm);
         this.app.service('sleeper/alarms').patch(alarm._id, {delivered: true});
+        Session.setFor(alarm.userId, {pendingAlarm : null});
     }
     alarmDeliveryFailed(alarm) {
         console.log("ALARM DELIVERY FAILED!", alarm);

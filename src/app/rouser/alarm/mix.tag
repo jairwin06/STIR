@@ -28,7 +28,13 @@
             try {
                 console.log("Finalizing alarm");
                 let result = await this.state.rouser.finalizeAlarm();            
-                console.log("Result", result);
+                console.log("Finalize result", result);
+                if (result.status == "success") {
+                    this.state.rouser.invalidateAlarms();
+                    page("/rouser/alarms");
+                } else {
+                    console.log("Error finalizing alarm!", result);
+                }
             }
             catch (e) {
                 console.log("Error finalizing alarm!", e);

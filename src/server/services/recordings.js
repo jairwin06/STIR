@@ -41,6 +41,7 @@ export default class RecordingsService {
             if (data['recording.finalized'] == true) {
                 console.log("Alarm set!", result);
                 this.emit('finalized', result);
+                return {status: "success"}
             }
         });
     }
@@ -48,8 +49,8 @@ export default class RecordingsService {
 
     ready(data) {
         console.log("Recording file is ready!",data);
-        // Save it in session and db
-        Session.setFor(data.rouserId, {pendingRecording : data});
+        // Delete from session, save in db
+        Session.setFor(data.rouserId, {pendingRecording : null});
         let recording = Object.assign({}, data);
         recording.finalized = false;
         delete recording.alarmId;

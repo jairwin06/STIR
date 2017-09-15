@@ -6,6 +6,7 @@
                 <a href="/rouser/alarm/{_id}">{name}</a>
             </li>
         </ul>
+        <p show="{state.rouser.alarms.length == 0}">No alarms in queue</p>
  </div>
  <style>
   #rouser #alarm-queue {

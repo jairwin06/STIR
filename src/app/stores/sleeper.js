@@ -16,7 +16,8 @@ export default class SleeperStore extends Store {
                 let result = await SocketUtil.rpc(
                     'sleeper/alarms::find', 
                     {
-                        accessToken: this._state.auth.accessToken
+                        accessToken: this._state.auth.accessToken,
+                        delivered: false
                     });
                 console.log("Alarms result", result);
                 this.alarms = result;

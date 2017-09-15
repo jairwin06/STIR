@@ -33,6 +33,10 @@ export default class RouserStore extends Store {
         }
     }
 
+    invalidateAlarms() {
+        this.alarms = null;
+    }
+
     setAction(action) {
         if (this.action != action) {
             this.action = action;
