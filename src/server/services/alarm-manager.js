@@ -1,5 +1,7 @@
 import Alarm from '../models/alarm'
+import User from '../models/user'
 import TwilioUtil from '../util/twilio'
+import Session from '../models/session-persistent'
 
 const ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt"
@@ -8,16 +10,18 @@ export default class AlarmManager {
     constructor() {
         console.log("Alarm manager starting");
         this.getPendingAlarms();
+        this.activeAlarm = null;
     }
     setup(app) {
         this.app = app;
-        app.service('recordings').on('finalized', alarm => this.onAlarmSet(alarm));
+        app.service('sleeper/alarms').on('patched', alarm => this.onAlarmPatched(alarm));
     }
     getPendingAlarms() {
         console.log("Get pending alarms");
         Alarm.find({
             time: {$gt: new Date()},
-            'recording.finalized': true
+            'recording.finalized': true,
+            delivered: false
         }).sort({time: -1})
         .then((result) => {
             console.log("Result:", result.length + " Alarms");
@@ -34,9 +38,30 @@ export default class AlarmManager {
         if (this.nextAlarm && this.nextAlarm.time.getTime() <= new Date().getTime()) {
             console.log("Time to wake up " + this.nextAlarm.name);
             
-
             // Already pop the next alarm to continue processing
+            this.activeAlarm = this.nextAlarm;
+            this.popAlarm();
 
+            // Get the user
+            User.findOne({
+              _id: this.activeAlarm.userId  
+            })
+            .then((user) => {
+                Session.setFor(user._id, {pendingAlarm : this.activeAlarm});
+
+                // Make the call
+                TwilioUtil.client.calls.create({
+                        url: SERVER_URL + '/twiml-alarm.xml',
+                        to: user.phone,
+                        from: TwilioUtil.TWILIO_PHONE_NUMBER
+                }).then((response) => {
+                    console.log("Twilio response", response);
+                })
+                .catch((err) => {
+                    console.log("Error dispatching alarm call", err )
+                    this.activeAlarm = null;
+                })
+            })
         }
     }
     popAlarm() {
@@ -51,9 +76,17 @@ export default class AlarmManager {
         }
 
     }
-    onAlarmSet(alarm) {
-        console.log("New alarm set!", alarm);
+    onAlarmPatched(alarm) {
+        console.log("Alarm patched!", alarm);
         this.getPendingAlarms();
+    }
+
+    alarmDelivered(alarm) {
+        console.log("ALARM DELIVERED!", alarm);
+        this.app.service('sleeper/alarms').patch(alarm._id, {delivered: true});
+    }
+    alarmDeliveryFailed(alarm) {
+        console.log("ALARM DELIVERY FAILED!", alarm);
     }
 
     find(params) {

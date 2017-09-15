@@ -19,23 +19,15 @@
  <script>
     this.on('mount', () => {
         console.log("alarms mounted");
-        this.state.sleeper.on('alarm_created', this.onAlarmCreated);
         this.state.sleeper.on('alarms_updated', this.onAlarmsUpdated);
     });
 
     this.on('unmount', () => {
-        this.state.sleeper.off('alarm_created', this.onAlarmCreated);
         this.state.sleeper.off('alarms_updated', this.onAlarmsUpdated);
     });
 
-    onAlarmCreated() {
-        console.log("New alarm created!");
-        this.state.sleeper.setAction("show");
-    }
-
     onAlarmsUpdated() {
         this.update();
-
     }
 
     formatDate(time) {

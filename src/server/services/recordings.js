@@ -3,7 +3,7 @@ import Session from '../models/session-persistent'
 
 export default class RecordingsService {
     constructor() {
-        this.events = ['ready', 'finalized'];
+        this.events = ['ready'];
     }
     setup(app) {
         this.app = app;

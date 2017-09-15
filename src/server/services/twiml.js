@@ -6,7 +6,7 @@ import DownloadUtil from '../util/download'
 
 export default { 
     getRecordingTwiML: function(req,res) {
-        console.log("TWIML SERVICE CALLED!", req.body);
+        console.log("TWIML RECORDING SERVICE CALLED!", req.body);
         // Get the user by phone number
         User.findOne({phone: req.body.Called})
         .then((user) => {
@@ -40,6 +40,35 @@ export default {
         })
     },
 
+    getAlarmTwiML: function(req,res) {
+        console.log("TWIML ALARM SERVICE CALLED!", req.body);
+        let pendingAlarm = null;
+        // Get the user by phone number
+        User.findOne({phone: req.body.Called})
+        .then((user) => {
+            console.log("Found user ", user);
+            const response = new twiml.VoiceResponse();
+
+            // Get the session
+            let sessionData = Session.getFor(user._id);
+
+            if (sessionData && sessionData.pendingAlarm) {
+                pendingAlarm = sessionData.pendingAlarm;
+                response.play({},SERVER_URL + pendingAlarm.recording.recordingUrl);
+            } else {
+                response.say({}, "Wake up");
+            }
+            res.type('text/xml');
+            res.send(response.toString());
+            req.app.service('rouser/alarms').alarmDelivered(pendingAlarm);
+        })
+        .catch((err) => {
+            console.log("Error in twiml alarm service!", err);
+            res.send("Error" + err);
+            req.app.service('rouser/alarms').alarmDeliveryFailed(pendingAlarm);
+
+        })
+    },
     dispatchRecordingCall: function(hook) {
         console.log("TWIML Dispatch call hook!", hook.data, hook.params);
         TwilioUtil.client.calls.create({

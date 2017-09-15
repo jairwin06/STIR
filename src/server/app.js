@@ -76,6 +76,7 @@ app
 
 // TWIML
 app.post('/twiml-rec.xml', TwiMLService.getRecordingTwiML)
+app.post('/twiml-alarm.xml', TwiMLService.getAlarmTwiML)
 app.post('/twiml/recording-status/:userId', TwiMLService.getRecordingStatus)
 
 //Setup authentication
