@@ -38,7 +38,11 @@
 
     onRecordingReady() {
         console.log("Recording ready!", this.state.rouser.recording);
-        this.state.rouser.setRecordStage('mix');
+        if (this.state.rouser.recording.status == "success") {
+            this.state.rouser.setRecordStage('mix');
+        } else {
+            console.error(this.state.rouser.recording.message);
+        }
     }
  </script>
 </record>

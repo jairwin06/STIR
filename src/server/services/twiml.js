@@ -54,7 +54,7 @@ export default {
 
             if (sessionData && sessionData.pendingAlarm) {
                 pendingAlarm = sessionData.pendingAlarm;
-                response.play({},SERVER_URL + pendingAlarm.recording.recordingUrl);
+                response.play({},SERVER_URL + pendingAlarm.recording.mixUrl);
             } else {
                 response.say({}, "Wake up");
             }

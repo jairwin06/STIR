@@ -1,5 +1,6 @@
 import Alarm from '../models/alarm'
 import Session from '../models/session-persistent'
+import SoxUtil from '../util/sox'
 
 export default class RecordingsService {
     constructor() {
@@ -48,13 +49,31 @@ export default class RecordingsService {
 
 
     ready(data) {
-        console.log("Recording file is ready!",data);
+        console.log("Recording file is ready! mixing",data);
         // Delete from session, save in db
         Session.setFor(data.rouserId, {pendingRecording : null});
-        let recording = Object.assign({}, data);
-        recording.finalized = false;
-        delete recording.alarmId;
-        this.app.service('/sleeper/alarms').patch(data.alarmId,{recording: recording})
-        this.emit('ready', data);
+        // Mix
+        SoxUtil.mixBackingTrack(
+            'public/recordings/' + data.alarmId + '-rec.wav',
+            'backingtracks/_2014_.wav',
+            'public/recordings/' + data.alarmId + '-mix.wav'
+        )
+        .then((result) => {
+            console.log("Mixing result", result);
+            data.mixUrl = '/recordings/' + data.alarmId + '-mix.wav?t=' + new Date().getTime();
+            let recording = Object.assign({}, data);
+            recording.finalized = false;
+            data.mixUrl = '/recordings/' + data.alarmId + '-mix.wav?t=' + new Date().getTime();
+            data.status = "success";
+            delete recording.alarmId;
+            this.app.service('/sleeper/alarms').patch(data.alarmId,{recording: recording})
+            this.emit('ready', data);
+        })
+        .catch((err) => {
+            console.log("Mixing error",err);
+            data.status = "error";
+            data.message = err.toString();
+            this.emit('ready', data);
+        });
     }
 }

@@ -6,36 +6,46 @@ class SoxUtil {
     }
     mixBackingTrack(recording, backingTrack, output){
         const TimeFormat = SoxCommand.TimeFormat;
-        return Promise.all([identifyWav(reording),identifyWav(backingTrack)])
+        return Promise.all([this.identifyWav(recording),this.identifyWav(backingTrack)])
         .then((waveInfo) => {
-            console.log("Wave info", waveInfo);
-            
-            let endTimeFormatted = TimeFormat.formatTimeRelativeToEnd(waveInfo[1].duration - waveInfo[0].duration);
+            return new Promise((resolve, reject) => {
+                console.log("Wave info", waveInfo);
+                
+                let endTimeFormatted = TimeFormat.formatTimeRelativeToEnd(waveInfo[1].duration - waveInfo[0].duration);
 
-            let subCommand = SoxCommand(recording)
-            .output('-p')
-            .outputSampleRate(44100)
-            .outputFileType('wav');
+                let subCommand = SoxCommand(recording)
+                .output('-p')
+                .outputSampleRate(44100)
+                .outputChannels(2)
+                .outputFileType('wav');
 
-            let command = SoxCommand()
-            .inputSubCommand(subCommand)
-            .input(backingTrack)
-            .combine('mix')
-            .output(output)
-            .outputFileType('wav')
-            .trim(0, endTimeFormatted);
+                let command = SoxCommand()
+                .inputSubCommand(subCommand)
+                .input(backingTrack)
+                .combine('mix')
+                .output(output)
+                .outputBits(16)
+                .outputEncoding('signed-integer')
+                .outputFileType('wav')
+                .trim(0, endTimeFormatted);
 
-            let errorThrow = function(err, stdout, stderr) {
-              console.log('Cannot process audio: ' + err.message);
-              console.log('Sox Command Stdout: ', stdout);
-              console.log('Sox Command Stderr: ', stderr)
-              throw new Error(err.message);
-            };
+                let errorThrow = function(err, stdout, stderr) {
+                  console.log('Cannot process audio: ' + err.message);
+                  console.log('Sox Command Stdout: ', stdout);
+                  console.log('Sox Command Stderr: ', stderr)
+                  reject(new Error(err.message));
+                };
 
-            command.on('error', errorThrow);
-            subCommand.on('error', errorThrow);
+                command.on('error', errorThrow);
+                subCommand.on('error', errorThrow);
 
-            command.run();
+                command.on('end', function() {
+                      resolve({status: "success"})
+                });
+
+                command.run();
+
+            });
         })
     }
     identifyWav(file) {

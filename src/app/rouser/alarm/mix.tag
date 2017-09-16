@@ -2,7 +2,7 @@
     <h1 class="title">Mix your recording</h1>
     <p>
         <audio controls="controls">
-            <source src={state.rouser.recording.recordingUrl} type="audio/wav">
+            <source src={state.rouser.recording.mixUrl} type="audio/wav">
         </audio>
     </p>
     <p>

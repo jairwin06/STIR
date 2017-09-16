@@ -42,4 +42,6 @@ start.sh
 
 public/recordings
 
+backingtracks
+
 .node-persist
