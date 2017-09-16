@@ -10,7 +10,6 @@ export default class AlarmManager {
     constructor() {
         console.log("Alarm manager starting");
         this.getPendingAlarms();
-        this.activeAlarm = null;
     }
     setup(app) {
         this.app = app;
@@ -38,30 +37,43 @@ export default class AlarmManager {
         if (this.nextAlarm && this.nextAlarm.time.getTime() <= new Date().getTime()) {
             console.log("Time to wake up " + this.nextAlarm.name);
             
+            let activeAlarm = this.nextAlarm;
+            this.activateAlarm(activeAlarm);
+            // One retry after a minute
+            setTimeout(() => {
+                this.retryAlarm(activeAlarm.userId);
+            },1000 * 60);
+
             // Already pop the next alarm to continue processing
-            this.activeAlarm = this.nextAlarm;
             this.popAlarm();
+        }
+    }
+    activateAlarm(alarm) {
+        // Get the user
+        User.findOne({
+          _id: alarm.userId  
+        })
+        .then((user) => {
+            Session.setFor(user._id, {pendingAlarm : alarm});
 
-            // Get the user
-            User.findOne({
-              _id: this.activeAlarm.userId  
+            // Make the call
+            TwilioUtil.client.calls.create({
+                    url: SERVER_URL + '/twiml-alarm.xml',
+                    to: user.phone,
+                    from: TwilioUtil.TWILIO_PHONE_NUMBER
+            }).then((response) => {
+                console.log("Twilio response", response);
             })
-            .then((user) => {
-                Session.setFor(user._id, {pendingAlarm : this.activeAlarm});
-
-                // Make the call
-                TwilioUtil.client.calls.create({
-                        url: SERVER_URL + '/twiml-alarm.xml',
-                        to: user.phone,
-                        from: TwilioUtil.TWILIO_PHONE_NUMBER
-                }).then((response) => {
-                    console.log("Twilio response", response);
-                })
-                .catch((err) => {
-                    console.log("Error dispatching alarm call", err )
-                    this.activeAlarm = null;
-                })
+            .catch((err) => {
+                console.log("Error dispatching alarm call", err )
             })
+        })
+    }
+    retryAlarm(userId) {
+        let sessionData = Session.getFor(userId);
+        if (sessionData.pendingAlarm) {
+            console.log("RETRYING ALARM!", sessionData.pendingAlarm);
+            this.activateAlarm(sessionData.pendingAlarm);
         }
     }
     popAlarm() {
