@@ -5,6 +5,7 @@
   <form onsubmit="{analyzeFacebook}">
     <button type="submit" disabled="{!state.facebook.apiLoaded}">Analyze My Facebook posts</button>
   </form>
+  <img show="{loading}" src="/images/loading.gif"></img>
  </p>
  <p>
   <span class="title">Or Opt-out and answer some questions</span>
@@ -42,6 +43,7 @@
     analyzeFacebook(e) {
         e.preventDefault();
         console.log("Logging in to facebook");
+        this.loading = true;
         this.state.facebook.login()
         .then(() => {
             console.log("Connecteed");
@@ -50,9 +52,9 @@
     }
 
     analysisStatusUpdated() {
+        this.loading = false;
         console.log("Facebook analysis status", this.state.facebook.analysisStatus);
         if (!this.state.auth.user.name) {
-
             this.state.auth.setUserName(this.state.facebook.analysisStatus.userName);
         }
         this.state.sleeper.currentAlarm.name = this.state.facebook.analysisStatus.userName;
