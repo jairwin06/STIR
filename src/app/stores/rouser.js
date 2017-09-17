@@ -54,6 +54,7 @@ export default class RouserStore extends Store {
         console.log("Rouser chooses alarm ", id);
         this.currentAlarm = MiscUtil.findById(this.alarms,id);
         console.log("Current alarm", this.currentAlarm);
+        this.trigger("alarm_loaded");
     }
 
     async requestCall() {

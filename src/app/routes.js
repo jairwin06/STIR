@@ -74,10 +74,20 @@ class Routes {
         });
 
         app.route('/rouser/alarm/:id').get((req, res, next) => {
-            console.log("Rouser alarm record route", req);
+            console.log("Rouser alarm route", req);
             req.appState.rouser.setAction("alarm");
             req.appState.rouser.chooseAlarm(req.params.id);
+            this.go(next, req, res);
+        });
+
+        app.route('/rouser/alarm/:id/record').get((req, res, next) => {
+            console.log("Rouser alarm record route", req);
             req.appState.rouser.setRecordStage('record');
+            this.go(next, req, res);
+        });
+        app.route('/rouser/alarm/:id/mix').get((req, res, next) => {
+            console.log("Rouser alarm mix route", req);
+            req.appState.rouser.setRecordStage('mix');
             this.go(next, req, res);
         });
 

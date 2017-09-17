@@ -42,7 +42,6 @@ export default {
 
     getAlarmTwiML: function(req,res) {
         console.log("TWIML ALARM SERVICE CALLED!", req.body);
-        let pendingAlarm = null;
         // Get the user by phone number
         User.findOne({phone: req.body.Called})
         .then((user) => {
@@ -53,14 +52,14 @@ export default {
             let sessionData = Session.getFor(user._id);
 
             if (sessionData && sessionData.pendingAlarm) {
-                pendingAlarm = sessionData.pendingAlarm;
-                response.play({},SERVER_URL + pendingAlarm.recording.mixUrl);
+                response.play({},SERVER_URL + sessionData.pendingAlarm.recording.mixUrl);
+
+                req.app.service('rouser/alarms').alarmDelivered(sessionData.pendingAlarm);
             } else {
                 response.say({}, "Wake up");
             }
             res.type('text/xml');
             res.send(response.toString());
-            req.app.service('rouser/alarms').alarmDelivered(pendingAlarm);
         })
         .catch((err) => {
             console.log("Error in twiml alarm service!", err);

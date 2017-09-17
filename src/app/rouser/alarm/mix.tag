@@ -5,8 +5,9 @@
             <source src={state.rouser.recording.mixUrl} type="audio/wav">
         </audio>
     </p>
+    <button type="button" click="{recordAgain}">Retry the recording</button>
     <p>
-      <form onsubmit="{finalize}">
+    <form onsubmit="{finalize}">
        <input type="submit" value="Finalize rouse">
     </p>
   </form>
@@ -22,6 +23,11 @@
         this.on('unmount', () => {
 
         });
+
+        recordAgain() {
+            //window.history.back();
+            page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
+        }
 
         async finalize(e) {
             e.preventDefault();

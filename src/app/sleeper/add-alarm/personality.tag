@@ -15,10 +15,12 @@
  <script>
     this.on('mount', () => {
         console.log("add-alarm-personality mounted");
-        this.state.facebook.loadAPI()
-        .then(() => {
-           console.log("API Loaded");
-        })
+        if (IS_CLIENT) {
+            this.state.facebook.loadAPI()
+            .then(() => {
+               console.log("API Loaded");
+            })
+        }
 
         this.state.facebook.on('analysis_status_updated', this.analysisStatusUpdated);
     });

@@ -39,7 +39,9 @@
     onRecordingReady() {
         console.log("Recording ready!", this.state.rouser.recording);
         if (this.state.rouser.recording.status == "success") {
-            this.state.rouser.setRecordStage('mix');
+            if (IS_CLIENT) {
+                page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/mix")
+            }
         } else {
             console.error(this.state.rouser.recording.message);
         }

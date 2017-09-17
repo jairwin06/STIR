@@ -18,6 +18,7 @@
     this.on('mount', () => {
         console.log("rouser alarm mounted", this.state.rouser.recordStage);
         this.state.rouser.on('record_stage_updated', this.stageUpdated);
+        this.state.rouser.on('alarm_loaded', this.alarmLoaded);
         if (this.state.rouser.recordStage) {
             this.stageTag = mount(this.refs.stage,this.state.rouser.recordStage)[0];
         }
@@ -25,11 +26,18 @@
 
     this.on('unmount', () => {
         this.state.rouser.off('record_stage_updated', this.stageUpdated);
+        this.state.rouser.off('alarm_loaded', this.alarmLoaded);
     });
-
 
     stageUpdated(stage) {
         this.stageTag = mount(this.refs.stage,this.state.rouser.recordStage)[0];
+    }
+
+    alarmLoaded() {
+        // Go to record
+        if (IS_CLIENT) {
+            page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
+        }
     }
  </script>
 </alarm>
