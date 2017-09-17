@@ -5,7 +5,6 @@ class Routes {
     constructor() {
     }
     go(next, req, res) {
-        console.log("Go!");
         req.handledRoute = true;
         if (next) {
             next();
@@ -70,7 +69,7 @@ class Routes {
         app.route('/rouser/alarm/:id').get((req, res, next) => {
             console.log("Rouser alarm route", req);
             req.appState.rouser.setAction("alarm");
-            this.populate(req, 'rouser', 'chooseAlarm', params.id)
+            this.populate(req, 'rouser', 'chooseAlarm', req.params.id)
             this.go(next, req, res);
         });
 

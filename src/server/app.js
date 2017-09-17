@@ -111,7 +111,8 @@ app.service('/sleeper/alarms').before({
   patch: [
       authHooks.restrictToOwner({ ownerField: 'userId' }),
       patchAlarmHook
-  ]
+  ],
+  remove: disallow('external')
 });
 
 app.service('/sleeper/alarms').after({

@@ -11,6 +11,7 @@
     </p>
     <input type="submit" value="Receive Call">
   </form>
+  <img show="{loading}" src="/images/loading.gif"></img>
  <style>
  </style>
  <script>
@@ -28,6 +29,7 @@
         e.preventDefault();
         console.log("Request a call!");
         try {
+            this.loading = true;
             let result = await this.state.rouser.requestCall();
             console.log("Request call result", result);
         } 
@@ -37,6 +39,7 @@
     }
 
     onRecordingReady() {
+        this.loading = false;
         console.log("Recording ready!", this.state.rouser.recording);
         if (this.state.rouser.recording.status == "success") {
             if (IS_CLIENT) {

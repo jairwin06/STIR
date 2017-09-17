@@ -7,6 +7,7 @@ const AlarmSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     assignedTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
     delivered: {type: Boolean, default: false},
+    deleted: {type: Boolean, default: false},
     recording: {
         rouserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         recordingUrl: {type: String, default: null},

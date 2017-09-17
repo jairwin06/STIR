@@ -17,7 +17,8 @@ export default class SleeperStore extends Store {
                     'sleeper/alarms::find', 
                     {
                         accessToken: this._state.auth.accessToken,
-                        delivered: false
+                        delivered: false,
+                        deleted: false
                     });
                 console.log("Alarms result", result);
                 this.alarms = result;
@@ -68,5 +69,14 @@ export default class SleeperStore extends Store {
         console.log("Sleeper chooses alarm ", id);
         this.currentAlarm = MiscUtil.findById(this.alarms,id);
         console.log("Current sleeper alarm", this.currentAlarm);
+    }
+
+    async deleteAlarm() {
+        if (this.currentAlarm) {
+            console.log("Deleting alarm");
+            let result = await SocketUtil.rpc('sleeper/alarms::patch', this.currentAlarm._id, {deleted: true});
+            this.alarms.splice(MiscUtil.findIndexById(this.alarms, this.currentAlarm._id), 1);
+            return {status: "success"};
+        }
     }
 };

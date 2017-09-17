@@ -20,7 +20,8 @@ export default class AlarmManager {
         Alarm.find({
             time: {$gt: new Date()},
             'recording.finalized': true,
-            delivered: false
+            delivered: false,
+            deleted: false
         }).sort({time: -1})
         .then((result) => {
             console.log("Result:", result.length + " Alarms");
