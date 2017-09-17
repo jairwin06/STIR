@@ -11,8 +11,11 @@ main {
 #sleeper clock h1 {
   color: red; }
 
-#sleeper alarms edit-alarm h1 {
-  color: green; }
+action #edit-alarm h1 {
+  color: cyan; }
+
+action #edit-alarm button {
+  color: red; }
 
 #sleeper h1 {
   color: yellow; }
@@ -25,3 +28,6 @@ main #sign-up h1 {
 
 #sleeper alarms add-alarm h1 {
   color: green; }
+
+stage[data-is="personality"] .title {
+  font-size: 30px; }

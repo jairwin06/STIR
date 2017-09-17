@@ -1,16 +1,25 @@
 <personality>
  <h1 class="title">Add Alarm personality</h1>
-  <form onsubmit="{analyzeFacebook}" show="{this.state.facebook.analysisStatus != 'success'}">
-    <button type="submit">Analyze My Facebook posts</button>
+ <p>
+  <span class="title">Use my facebook data</span>
+  <form onsubmit="{analyzeFacebook}">
+    <button type="submit" disabled="{!state.facebook.apiLoaded}">Analyze My Facebook posts</button>
   </form>
-
-  <b>Opt-out and answer some questions</b>
+ </p>
+ <p>
+  <span class="title">Or Opt-out and answer some questions</span>
   <form onsubmit="{submitQuestions}">
     Your name <input type="text" name="name" ref="name">
     <button type="submit">Submit</button>
   </form>
+  </p>
   
  <style>
+     stage[data-is="personality"] {
+         .title {
+            font-size: 30px;
+         }
+     }
  </style>
  <script>
     this.on('mount', () => {
@@ -19,6 +28,7 @@
             this.state.facebook.loadAPI()
             .then(() => {
                console.log("API Loaded");
+               this.update();
             })
         }
 

@@ -3,9 +3,9 @@ import miscUtil from './util/misc'
 
 class Routes {
     constructor() {
-        this.populateQueue = [];
     }
     go(next, req, res) {
+        console.log("Go!");
         req.handledRoute = true;
         if (next) {
             next();
@@ -30,10 +30,8 @@ class Routes {
             console.log("Sleeper route!");
             req.appState.main.setRole("sleeper");
             req.appState.sleeper.setAction("clock");
-            req.populateQueue.push(
-                req.appState.auth.getStatus(),
-                req.appState.sleeper.getAlarms()
-            )
+            this.populate(req, 'auth', 'getStatus');
+            this.populate(req, 'sleeper', 'getAlarms');
             this.go(next, req, res);
         });
 
@@ -44,7 +42,7 @@ class Routes {
         });
 
         app.route('/sleeper/alarm/:id').get((req, res, next) => {
-            req.appState.sleeper.chooseAlarm(req.params.id);
+            this.populate(req, 'sleeper', 'chooseAlarm', req.params.id);
             req.appState.sleeper.setAction("edit-alarm");
             this.go(next, req, res);
         });
@@ -52,18 +50,14 @@ class Routes {
         app.route('/rouser*').get((req, res, next) => {
             console.log("Rouser route");
             req.appState.main.setRole("rouser");
-            req.populateQueue.push(
-                req.appState.auth.getStatus()
-            )
+            this.populate(req, 'auth', 'getStatus');
             this.go(next, req, res);
         });
 
         app.route('/rouser/alarms').get((req, res, next) => {
             console.log("Rouser alarms route");
             req.appState.rouser.setAction("alarms");
-            req.populateQueue.push(
-                req.appState.rouser.getAlarms()
-            )
+            this.populate(req, 'rouser', 'getAlarms');
             this.go(next, req, res);
         });
 
@@ -76,7 +70,7 @@ class Routes {
         app.route('/rouser/alarm/:id').get((req, res, next) => {
             console.log("Rouser alarm route", req);
             req.appState.rouser.setAction("alarm");
-            req.appState.rouser.chooseAlarm(req.params.id);
+            this.populate(req, 'rouser', 'chooseAlarm', params.id)
             this.go(next, req, res);
         });
 
@@ -100,6 +94,15 @@ class Routes {
                 this.go(next, req);
             }
         }); */
+    }
+    populate(req, store, task, ...args) {
+        if (IS_CLIENT) {
+            // Execute now
+            req.appState[store][task].apply(req.appState[store], args);
+        } else {
+            // Execute after
+            req.populateQueue.push ({task: task, store: store, args: args});
+        }
     }
 };
 

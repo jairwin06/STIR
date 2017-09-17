@@ -1,10 +1,16 @@
 <edit-alarm>
- <h1 class="title">Edit Alarm</h1>
- <time></time>
+ <div id="edit-alarm">
+    <h1 class="title">Edit Alarm</h1>
+    <time></time>
+    <button type="button">CANCEL ALARM</button>
+ </div>
  <style>
-  #sleeper alarms edit-alarm {
+  action #edit-alarm {
     h1 {
-     color: green;
+     color: cyan;
+    }
+    button {
+        color: red;
     }
   }
  </style>

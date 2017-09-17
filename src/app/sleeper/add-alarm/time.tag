@@ -10,9 +10,6 @@
  <script>
     this.on('mount', () => {
         console.log("add-alarm-time mounted");
-        //this.nowDate = moment().format('YYYY-MM-DDTHH:mm:00.00');
-        this.nowDate = new Date().toLocaleISOString();
-        console.log("Min date", this.nowDate);
         this.update();
     });
 

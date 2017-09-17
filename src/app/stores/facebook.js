@@ -17,7 +17,7 @@ export default class FacebookStore extends Store {
             } else {
                 console.log("Loading Facebook API using JQuery");
                 $.ajaxSetup({ cache: true });
-                $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+                $.getScript('//connect.facebook.net/en_US/sdk.js', () => {
                     FB.init({
                       appId: '679489015579803',
                       version: 'v2.8',
@@ -25,6 +25,7 @@ export default class FacebookStore extends Store {
                       xfbml : true
                     });     
                     FB.AppEvents.logPageView();
+                    this.apiLoaded = true;
                     resolve();
                 });
             }

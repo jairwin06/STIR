@@ -175,25 +175,28 @@ app.use(function (req, res, next) {
 
 Routes.runRoutingTable(app);
 
-app.use(function (req, res, next) {
+app.use(async function (req, res, next) {
+    console.log("Render middleware");
     if (!req.handledRoute) {
         res.status(404).send('Nothing to see here!');
     } else {
-        Promise.all(req.populateQueue)
-        .then(() => {
-            console.log("Render riot");
-            mixin({state: req.appState}); // Global state mixin
-            res.render('index', {
-              initialData: JSON.stringify(req.appState, (key,value) => {
-                  return ((key == '_state' || key == 'debug') ? function() {} : value); 
-              }),
-              body: render('main', req.appState)
-            })
+        for (let i = 0; i < req.populateQueue.length; i++) {
+            let taskObj = req.populateQueue[i];
+            console.log("Runnint task", taskObj);
+            await req.appState[taskObj.store][taskObj.task].apply(req.appState[taskObj.store], taskObj.args);
+        }
+        console.log("Render riot");
+        mixin({state: req.appState}); // Global state mixin
+        res.render('index', {
+          initialData: JSON.stringify(req.appState, (key,value) => {
+              return ((key == '_state' || key == 'debug') ? function() {} : value); 
+          }),
+          body: render('main', req.appState)
         })
     }
 });
 
-app.use(errorHandler());
+//app.use(errorHandler());
 
 
 console.log("Starting server");

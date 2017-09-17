@@ -40,8 +40,8 @@ jspm_packages
 
 start.sh
 
-public/recordings
+public/recordings/*.wav
 
-backingtracks
+backingtracks/*.wav
 
 .node-persist
