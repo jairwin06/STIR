@@ -1,5 +1,5 @@
 export default {
-    secret: 'takadanoSTIR',
+    secret: process.env['AUTH_SECRET'],
     header: 'authorization',
     cookie : {
         enabled: true,

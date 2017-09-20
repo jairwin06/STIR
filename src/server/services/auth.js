@@ -8,15 +8,8 @@ export default function(req,res,next) {
             createNewUser();
         } else {
             console.log("Found token! verifying");
-            let accessToken = req.cookies[AuthSettings.cookie.name];
-            req.app.passport.verifyJWT(accessToken, {secret: AuthSettings.secret})
+            verifyUser(req)
             .then((result) => {
-                // Verify the user exists
-                return req.app.service("users").get(result.userId);
-            })
-            .then((user) => {
-                req.user = user;
-                req.accessToken = accessToken;
                 next();
             })
             .catch ((error) => {
@@ -47,5 +40,20 @@ export default function(req,res,next) {
             throw new Error(error);
         })
     }
+}
+
+export function verifyUser(req) {
+    let accessToken = req.cookies[AuthSettings.cookie.name];
+    return req.app.passport.verifyJWT(accessToken, {secret: AuthSettings.secret})
+    .then((result) => {
+        // Verify the user exists
+        return req.app.service("users").get(result.userId);
+    })
+    .then((user) => {
+        console.log("Auth found JWT user!");
+        req.user = user;
+        req.accessToken = accessToken;
+        return;
+    })
 }
 

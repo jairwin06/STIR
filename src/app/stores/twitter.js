@@ -10,21 +10,6 @@ export default class TwitterStore extends Store {
         this.analysisStatus = null;
     }     
 
-    loadAPI() {
-        return new Promise((resolve, reject) => {
-            if (this.apiLoaded) {
-                resolve();
-            } else {
-                console.log("Loading Twitter API using JQuery");
-                $.ajaxSetup({ cache: true });
-                window.twttr = { ready: () => resolve();}
-                $.getScript('//platform.twitter.com/widgets.js', function(){
-                    resolve();
-                });
-            }
-        });
-    }
-
     login() {
         return new Promise((resolve, reject) => {
             FB.login((response) => {

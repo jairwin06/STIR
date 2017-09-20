@@ -26,7 +26,7 @@ class Routes {
         });
 
         app.route('/sleeper*').get((req, res, next) => {
-            console.log("Sleeper route!");
+            console.log("Sleeper route!", req.user);
             req.appState.main.setRole("sleeper");
             req.appState.sleeper.setAction("clock");
             this.populate(req, 'auth', 'getStatus');

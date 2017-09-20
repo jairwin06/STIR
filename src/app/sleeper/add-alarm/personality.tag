@@ -7,6 +7,9 @@
   </form>
   <img show="{loading}" src="/images/loading.gif"></img>
  </p>
+  <p>
+      <a href="/auth/twitter" class="button">Use my Twitter data</a>
+ </p>
  <p>
   <span class="title">Or Opt-out and answer some questions</span>
   <form onsubmit="{submitQuestions}">

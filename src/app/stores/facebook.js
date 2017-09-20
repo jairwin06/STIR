@@ -10,6 +10,7 @@ export default class FacebookStore extends Store {
         this.analysisStatus = null;
     }     
 
+    // TODO: Use OAuth2!
     loadAPI() {
         return new Promise((resolve, reject) => {
             if (this.apiLoaded) {

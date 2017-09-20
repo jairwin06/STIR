@@ -6,8 +6,6 @@ import Routes from '../app/routes';
 import { render,mixin } from 'riot';
 import '../app/main.tag'
 
-//import feathersPassport from 'feathers-passport';
-//import hooks from 'feathers-hooks';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compress from 'compression'
@@ -17,12 +15,17 @@ import FS from 'fs';
 import mongoose from 'mongoose'
 import service from 'feathers-mongoose'
 
-import State from '../app/state';
+import State from '../app/state'
 import hooks from 'feathers-hooks'
+import session from 'express-session';
 import authentication from 'feathers-authentication'
 import jwt from 'feathers-authentication-jwt'
-import authHooks from 'feathers-authentication-hooks';
-import errorHandler from 'feathers-errors/handler';
+import oauth1 from 'feathers-authentication-oauth1'
+import OAuthVerifier from './util/oauth-jwt-verifier'
+import { Strategy as TwitterStrategy } from 'passport-twitter'
+
+import authHooks from 'feathers-authentication-hooks'
+import errorHandler from 'feathers-errors/handler'
 import AuthSettings from './auth-settings'
 import AuthService from './services/auth'
 import {disallow, pluck} from 'feathers-hooks-common'
@@ -60,7 +63,8 @@ const app = feathers()
 .use(feathers.static(process.env.APP_BASE_PATH + "/public"))
 .use(cookieParser())
 .use(bodyParser.json())
-.use(bodyParser.urlencoded({ extended: true  }));
+.use(bodyParser.urlencoded({ extended: true  }))
+.use(session({ secret: AuthSettings.secret, resave: true, saveUninitialized: true  }));
 
 // Services
 mongoose.Promise = global.Promise;
@@ -82,6 +86,13 @@ app.post('/twiml/recording-status/:userId', TwiMLService.getRecordingStatus)
 //Setup authentication
 app.configure(authentication(AuthSettings));
 app.configure(jwt());
+app.configure(oauth1({
+  name: 'twitter',
+  Strategy: TwitterStrategy,
+  consumerKey: process.env['TWITTER_API_KEY'],
+  consumerSecret: process.env['TWITTER_API_SECRET'],
+  Verifier: OAuthVerifier
+}));
 
 app.service('users').before({
   all: disallow('external')
