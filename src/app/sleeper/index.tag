@@ -24,7 +24,11 @@
 
         if (this.state.sleeper.action) {
              mount(this.refs.action, this.state.sleeper.action);
-        }
+         } else {
+             if (IS_CLIENT) {
+                page("/sleeper/alarms");
+             }
+         }
     });
 
     this.on('unmount', () => {
@@ -33,6 +37,7 @@
     });
 
     actionUpdated() {
+        console.log("Sleeper action updated", this.state.sleeper.action);
         mount(this.refs.action, this.state.sleeper.action);
     }
 

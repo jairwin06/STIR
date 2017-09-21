@@ -26,20 +26,27 @@ class Routes {
         });
 
         app.route('/sleeper*').get((req, res, next) => {
-            console.log("Sleeper route!", req.user);
             req.appState.main.setRole("sleeper");
-            req.appState.sleeper.setAction("clock");
             this.populate(req, 'auth', 'getStatus');
             this.populate(req, 'sleeper', 'getAlarms');
             this.go(next, req, res);
         });
-
+        app.route('/sleeper/alarms').get((req, res, next) => {
+            req.appState.sleeper.setAction("clock");
+            this.go(next, req, res);
+        });
         app.route('/sleeper/alarms/add').get((req, res, next) => {
             req.appState.sleeper.setAction("add-alarm");
+            this.go(next, req, res);
+        });
+        app.route('/sleeper/alarms/add/time').get((req, res, next) => {
             req.appState.sleeper.setAddAlarmStage("time");
             this.go(next, req, res);
         });
-
+        app.route('/sleeper/alarms/add/personality').get((req, res, next) => {
+            req.appState.sleeper.setAddAlarmStage("personality");
+            this.go(next, req, res);
+        });
         app.route('/sleeper/alarm/:id').get((req, res, next) => {
             this.populate(req, 'sleeper', 'chooseAlarm', req.params.id);
             req.appState.sleeper.setAction("edit-alarm");

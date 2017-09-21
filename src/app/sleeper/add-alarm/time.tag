@@ -33,7 +33,7 @@
     async next(e) {
         e.preventDefault();
         if (this.state.sleeper.action == "add-alarm") {
-            this.state.sleeper.setAddAlarmStage("personality");
+            page("/sleeper/alarms/add/personality")
         } else {
             try {
                 let result = await this.state.sleeper.saveAlarm();

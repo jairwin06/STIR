@@ -8,7 +8,15 @@ const UserSchema = new mongoose.Schema({
         phoneValidated: {type: Boolean, default: false}
     },
     verificationCode: Number,
-    twitterId: String
+    twitter: {
+        profile: {
+            id: String,
+            username: String,
+            displayName: String
+        },
+        accessToken: String,
+        refreshToken: String
+    }
 },{timestamps: true})
 
 const Model = mongoose.model('User', UserSchema);

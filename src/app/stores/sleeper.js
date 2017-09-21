@@ -6,12 +6,13 @@ export default class SleeperStore extends Store {
 
     constructor(state) {
         super(state);
-        this.addAlarmStage = "time";
         this.currentAlarm = {};
     }     
-    async getAlarms(fruit) { 
-        if (!this.alarms)  {
+
+    async getAlarms() { 
+        if (!this.alarms && !this.gettingAlarms)  {
             try {
+                this.gettingAlarms = true;
                 console.log("Getting alarms");
                 let result = await SocketUtil.rpc(
                     'sleeper/alarms::find', 
@@ -20,12 +21,14 @@ export default class SleeperStore extends Store {
                         delivered: false,
                         deleted: false
                     });
+                this.gettingAlarms = false;
                 console.log("Alarms result", result);
                 this.alarms = result;
                 this.trigger("alarms_updated");
             }
 
             catch (e) {
+                this.gettingAlarms = false;
                 console.log("Error getting alarms  ", e);                    
             }
         }
