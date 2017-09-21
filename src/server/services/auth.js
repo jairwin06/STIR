@@ -47,6 +47,7 @@ export function verifyUser(req) {
     return req.app.passport.verifyJWT(accessToken, {secret: AuthSettings.secret})
     .then((result) => {
         // Verify the user exists
+        console.log("Result:", result);
         return req.app.service("users").get(result.userId);
     })
     .then((user) => {

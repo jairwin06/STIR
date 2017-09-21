@@ -21,7 +21,8 @@ import session from 'express-session';
 import authentication from 'feathers-authentication'
 import jwt from 'feathers-authentication-jwt'
 import oauth1 from 'feathers-authentication-oauth1'
-import OAuthVerifier from './util/oauth-jwt-verifier'
+import CustomOAuthVerifier from './util/oauth-jwt-verifier'
+import CustomOAuthHandler from './util/oauth-jwt-handler'
 import { Strategy as TwitterStrategy } from 'passport-twitter'
 
 import authHooks from 'feathers-authentication-hooks'
@@ -91,7 +92,10 @@ app.configure(oauth1({
   Strategy: TwitterStrategy,
   consumerKey: process.env['TWITTER_API_KEY'],
   consumerSecret: process.env['TWITTER_API_SECRET'],
-  Verifier: OAuthVerifier
+  Verifier: CustomOAuthVerifier,
+  handler:  CustomOAuthHandler({
+    successRedirect: "/sleeper/alarms/add"
+  })
 }));
 
 app.service('users').before({

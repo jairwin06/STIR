@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
     status : {
         phoneValidated: {type: Boolean, default: false}
     },
-    verificationCode: Number
+    verificationCode: Number,
+    twitterId: String
 },{timestamps: true})
 
 const Model = mongoose.model('User', UserSchema);
