@@ -16,6 +16,13 @@ const UserSchema = new mongoose.Schema({
         },
         accessToken: String,
         refreshToken: String
+    },
+    facebook: {
+        profile: {
+            id: String,
+            displayName: String
+        },
+        accessToken: String
     }
 },{timestamps: true})
 

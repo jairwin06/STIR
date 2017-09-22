@@ -54,7 +54,7 @@ export function verifyUser(req) {
         console.log("Auth found JWT user!");
         req.user = user;
         req.accessToken = accessToken;
-        return;
+        return user;
     })
 }
 

@@ -1,14 +1,13 @@
 <personality>
  <h1 class="title">Add Alarm personality</h1>
  <p>
-  <span class="title">Use my facebook data</span>
-  <form onsubmit="{analyzeFacebook}">
-    <button type="submit" disabled="{!state.facebook.apiLoaded}">Analyze My Facebook posts</button>
-  </form>
-  <img show="{loading}" src="/images/loading.gif"></img>
+  <div class="title">Use my facebook data</div>
+   <a href="/auth/facebook" class="button">Analyze posts</a>
  </p>
+<img show="{loading}" src="/images/loading.gif"></img>
   <p>
-      <a href="/auth/twitter" class="button">Use my Twitter data</a>
+      <div class="title">Use my twitter data</div>
+      <a href="/auth/twitter" class="button">Analyze tweets</a>
  </p>
  <b show"{error}" class="error">{error}</b>
  <p>
@@ -42,13 +41,10 @@
                 this.state.sleeper.twitterAnalyze();
                 this.loading = true;
                 this.update();
-            } else {
-                this.state.facebook.loadAPI()
-                .then(() => {
-                   console.log("API Loaded");
-                   this.update();
-                })
-
+            } else if (this.state.sleeper.pendingFacebook){
+                this.state.sleeper.analyzeFacebook();
+                this.loading = true;
+                this.update();
             }
         }
 

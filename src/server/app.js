@@ -21,9 +21,11 @@ import session from 'express-session';
 import authentication from 'feathers-authentication'
 import jwt from 'feathers-authentication-jwt'
 import oauth1 from 'feathers-authentication-oauth1'
+import oauth2 from 'feathers-authentication-oauth2'
 import CustomOAuthVerifier from './util/oauth-jwt-verifier'
 import CustomOAuthHandler from './util/oauth-jwt-handler'
 import { Strategy as TwitterStrategy } from 'passport-twitter'
+import { Strategy as FacebookStrategy } from 'passport-facebook'
 
 import authHooks from 'feathers-authentication-hooks'
 import errorHandler from 'feathers-errors/handler'
@@ -44,7 +46,6 @@ import AlarmModel from './models/alarm'
 import GeneratePrompt from './services/generate-prompt'
 import AlarmManager from './services/alarm-manager'
 import patchAlarmHook from './services/patch-alarm'
-import afterSocialLink from './services/after-social-link'
 
 import SocketUtil from '../app/util/socket'
 
@@ -102,15 +103,20 @@ app.configure(oauth1({
       successRedirect: "/sleeper/alarms/add/personality"
   })
 }));
+app.configure(oauth2({
+  name: 'facebook',
+  Strategy: FacebookStrategy,
+  clientID: process.env['FB_APP_ID'],
+  clientSecret : process.env['FB_APP_SECRET'],
+  scope: ['public_profile', 'email'],
+  Verifier: CustomOAuthVerifier,
+  handler:  CustomOAuthHandler({
+     successRedirect: "/sleeper/alarms/add/personality"
+  })
+}));
 
 app.service('users').before({
   all: disallow('external')
-});
-
-app.service('users').hooks({
-  after: {
-    update: [afterSocialLink]
-  }
 });
 
 // Setup a hook to only allow valid JWTs or successful 
@@ -146,6 +152,17 @@ app.service('/sleeper/alarms').after({
   ],
   patch: [
     pluck('_id', 'time') 
+  ]
+});
+
+app.service('fbanalyze').before({
+  find: [
+    authentication.hooks.authenticate(['jwt'])
+  ]
+});
+app.service('twitter-analyze').before({
+  find: [
+    authentication.hooks.authenticate(['jwt'])
   ]
 });
 

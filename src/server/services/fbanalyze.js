@@ -16,27 +16,29 @@ export default class FBAnalyzeService {
     find(params) {
         console.log("FB Analyze service! params: ", params);
 
-        return this.verifyToken(params.query.fbaccessToken)
+        return this.verifyToken(params.user.facebook.accessToken)
         .then(() => {
-            return this.getName(params.query.fbaccessToken);
+            return this.getName(params.user.facebook.accessToken);
         })
         .then((name) => {
             params.user.name = name;
-            return this.getPosts(params.query.fbaccessToken);
+            return this.getPosts(params.user.facebook.accessToken);
         })
         .then((posts) => {
             console.log("Analyzing")
             let oneLine = posts.join("\n");
-            return WastonUtil.profile(oneLine);
+            return WastonUtil.profileText(oneLine);
         })
         .then((personality) => {
             // Save the personality in the session
             console.log("Done");
             Session.setFor(params.user._id, {name: params.user.name, personality : personality});
+            Session.setFor(params.user._id, {state: {pendingFacebook: false}});
             return Promise.resolve({status: "success", userName: params.user.name});
         })
         .catch((err) => {
             console.log("Error in FBAnalyzerService", err);
+            Session.setFor(params.user._id, {state: {pendingFacebook: false}});
             return Promise.reject(err);
         });
     }
@@ -49,7 +51,7 @@ export default class FBAnalyzeService {
                 if (res && res.data.is_valid) {
                     resolve();
                 } else {
-                    reject(err);
+                    reject(new Error(res.data.error.message));
                 }
             });
         });
