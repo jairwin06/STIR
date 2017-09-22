@@ -30,7 +30,7 @@
             let result = await this.state.sleeper.deleteAlarm();
             console.log("delete result", result);
             if (IS_CLIENT) {
-                page("/sleeper");
+                page("/sleeper/alarms");
             }
         } catch (e) {
             console.log("Error deleting alarm!", e);

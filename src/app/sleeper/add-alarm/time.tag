@@ -40,7 +40,7 @@
                 let result = await this.state.sleeper.saveAlarm();
                 console.log("Save result", result);
                 if (IS_CLIENT) {
-                    page("/sleeper");
+                    page("/sleeper/alarms");
                 }
             } catch (e) {
                 console.log("Error saving alarm!", e);
