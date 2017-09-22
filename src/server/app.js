@@ -98,6 +98,7 @@ app.configure(oauth1({
   Strategy: TwitterStrategy,
   consumerKey: process.env['TWITTER_API_KEY'],
   consumerSecret: process.env['TWITTER_API_SECRET'],
+  callbackURL: process.env['SERVER_URL'] + "/auth/twitter/callback",
   Verifier: CustomOAuthVerifier,
   handler:  CustomOAuthHandler({
       successRedirect: "/sleeper/alarms/add/personality"
@@ -109,6 +110,7 @@ app.configure(oauth2({
   clientID: process.env['FB_APP_ID'],
   clientSecret : process.env['FB_APP_SECRET'],
   scope: ['public_profile', 'email'],
+  callbackURL: process.env['SERVER_URL'] + "/auth/facebook/callback",
   Verifier: CustomOAuthVerifier,
   handler:  CustomOAuthHandler({
      successRedirect: "/sleeper/alarms/add/personality"
