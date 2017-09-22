@@ -85,6 +85,7 @@
     "sox-audio": "^0.3.0",
     "tracery-grammar": "^2.7.3",
     "twilio": "^3.6.4",
+    "twitter": "^1.7.1",
     "uws": "^8.14.1",
     "watson-developer-cloud": "^2.39.0"
   }

@@ -2,8 +2,9 @@ import graph from 'fbgraph'
 import WastonUtil from '../util/watson'
 import Session from '../models/session-persistent'
 
-const FB_APP_ID = '679489015579803';
-const FB_APP_SECRET = 'e820e06015e5dbf80982c72400433dde';
+const FB_APP_ID = process.env['FB_APP_ID'];
+const FB_APP_SECRET = process.env['FB_APP_SECRET'];
+
 const FB_APP_TOKEN = FB_APP_ID + '|' + FB_APP_SECRET;
 
 
@@ -25,7 +26,7 @@ export default class FBAnalyzeService {
         })
         .then((posts) => {
             console.log("Analyzing")
-            let oneLine = posts.join(" ");
+            let oneLine = posts.join("\n");
             return WastonUtil.profile(oneLine);
         })
         .then((personality) => {

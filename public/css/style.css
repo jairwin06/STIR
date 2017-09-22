@@ -31,3 +31,6 @@ main #sign-up h1 {
 
 stage[data-is="personality"] .title {
   font-size: 30px; }
+
+stage[data-is="personality"] .error {
+  color: red; }

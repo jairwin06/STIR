@@ -10,6 +10,7 @@
   <p>
       <a href="/auth/twitter" class="button">Use my Twitter data</a>
  </p>
+ <b show"{error}" class="error">{error}</b>
  <p>
   <span class="title">Or Opt-out and answer some questions</span>
   <form onsubmit="{submitQuestions}">
@@ -17,11 +18,17 @@
     <button type="submit">Submit</button>
   </form>
   </p>
+  <p>
+    <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
+  </p>
   
  <style>
      stage[data-is="personality"] {
          .title {
             font-size: 30px;
+         }
+         .error {
+            color: red;
          }
      }
  </style>
@@ -29,18 +36,27 @@
     this.on('mount', () => {
         console.log("add-alarm-personality mounted");
         if (IS_CLIENT) {
-            this.state.facebook.loadAPI()
-            .then(() => {
-               console.log("API Loaded");
-               this.update();
-            })
+            // Did we just get the twitter credentials?
+            if (this.state.sleeper.pendingTwitter) {
+                console.log("Got twitter credentials! analyzing tweets")
+                this.state.sleeper.twitterAnalyze();
+                this.loading = true;
+                this.update();
+            } else {
+                this.state.facebook.loadAPI()
+                .then(() => {
+                   console.log("API Loaded");
+                   this.update();
+                })
+
+            }
         }
 
-        this.state.facebook.on('analysis_status_updated', this.analysisStatusUpdated);
+        this.state.sleeper.on('analysis_status_updated', this.analysisStatusUpdated);
     });
 
     this.on('unmount', () => {
-        this.state.facebook.off('analysis_status_updated', this.analysisStatusUpdated);
+        this.state.sleeper.off('analysis_status_updated', this.analysisStatusUpdated);
     });
 
     analyzeFacebook(e) {
@@ -50,18 +66,23 @@
         this.state.facebook.login()
         .then(() => {
             console.log("Connecteed");
-            return this.state.facebook.analyze();
+            return this.state.sleeper.analyzeFacebook();
         })
     }
 
     analysisStatusUpdated() {
         this.loading = false;
-        console.log("Facebook analysis status", this.state.facebook.analysisStatus);
-        if (!this.state.auth.user.name) {
-            this.state.auth.setUserName(this.state.facebook.analysisStatus.userName);
+        console.log("analysis status", this.state.sleeper.analysisStatus);
+        if (this.state.sleeper.analysisStatus.status == "success") {
+            if (!this.state.auth.user.name) {
+                this.state.auth.setUserName(this.state.sleeper.analysisStatus.userName);
+            }
+            this.state.sleeper.currentAlarm.name = this.state.sleeper.analysisStatus.userName;
+            this.validateCheck();
+        } else {
+            this.error = this.state.sleeper.analysisStatus.message;        
         }
-        this.state.sleeper.currentAlarm.name = this.state.facebook.analysisStatus.userName;
-        this.validateCheck();
+        this.update();
     }
 
     submitQuestions(e) {

@@ -55,6 +55,23 @@ export default class AuthStore extends Store {
             }
         }
     }
+    async getSession() { 
+        if (!this.user.session && !this.gettingSession)  {
+            try {
+                this.gettingSession = true;
+                console.log("Getting user session");
+                let result = await SocketUtil.rpc('user/session::find', {accessToken: this.accessToken});
+                this.gettingStatus = false;
+                this.user.session = result;
+                return this.user.session;
+            }
+
+            catch (e) {
+                console.log("Error getting user session", e);                    
+                this.gettingSession = false;
+            }
+        }
+    }
     async setContact(contact) {
         console.log("Set contact", contact);
         let result = await SocketUtil.rpc('user/contact::create',contact);
@@ -85,6 +102,11 @@ export default class AuthStore extends Store {
     setUserName(name) {
         console.log("Setting user name to", name);
         this.user.name = name;
+    }
+
+    async setSession(data) {
+        let result = await SocketUtil.rpc('user/session::create',data);
+        return result;
     }
 
 };

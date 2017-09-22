@@ -9,7 +9,14 @@ class PersistentSession {
         if (!userObject) {
             userObject = {};
         }
-        Object.assign(userObject, object);
+        if (object.state) {
+            if (!userObject.state) {
+                userObject.state = {};
+            }
+            Object.assign(userObject.state, object.state);
+        } else {
+            Object.assign(userObject, object);
+        }
         console.log("Set item sync", userId.toString(), userObject);
         storage.setItemSync(userId.toString(), userObject);
     }

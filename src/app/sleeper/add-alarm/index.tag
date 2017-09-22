@@ -20,9 +20,12 @@
         this.state.sleeper.on('sleeper_add_alarm_stage', this.stageUpdated);
         this.state.auth.on('user_code_verified', this.onCodeVerified);
 
-        if (IS_CLIENT) {
-            page("/sleeper/alarms/add/time");
+        if (!this.state.sleeper.addAlarmStage) {
+            if (IS_CLIENT) {
+                page("/sleeper/alarms/add/time");
+            }
         }
+
     });
 
     this.on('unmount', () => {

@@ -37,7 +37,7 @@ export default class SleeperStore extends Store {
     setAction(action) {
         if (this.action != action) {
             this.action = action;
-            if (action == "add") {
+            if (action == "add-alarm") {
                 this.currentAlarm = {};
             }
             this.trigger("sleeper_action_updated");
@@ -50,6 +50,8 @@ export default class SleeperStore extends Store {
             let result = await SocketUtil.rpc('sleeper/alarms::create', this.currentAlarm);
             console.log("Alarm create result", result);
             this.alarms.push(result);
+            this.currentAlarm = null;
+            this.addAlarmStage = null;
             this.trigger('alarm_created');
         }
 
@@ -80,6 +82,54 @@ export default class SleeperStore extends Store {
             let result = await SocketUtil.rpc('sleeper/alarms::patch', this.currentAlarm._id, {deleted: true});
             this.alarms.splice(MiscUtil.findIndexById(this.alarms, this.currentAlarm._id), 1);
             return {status: "success"};
+        }
+    }
+    async saveProgress() {
+        let result = this._state.auth.setSession({newAlarm: this.currentAlarm});
+        return result;
+    }
+
+    async restoreProgress() {
+        let result = await this._state.auth.getSession();
+        if (result.newAlarm) {
+            console.log("Restring sleeper progress", result);
+            this.currentAlarm = result.newAlarm;
+        }
+        if (result.pendingTwitter) {
+            console.log("Pending twitter!");
+            this.pendingTwitter = true;
+        } else {
+            this.pendingTwitter = false;
+        }
+        return result;
+    }
+
+    async analyzeFacebook() {
+        try {
+            console.log("Analyzing FB");
+            let result = await SocketUtil.rpc('fbanalyze::find', {fbaccessToken: this._state.facebook.accessToken});
+            console.log("FB Result", result);
+            this.analysisStatus = result;
+            this.trigger('analysis_status_updated');
+        } catch(e) {
+            console.log("Error analyzing FB", e);
+            this.analysisStatus = {status: "error", message: e.message};
+            this.trigger('analysis_status_updated');
+        }
+    }
+    async twitterAnalyze() {
+        try {
+            console.log("Analyzing Twitter");
+            let result = await SocketUtil.rpc('twitter-analyze::find');
+            console.log("Twitter result", result);
+            this.analysisStatus = result;
+            this.trigger('analysis_status_updated');
+            this.pendingTwitter = false;
+        } catch(e) {
+            this.analysisStatus = {status: "error", message: e.message};
+            this.trigger('analysis_status_updated');
+            console.log("Error analyzing twitter", e);
+            this.pendingTwitter = false;
         }
     }
 };

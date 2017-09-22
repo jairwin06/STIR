@@ -14,7 +14,7 @@ export default class State {
         this.sleeper = new SleeperStore(this);
         this.rouser = new RouserStore(this);
         this.facebook = new FacebookStore();
-
+            
         console.log("State Initialized");
     }
 };

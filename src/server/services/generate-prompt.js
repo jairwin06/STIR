@@ -55,6 +55,8 @@ export default function (hook) {
     let grammar = tracery.createGrammar(promptSyntax);
     hook.data.prompt = grammar.flatten('#sentences#')
     console.log("Final prompt", hook.data.prompt);
+
+    Session.setFor(hook.data.userId, {newAlarm: null});
 }
 
 function addLocation(promptSyntax) {

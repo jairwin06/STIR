@@ -33,8 +33,10 @@ import {disallow, pluck} from 'feathers-hooks-common'
 import TwiMLService from './services/twiml'
 
 import FBAnalyzeService from './services/fbanalyze'
+import TwitterAnalyzeService from './services/twitter-analyze'
 import UserContactService from './services/user-contact'
 import RecordingsService from './services/recordings'
+import SessionService from './services/session'
 
 import UserModel from './models/user'
 import AlarmModel from './models/alarm'
@@ -42,6 +44,7 @@ import AlarmModel from './models/alarm'
 import GeneratePrompt from './services/generate-prompt'
 import AlarmManager from './services/alarm-manager'
 import patchAlarmHook from './services/patch-alarm'
+import afterSocialLink from './services/after-social-link'
 
 import SocketUtil from '../app/util/socket'
 
@@ -76,8 +79,10 @@ app
 .use('/sleeper/alarms', service({Model: AlarmModel}))
 .use('/rouser/alarms', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
+.use('/twitter-analyze', new TwitterAnalyzeService())
 .use('/user/contact', new UserContactService())
-.use('/recordings',new RecordingsService());
+.use('/recordings',new RecordingsService())
+.use('/user/session',new SessionService());
 
 // TWIML
 app.post('/twiml-rec.xml', TwiMLService.getRecordingTwiML)
@@ -94,7 +99,7 @@ app.configure(oauth1({
   consumerSecret: process.env['TWITTER_API_SECRET'],
   Verifier: CustomOAuthVerifier,
   handler:  CustomOAuthHandler({
-    successRedirect: "/sleeper/alarms/add"
+      successRedirect: "/sleeper/alarms/add/personality"
   })
 }));
 
@@ -102,6 +107,11 @@ app.service('users').before({
   all: disallow('external')
 });
 
+app.service('users').hooks({
+  after: {
+    update: [afterSocialLink]
+  }
+});
 
 // Setup a hook to only allow valid JWTs or successful 
 // local auth to authenticate and get new JWT access tokens
@@ -143,6 +153,12 @@ app.service('/user/contact').before({
   find: [
     authentication.hooks.authenticate(['jwt']),
     authHooks.queryWithCurrentUser()
+  ]
+});
+
+app.service('/user/session').before({
+  find: [
+    authentication.hooks.authenticate(['jwt'])
   ]
 });
 

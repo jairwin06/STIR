@@ -28,11 +28,29 @@ class WatsonUtil {
           'emotional range': 'They respond to softly spoken words. Imagine you are their mother waking them up.',
        }
     }
-    profile(text) {
+    profileText(text) {
         return new Promise((resolve, reject) => {
             console.log("Running profile");
             this.personalityInsights.profile({
               text: text,
+              consumption_preferences: true,
+              raw_scores: true
+              },
+              (err, response) => {
+                  if (err) {
+                    reject(new Error(err));
+                  }
+                  else {
+                    resolve(response);
+                  }
+            });
+        });
+    }
+    profileItems(items) {
+        return new Promise((resolve, reject) => {
+            console.log("Running profile");
+            this.personalityInsights.profile({
+              contentItems : items,
               consumption_preferences: true,
               raw_scores: true
               },

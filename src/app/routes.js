@@ -35,7 +35,10 @@ class Routes {
             req.appState.sleeper.setAction("clock");
             this.go(next, req, res);
         });
-        app.route('/sleeper/alarms/add').get((req, res, next) => {
+        app.route('/sleeper/alarms/add*').get((req, res, next) => {
+            if (IS_SERVER) {
+                this.populate(req, 'sleeper', 'restoreProgress');
+            }
             req.appState.sleeper.setAction("add-alarm");
             this.go(next, req, res);
         });
