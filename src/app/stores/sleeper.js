@@ -15,7 +15,7 @@ export default class SleeperStore extends Store {
                 this.gettingAlarms = true;
                 console.log("Getting alarms");
                 let result = await SocketUtil.rpc(
-                    'sleeper/alarms::find', 
+                    'sleeper-alarms::find', 
                     {
                         accessToken: this._state.auth.accessToken,
                         delivered: false,
@@ -47,7 +47,7 @@ export default class SleeperStore extends Store {
     async addAlarm() {
         try {
             console.log("Create the alarm!", this.currentAlarm);
-            let result = await SocketUtil.rpc('sleeper/alarms::create', this.currentAlarm);
+            let result = await SocketUtil.rpc('sleeper-alarms::create', this.currentAlarm);
             console.log("Alarm create result", result);
             this.alarms.push(result);
             this.currentAlarm = null;
@@ -62,7 +62,7 @@ export default class SleeperStore extends Store {
 
     async saveAlarm() {
         console.log("Saving alarm", this.currentAlarm);
-        return await SocketUtil.rpc('sleeper/alarms::patch', this.currentAlarm._id, {time: this.currentAlarm.time});
+        return await SocketUtil.rpc('sleeper-alarms::patch', this.currentAlarm._id, {time: this.currentAlarm.time});
     }
 
     setAddAlarmStage(stage) {
@@ -79,7 +79,7 @@ export default class SleeperStore extends Store {
     async deleteAlarm() {
         if (this.currentAlarm) {
             console.log("Deleting alarm");
-            let result = await SocketUtil.rpc('sleeper/alarms::patch', this.currentAlarm._id, {deleted: true});
+            let result = await SocketUtil.rpc('sleeper-alarms::patch', this.currentAlarm._id, {deleted: true});
             this.alarms.splice(MiscUtil.findIndexById(this.alarms, this.currentAlarm._id), 1);
             return {status: "success"};
         }

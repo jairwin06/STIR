@@ -63,12 +63,21 @@ export default class FBAnalyzeService {
             graph.get('me/posts', {limit: 1000, access_token: accessToken}, function(err, res) {
                 // TODO: Paging
                 let posts = [];
-                res.data.forEach((post) => {
-                    if (post.message) {
-                        posts.push(post.message);
+                if (err) {
+                    console.log("Error getting feed!", err);
+                    reject(new Error(err));
+                } else {
+                    if (res.data.length == 0) {
+                        reject(new Error("Could not get any posts"));
+                    } else {
+                        res.data.forEach((post) => {
+                            if (post.message) {
+                                posts.push(post.message);
+                            }
+                            resolve(posts);
+                        })
                     }
-                    resolve(posts);
-                })
+                }
             });
         });
     }

@@ -43,7 +43,9 @@
 
     onAlarmCreated() {
         console.log("New alarm created!");
-        this.state.sleeper.setAction("clock");
+        if (IS_CLIENT) {
+            page("/sleeper/alarms");
+        }
     }
 
 

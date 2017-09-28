@@ -3,14 +3,15 @@ class FetchUtil {
     constructor() {
     }
 
-    postJSON(target, data) {
+    postJSON(target, data, accessToken) {
         return fetch(target, {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify(data),
             headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': accessToken
             }
         })
         .then((response) => {
@@ -25,7 +26,7 @@ class FetchUtil {
              credentials: 'include',
              headers: {
                  'Accept': 'application/json',
-                 'authorization': accessToken
+                 'Authorization': accessToken
              }
         })
         .then((response) => {

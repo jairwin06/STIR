@@ -1,83 +1,107 @@
 import AuthSettings from '../auth-settings'
 
-export default class AuthService {
-    constructor(app) {
-        console.log("Initializing Auth Service");
-        this.createFixtures(app);
-    }
-    middleware(req,res,next) {
+export function authHook(hook) {
+    return new Promise((resolve, reject) => {
         try {
-            console.log("Authentication middleware!", req.method, req.originalUrl)
-            if (!req.cookies[AuthSettings.cookie.name]) {
-                console.log("No token! creating user");
-                this.createNewUser(req);
+            console.log("Authentication hook!")
+            let accessToken = null;
+            if (hook.params.provider == "rest" && hook.params.headers.authorization) {
+                accessToken = hook.params.headers.authorization;
+            }
+            else if (hook.params.provider == "socketio" && hook.data.accessToken) {
+                accessToken = hook.data.accessToken;
+            }
+
+            if (!accessToken) {
+                if (hook.params.provider == "rest") {
+                    console.log("No token! creating user");
+                    createNewUser(hook.app)
+                    .then((accessToken) => {
+                        hook.params.headers.authorization = accessToken;
+                        resolve(hook);
+                    })
+                }
             } else {
                 console.log("Found token! verifying");
-                verifyUser(req)
+                verifyUser(accessToken, hook.app)
                 .then((result) => {
-                    next();
+                    resolve(hook);
                 })
                 .catch ((error) => {
                     console.log("Error getting user", error.message,"Creating a new one");
-                    this.createNewUser(req);
+                    createNewUser(hook.app)
+                    .then((accessToken) => {
+                        hook.data.accessToken = accessToken;
+                        hook.params.headers.authorization = accessToken;
+                        resolve(hook);
+                    });
                 })
             }
         } catch (e) {
-            console.log("Error!",e)
-            throw e;
+            reject(e);
         }
-    }
-    createNewUser(req) {
-        req.app.service('users').create({
-        }).then(function(user) {
-          console.log("Creating JWT token");
-          req.user = user;
-          return req.app.passport.createJWT({userId: user._id}, AuthSettings);
-        })
-        .then((accessToken) => {
-            console.log("Created access token", accessToken);
-            req.accessToken = accessToken;
-            let farFuture = new Date(new Date().getTime() + (1000*60*60*24*365*10)); // ~10y
-            res.cookie( AuthSettings.cookie.name, accessToken, { expires: farFuture, httpOnly: true  });
+    })
+}
+export function authMiddleware(req,res,next) {
+    try {
+        console.log("Authentication middleware!", req.method, req.originalUrl)
+        if (!req.cookies[AuthSettings.cookie.name]) {
             next();
-        }, (error) => {
-            console.log("Error creating JWT", error);
-            throw new Error(error);
-        })
-    }
-    createFixtures(app) {
-        let users = app.service('users');
-        users.find({query: {role: "admin"}})
-        .then((result) => {
-            if (result.length == 0) {
-                return users.create({
-                    role: "admin"
-                })
-            }
-        })
-        users.find({query: {role: "mturk"}})
-        .then((result) => {
-            if (result.length == 0) {
-                return users.create({
-                    role: "mturk"
-                })
-            }
-        })
+        } else {
+            console.log("Found token! verifying");
+            let accessToken = req.cookies[AuthSettings.cookie.name];
+            verifyUser(accessToken, req.app)
+            .then((result) => {
+                req.user = result;
+                req.accessToken = accessToken;
+                next();
+            })
+            .catch ((error) => {
+                console.log("Error getting user", error.message);
+                next();
+            })
+        }
+    } catch (e) {
+        console.log("Error!",e)
+        next();
     }
 }
+function createNewUser(app) {
+    return app.service('users').create({
+    }).then(function(user) {
+      console.log("Creating JWT token");
+      return app.passport.createJWT({userId: user._id}, AuthSettings);
+    });
+}
+export function createFixtures(app) {
+    let users = app.service('users');
+    users.find({query: {role: "admin"}})
+    .then((result) => {
+        if (result.length == 0) {
+            return users.create({
+                role: "admin"
+            })
+        }
+    })
+    users.find({query: {role: "mturk"}})
+    .then((result) => {
+        if (result.length == 0) {
+            return users.create({
+                role: "mturk"
+            })
+        }
+    })
+}
 
-export function verifyUser(req) {
-    let accessToken = req.cookies[AuthSettings.cookie.name];
-    return req.app.passport.verifyJWT(accessToken, {secret: AuthSettings.secret})
+export function verifyUser(accessToken, app) {
+    return app.passport.verifyJWT(accessToken, {secret: AuthSettings.secret})
     .then((result) => {
         // Verify the user exists
         console.log("Result:", result);
-        return req.app.service("users").get(result.userId);
+        return app.service("users").get(result.userId);
     })
     .then((user) => {
         console.log("Auth found JWT user!");
-        req.user = user;
-        req.accessToken = accessToken;
         return user;
     })
 }

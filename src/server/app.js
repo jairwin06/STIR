@@ -30,7 +30,7 @@ import { Strategy as FacebookStrategy } from 'passport-facebook'
 import authHooks from 'feathers-authentication-hooks'
 import errorHandler from 'feathers-errors/handler'
 import AuthSettings from './auth-settings'
-import AuthService from './services/auth'
+import {createFixtures, authHook, authMiddleware} from './services/auth'
 import {disallow, pluck} from 'feathers-hooks-common'
 import TwiMLService from './services/twiml'
 
@@ -60,7 +60,7 @@ SocketUtil.initWithUrl("http://localhost:3030");
 const app = feathers()
 .set('views', process.env.APP_BASE_PATH + "/src/server/views")
 .set('view engine', 'ejs')
-//.configure(rest())
+.configure(rest())
 .configure(socketio({wsEngine: 'uws'}))
 .configure(hooks())
 .use(compress())
@@ -72,6 +72,7 @@ const app = feathers()
 .use(bodyParser.urlencoded({ extended: true  }))
 .use(session({ secret: AuthSettings.secret, resave: true, saveUninitialized: true  }));
 
+//app.use(authMiddleware);
 
 // Services
 mongoose.Promise = global.Promise;
@@ -79,8 +80,8 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 
 app
 .use('/users', service({Model: UserModel}))
-.use('/sleeper/alarms', service({Model: AlarmModel}))
-.use('/rouser/alarms', new AlarmManager())
+.use('/sleeper-alarms', service({Model: AlarmModel}))
+.use('/rouser-alarms', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
 .use('/twitter-analyze', new TwitterAnalyzeService())
 .use('/user/contact', new UserContactService())
@@ -111,7 +112,7 @@ app.configure(oauth2({
   Strategy: FacebookStrategy,
   clientID: process.env['FB_APP_ID'],
   clientSecret : process.env['FB_APP_SECRET'],
-  scope: ['public_profile', 'email'],
+  scope: ['public_profile', 'email', 'user_posts'],
   callbackURL: process.env['SERVER_URL'] + "/auth/facebook/callback",
   Verifier: CustomOAuthVerifier,
   handler:  CustomOAuthHandler({
@@ -128,12 +129,13 @@ app.service('users').before({
 app.service('authentication').hooks({
   before: {
     create: [
+      authHook,
       authentication.hooks.authenticate(['jwt'])
     ]
   }
 });
 
-app.service('/sleeper/alarms').before({
+app.service('/sleeper-alarms').before({
   create: [
     authHooks.associateCurrentUser(),
     GeneratePrompt
@@ -150,7 +152,7 @@ app.service('/sleeper/alarms').before({
   remove: disallow('external')
 });
 
-app.service('/sleeper/alarms').after({
+app.service('/sleeper-alarms').after({
   create: [
     pluck('_id', 'time') 
   ],
@@ -183,7 +185,7 @@ app.service('/user/session').before({
   ]
 });
 
-app.service('/rouser/alarms').before({
+app.service('/rouser-alarms').before({
   find: [
     authentication.hooks.authenticate(['jwt'])
   ]
@@ -209,12 +211,10 @@ app.service('/recordings').filter('ready', function(data, connection, hook) {
     }
 });
 
+createFixtures(app);
+
 // Client routes
-const authService = new AuthService(app);
-
-// Auth middleware
-app.use(authService.middleware);
-
+app.use(authMiddleware);
 app.use(function (req, res, next) {
     try {
         console.log("Init state");

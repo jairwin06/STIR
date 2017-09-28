@@ -9,7 +9,7 @@ class WatsonUtil {
             username: PERSONALITY_INSIGHTS_USER,
             password: PERSONALITY_INSIGHTS_PASSWORD,
             version_date: '2016-10-19',
-            url: "https://gateway-fra.watsonplatform.net/personality-insights/api"
+            url: "https://gateway.watsonplatform.net/personality-insights/api"
         });
 
         this.traitDescriptions = {

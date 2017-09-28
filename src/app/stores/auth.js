@@ -1,4 +1,5 @@
 import SocketUtil from '../util/socket';
+import FetchUtil from '../util/fetch';
 import Store from './store';
 
 export default class AuthStore extends Store {
@@ -14,7 +15,7 @@ export default class AuthStore extends Store {
         this.accessToken = accessToken;
     }
 
-    async login() {
+    async loginSocket() {
         try {
             console.log("User login");
             //let response = await fetchUtil.postJSON("http://localhost:3000/authentication", loginData);
@@ -22,13 +23,30 @@ export default class AuthStore extends Store {
                 strategy: "jwt",
                 accessToken: this.accessToken
             });
-            console.log("Login reply: ", response);
+            console.log("REST Login reply: ", response);
             if (response.errors) {
                 this.trigger("login_error", response.message);
             } else {
                 this.accessToken = response.accessToken;
-                // Reconnect the socket to gain session auth
-                //socketUtil.reconnect();
+                this.trigger("login_success", response.accessToken);
+            }
+        }
+        catch (e) {
+            console.log("Error logging in", e);                    
+        }
+        
+    }
+
+    async loginRest() {
+        try {
+            console.log("User login");
+            let response = await FetchUtil.postJSON("/authentication", {}, this.accessToken)
+            console.log("SOCKET Login reply: ", response);
+            if (response.errors) {
+                this.trigger("login_error", response.message);
+            } else {
+                this.accessToken = response.accessToken;
+                this.loginSocket();
                 this.trigger("login_success", response.accessToken);
             }
         }

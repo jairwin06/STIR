@@ -29,7 +29,7 @@
             this.state.main.on('main_role_updated', this.roleUpdated);
 
             if (IS_CLIENT) {
-               this.state.auth.login();
+               this.state.auth.loginRest();
             }
         });
 

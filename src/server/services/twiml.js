@@ -54,7 +54,7 @@ export default {
             if (sessionData && sessionData.pendingAlarm) {
                 response.play({},SERVER_URL + sessionData.pendingAlarm.recording.mixUrl);
 
-                req.app.service('rouser/alarms').alarmDelivered(sessionData.pendingAlarm);
+                req.app.service('rouser-alarms').alarmDelivered(sessionData.pendingAlarm);
             } else {
                 response.say({}, "Wake up");
             }
@@ -64,7 +64,7 @@ export default {
         .catch((err) => {
             console.log("Error in twiml alarm service!", err);
             res.send("Error" + err);
-            req.app.service('rouser/alarms').alarmDeliveryFailed(pendingAlarm);
+            req.app.service('rouser-alarms').alarmDeliveryFailed(pendingAlarm);
 
         })
     },

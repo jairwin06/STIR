@@ -8,6 +8,7 @@ export default {
     },
     jwt: {
         audience: 'http://stir.com',
-        issuer: 'STIR'
+        issuer: 'STIR',
+        expiresIn: '999d' 
     }
 }
