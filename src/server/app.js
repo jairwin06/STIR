@@ -49,6 +49,7 @@ import patchAlarmHook from './services/patch-alarm'
 
 import SocketUtil from '../app/util/socket'
 
+
 global.fetch = require('node-fetch');
 global.io = require('socket.io-client');
 
@@ -70,6 +71,7 @@ const app = feathers()
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({ extended: true  }))
 .use(session({ secret: AuthSettings.secret, resave: true, saveUninitialized: true  }));
+
 
 // Services
 mongoose.Promise = global.Promise;
@@ -208,9 +210,10 @@ app.service('/recordings').filter('ready', function(data, connection, hook) {
 });
 
 // Client routes
+const authService = new AuthService(app);
 
 // Auth middleware
-app.use(AuthService);
+app.use(authService.middleware);
 
 app.use(function (req, res, next) {
     try {

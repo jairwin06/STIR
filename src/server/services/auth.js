@@ -1,28 +1,33 @@
 import AuthSettings from '../auth-settings'
 
-export default function(req,res,next) {
-    try {
-        console.log("Authentication middleware!", req.method, req.originalUrl)
-        if (!req.cookies[AuthSettings.cookie.name]) {
-            console.log("No token! creating user");
-            createNewUser();
-        } else {
-            console.log("Found token! verifying");
-            verifyUser(req)
-            .then((result) => {
-                next();
-            })
-            .catch ((error) => {
-                console.log("Error getting user", error.message,"Creating a new one");
-                createNewUser();
-            })
-        }
-    } catch (e) {
-        console.log("Error!",e)
-        throw e;
+export default class AuthService {
+    constructor(app) {
+        console.log("Initializing Auth Service");
+        this.createFixtures(app);
     }
-
-    function createNewUser() {
+    middleware(req,res,next) {
+        try {
+            console.log("Authentication middleware!", req.method, req.originalUrl)
+            if (!req.cookies[AuthSettings.cookie.name]) {
+                console.log("No token! creating user");
+                this.createNewUser(req);
+            } else {
+                console.log("Found token! verifying");
+                verifyUser(req)
+                .then((result) => {
+                    next();
+                })
+                .catch ((error) => {
+                    console.log("Error getting user", error.message,"Creating a new one");
+                    this.createNewUser(req);
+                })
+            }
+        } catch (e) {
+            console.log("Error!",e)
+            throw e;
+        }
+    }
+    createNewUser(req) {
         req.app.service('users').create({
         }).then(function(user) {
           console.log("Creating JWT token");
@@ -38,6 +43,25 @@ export default function(req,res,next) {
         }, (error) => {
             console.log("Error creating JWT", error);
             throw new Error(error);
+        })
+    }
+    createFixtures(app) {
+        let users = app.service('users');
+        users.find({query: {role: "admin"}})
+        .then((result) => {
+            if (result.length == 0) {
+                return users.create({
+                    role: "admin"
+                })
+            }
+        })
+        users.find({query: {role: "mturk"}})
+        .then((result) => {
+            if (result.length == 0) {
+                return users.create({
+                    role: "mturk"
+                })
+            }
         })
     }
 }
@@ -57,4 +81,5 @@ export function verifyUser(req) {
         return user;
     })
 }
+
 

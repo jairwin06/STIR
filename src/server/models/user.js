@@ -4,6 +4,7 @@ const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
     phone: String,
+    role: {type: String, default: "user"},
     status : {
         phoneValidated: {type: Boolean, default: false}
     },
