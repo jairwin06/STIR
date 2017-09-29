@@ -3,39 +3,45 @@ import AuthSettings from '../auth-settings'
 export function authHook(hook) {
     return new Promise((resolve, reject) => {
         try {
-            console.log("Authentication hook!")
-            let accessToken = null;
-            if (hook.params.provider == "rest" && hook.params.headers.authorization) {
-                accessToken = hook.params.headers.authorization;
+            console.log("Authentication hook!",hook.data.strategy);
+            if (hook.data.strategy == "local") {
+                resolve(hook);
             }
-            else if (hook.params.provider == "socketio" && hook.data.accessToken) {
-                accessToken = hook.data.accessToken;
-            }
+            else {
+                let accessToken = null;
+                if (hook.params.provider == "rest" && hook.params.headers.authorization) {
+                    accessToken = hook.params.headers.authorization;
+                }
+                else if (hook.params.provider == "socketio" && hook.data.accessToken) {
+                    accessToken = hook.data.accessToken;
+                }
 
-            if (!accessToken) {
-                if (hook.params.provider == "rest") {
-                    console.log("No token! creating user");
-                    createNewUser(hook.app)
-                    .then((accessToken) => {
-                        hook.params.headers.authorization = accessToken;
+                if (!accessToken) {
+                    if (hook.params.provider == "rest") {
+                        console.log("No token! creating user");
+                        createNewUser(hook.app)
+                        .then((accessToken) => {
+                            hook.params.headers.authorization = accessToken;
+                            resolve(hook);
+                        })
+                    }
+                } else {
+                    console.log("Found token! verifying");
+                    verifyUser(accessToken, hook.app)
+                    .then((result) => {
                         resolve(hook);
                     })
+                    .catch ((error) => {
+                        console.log("Error getting user", error.message,"Creating a new one");
+                        createNewUser(hook.app)
+                        .then((accessToken) => {
+                            hook.data.accessToken = accessToken;
+                            hook.params.headers.authorization = accessToken;
+                            resolve(hook);
+                        });
+                    })
                 }
-            } else {
-                console.log("Found token! verifying");
-                verifyUser(accessToken, hook.app)
-                .then((result) => {
-                    resolve(hook);
-                })
-                .catch ((error) => {
-                    console.log("Error getting user", error.message,"Creating a new one");
-                    createNewUser(hook.app)
-                    .then((accessToken) => {
-                        hook.data.accessToken = accessToken;
-                        hook.params.headers.authorization = accessToken;
-                        resolve(hook);
-                    });
-                })
+
             }
         } catch (e) {
             reject(e);
@@ -79,7 +85,9 @@ export function createFixtures(app) {
     .then((result) => {
         if (result.length == 0) {
             return users.create({
-                role: "admin"
+                role: "admin",
+                name: "admin",
+                password: process.env['ADMIN_PASSWORD']
             })
         }
     })
@@ -87,7 +95,8 @@ export function createFixtures(app) {
     .then((result) => {
         if (result.length == 0) {
             return users.create({
-                role: "mturk"
+                role: "mturk",
+                name: "mturk"
             })
         }
     })

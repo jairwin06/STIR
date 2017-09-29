@@ -22,6 +22,7 @@ import authentication from 'feathers-authentication'
 import jwt from 'feathers-authentication-jwt'
 import oauth1 from 'feathers-authentication-oauth1'
 import oauth2 from 'feathers-authentication-oauth2'
+import local from 'feathers-authentication-local'
 import CustomOAuthVerifier from './util/oauth-jwt-verifier'
 import CustomOAuthHandler from './util/oauth-jwt-handler'
 import { Strategy as TwitterStrategy } from 'passport-twitter'
@@ -119,9 +120,20 @@ app.configure(oauth2({
      successRedirect: "/sleeper/alarms/add/personality"
   })
 }));
+// For admin
+app.configure(local({
+  usernameField: "name"
+}));
 
 app.service('users').before({
   all: disallow('external')
+});
+app.service('users').hooks({
+  before: {
+    create: [
+      local.hooks.hashPassword()
+    ]
+  }
 });
 
 // Setup a hook to only allow valid JWTs or successful 
@@ -130,7 +142,7 @@ app.service('authentication').hooks({
   before: {
     create: [
       authHook,
-      authentication.hooks.authenticate(['jwt'])
+      authentication.hooks.authenticate(['local','jwt'])
     ]
   }
 });
@@ -250,7 +262,7 @@ app.use(async function (req, res, next) {
     }
 });
 
-//app.use(errorHandler());
+app.use(errorHandler());
 
 
 console.log("Starting server");

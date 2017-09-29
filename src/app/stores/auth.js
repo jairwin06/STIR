@@ -23,7 +23,7 @@ export default class AuthStore extends Store {
                 strategy: "jwt",
                 accessToken: this.accessToken
             });
-            console.log("REST Login reply: ", response);
+            console.log("SOCKET Login reply: ", response);
             if (response.errors) {
                 this.trigger("login_error", response.message);
             } else {
@@ -40,18 +40,37 @@ export default class AuthStore extends Store {
     async loginRest() {
         try {
             console.log("User login");
-            let response = await FetchUtil.postJSON("/authentication", {}, this.accessToken)
-            console.log("SOCKET Login reply: ", response);
+            let response = await FetchUtil.postJSON("/authentication", {strategy: "jwt"}, this.accessToken)
+            console.log("REST Login reply: ", response);
             if (response.errors) {
                 this.trigger("login_error", response.message);
             } else {
                 this.accessToken = response.accessToken;
                 this.loginSocket();
                 this.trigger("login_success", response.accessToken);
+                return {status: "success"};
             }
         }
         catch (e) {
             console.log("Error logging in", e);                    
+        }
+        
+    }
+
+    async loginLocal(name, password) {
+        // TODO: If this fails then the JWT cookie is cleared and a new user will be created. is this ok?
+        console.log("Local login", name, password);
+        let response = await FetchUtil.postJSON("/authentication", {
+            strategy: "local",
+            name: name,
+            password: password
+        })
+        console.log("LOCAL Login reply: ", response);
+        if (response.errors) {
+            throw new Error(response.message);
+        } else {
+            this.accessToken = response.accessToken;
+            this.trigger("login_success", response.accessToken);
         }
         
     }
@@ -63,7 +82,8 @@ export default class AuthStore extends Store {
                 let result = await SocketUtil.rpc('user/contact::find', {accessToken: this.accessToken});
                 this.gettingStatus = false;
                 console.log("User contact status", result);
-                this.user.status = result;
+                this.user.status = result.status;
+                this.user.role = result.role;
                 this.trigger("status_updated");
             }
 

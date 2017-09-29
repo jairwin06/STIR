@@ -2,6 +2,18 @@ main {
   display: block;
   background-color: #FC87FF; }
 
+#admin h1 {
+  color: turquoise; }
+
+#admin login h1 {
+  color: blue; }
+
+#rouser #alarm-queue h1 {
+  color: purple; }
+
+#rouser h1 {
+  color: blue; }
+
 #sleeper clock h1 {
   color: red; }
 
@@ -14,14 +26,11 @@ action #edit-alarm button {
 #sleeper h1 {
   color: yellow; }
 
-#rouser #alarm-queue h1 {
-  color: purple; }
-
-#rouser h1 {
-  color: blue; }
-
 main #sign-up h1 {
   color: green; }
+
+#rouser #alarm h1 {
+  color: yellow; }
 
 #sleeper alarms add-alarm h1 {
   color: green; }
@@ -31,6 +40,3 @@ stage[data-is="personality"] .title {
 
 stage[data-is="personality"] .error {
   color: red; }
-
-#rouser #alarm h1 {
-  color: yellow; }

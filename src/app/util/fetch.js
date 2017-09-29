@@ -4,16 +4,20 @@ class FetchUtil {
     }
 
     postJSON(target, data, accessToken) {
-        return fetch(target, {
+        let options = {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify(data),
             headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': accessToken
+                    'Content-Type': 'application/json'
             }
-        })
+        }
+        if (accessToken) {
+            options.headers.Authorization = accessToken;
+        }
+
+        return fetch(target,options)
         .then((response) => {
              return response.json();
         })

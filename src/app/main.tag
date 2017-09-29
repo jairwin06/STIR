@@ -18,6 +18,7 @@
         import { mount } from 'riot'
         import './sleeper/index.tag'
         import './rouser/index.tag'
+        import './admin/index.tag'
 
         this.on('mount', () => {
             console.log("Main mounted");

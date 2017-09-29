@@ -94,6 +94,18 @@ class Routes {
             this.go(next, req, res);
         });
 
+        app.route('/admin*').get((req, res, next) => {
+            console.log("admin route");
+            req.appState.main.setRole("admin");
+            this.populate(req, 'auth', 'getStatus');
+            this.go(next, req, res);
+        });
+        app.route('/admin/login').get((req, res, next) => {
+            console.log("admin login route");
+            req.appState.admin.setAction("login");
+            this.go(next, req, res);
+        });
+
         /*
 
         app.route('*').get((req, res, next) => {
