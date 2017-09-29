@@ -7,6 +7,8 @@ export default class CustomVerifier extends Verifier {
   verify(req, accessToken, refreshToken, profile, done) {
     verifyUser(req.cookies[AuthSettings.cookie.name], req.app)
     .then((user) => {
+        req.user = user;
+        req.accessToken = accessToken;
         if (profile.provider == "facebook") {
             Session.setFor(user._id, {state: {pendingFacebook: true}});
         } else if (profile.provider == "twitter") {
