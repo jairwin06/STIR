@@ -110,7 +110,7 @@ export function verifyUser(accessToken, app) {
         return app.service("users").get(result.userId);
     })
     .then((user) => {
-        console.log("Auth found JWT user!");
+        console.log("Auth found JWT user! " + user._id);
         return user;
     })
 }

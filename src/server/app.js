@@ -233,6 +233,11 @@ app.service('/alarms/admin').before({
     })
   ]
 });
+app.service('/alarms/admin').after({
+  find: [
+    pluck('_id', 'createdAt','time', 'name', 'assignedTo')
+  ]
+});
 
 createFixtures(app);
 

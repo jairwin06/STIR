@@ -28,6 +28,9 @@
         try {
             let result = await this.state.auth.loginLocal("admin", this.refs.password.value);
             console.log("Login result", result);
+            if (result.status == 'success' && IS_CLIENT) {
+                window.location.href = "/admin/dashboard";
+            }
         } catch (e) {
             console.log("Error on login!", e);
             this.error = e.message;

@@ -5,6 +5,9 @@ main {
 #admin #admin-dashboard h1 {
   color: black; }
 
+#admin #admin-dashboard table, #admin #admin-dashboard th, #admin #admin-dashboard td {
+  border: 1px solid black; }
+
 #admin h1 {
   color: turquoise; }
 

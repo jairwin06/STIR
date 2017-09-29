@@ -71,6 +71,7 @@ export default class AuthStore extends Store {
         } else {
             this.accessToken = response.accessToken;
             this.trigger("login_success", response.accessToken);
+            return {status: "success"};
         }
         
     }
