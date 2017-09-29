@@ -81,8 +81,9 @@ mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
 
 app
 .use('/users', service({Model: UserModel}))
-.use('/sleeper-alarms', service({Model: AlarmModel}))
-.use('/rouser-alarms', new AlarmManager())
+.use('/alarms/sleeper', service({Model: AlarmModel}))
+.use('/alarms/admin', service({Model: AlarmModel}))
+.use('/alarms/rouser', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
 .use('/twitter-analyze', new TwitterAnalyzeService())
 .use('/user/contact', new UserContactService())
@@ -147,7 +148,7 @@ app.service('authentication').hooks({
   }
 });
 
-app.service('/sleeper-alarms').before({
+app.service('/alarms/sleeper').before({
   create: [
     authHooks.associateCurrentUser(),
     GeneratePrompt
@@ -164,7 +165,7 @@ app.service('/sleeper-alarms').before({
   remove: disallow('external')
 });
 
-app.service('/sleeper-alarms').after({
+app.service('/alarms/sleeper').after({
   create: [
     pluck('_id', 'time') 
   ],
@@ -197,7 +198,7 @@ app.service('/user/session').before({
   ]
 });
 
-app.service('/rouser-alarms').before({
+app.service('/alarms/rouser').before({
   find: [
     authentication.hooks.authenticate(['jwt'])
   ]
@@ -221,6 +222,16 @@ app.service('/recordings').filter('ready', function(data, connection, hook) {
     } else {
         return false;
     }
+});
+
+app.service('/alarms/admin').before({
+  all: [
+    authentication.hooks.authenticate(['jwt']),
+    authHooks.restrictToRoles({
+        roles: ['admin'],
+        fieldName: 'role'
+    })
+  ]
 });
 
 createFixtures(app);

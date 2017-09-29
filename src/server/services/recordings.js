@@ -33,7 +33,7 @@ export default class RecordingsService {
                 console.log("Patching");
                 let query = {};
                 query['recording.finalized'] = data['recording.finalized'];
-                return this.app.service('/sleeper-alarms').patch(id, query);
+                return this.app.service('/alarms/sleeper').patch(id, query);
             } else {
                 throw new Error("Invalid rouser id for this alarm!")
             }
@@ -66,7 +66,7 @@ export default class RecordingsService {
             data.mixUrl = '/recordings/' + data.alarmId + '-mix.wav?t=' + new Date().getTime();
             data.status = "success";
             delete recording.alarmId;
-            this.app.service('/sleeper-alarms').patch(data.alarmId,{recording: recording})
+            this.app.service('/alarms/sleeper').patch(data.alarmId,{recording: recording})
             this.emit('ready', data);
         })
         .catch((err) => {

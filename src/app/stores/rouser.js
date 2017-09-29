@@ -22,7 +22,7 @@ export default class RouserStore extends Store {
             if (!this.alarms && !this.gettingAlarms) {
                 this.gettingAlarms = true;
                 console.log("Get rouser alarms");
-                this.alarms = await SocketUtil.rpc('rouser-alarms::find', {accessToken: this._state.auth.accessToken});
+                this.alarms = await SocketUtil.rpc('alarms/rouser::find', {accessToken: this._state.auth.accessToken});
                 this.gettingAlarms = false;
                 this.trigger('queue_updated')
             }

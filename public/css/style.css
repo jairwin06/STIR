@@ -2,6 +2,9 @@ main {
   display: block;
   background-color: #FC87FF; }
 
+#admin #admin-dashboard h1 {
+  color: black; }
+
 #admin h1 {
   color: turquoise; }
 

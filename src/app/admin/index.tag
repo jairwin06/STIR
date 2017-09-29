@@ -13,6 +13,7 @@
  <script>
     import {mount} from 'riot'
     import './login.tag'
+    import './dashboard.tag'
 
     this.on('mount', () => {
         console.log("Admin mounted. current action", this.state.admin.action);
@@ -21,6 +22,9 @@
         console.log("Current user role", this.state.auth.user.role);
         if (IS_CLIENT && this.state.auth.user.role != "admin" && this.state.admin.action != "login") {
             page("/admin/login");            
+        }
+        else if (IS_CLIENT && this.state.auth.user.role == "admin" && this.state.admin.action != "dashboard") {
+            page("/admin/dashboard");            
         }
         else if (this.state.admin.action) {
              mount(this.refs.action, this.state.admin.action);

@@ -106,6 +106,13 @@ class Routes {
             this.go(next, req, res);
         });
 
+        app.route('/admin/dashboard').get((req, res, next) => {
+            console.log("admin dashboard route");
+            req.appState.admin.setAction("dashboard");
+            this.populate(req, 'admin', 'getAlarms');
+            this.go(next, req, res);
+        });
+
         /*
 
         app.route('*').get((req, res, next) => {
