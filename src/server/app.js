@@ -47,6 +47,7 @@ import AlarmModel from './models/alarm'
 import GeneratePrompt from './services/generate-prompt'
 import AlarmManager from './services/alarm-manager'
 import patchAlarmHook from './services/patch-alarm'
+import dispatchMTurkHook from './services/dispatch-mturk'
 
 import SocketUtil from '../app/util/socket'
 
@@ -237,7 +238,8 @@ app.service('/alarms/admin').hooks({
   after: {
     find: [
       pluck('_id', 'createdAt','time', 'name', 'assignedTo', 'mturk')
-    ]
+    ],
+    patch: [dispatchMTurkHook]
   }
 });
 

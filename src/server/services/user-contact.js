@@ -14,7 +14,6 @@ export default class UserContactService {
 
     create(data,params) {
         console.log("set user contact", data,params);
-        // TODO: What if there is already a user with this phone??
 
         if (data.code && params.user.verificationCode) {
             return this.verify(data,params)
