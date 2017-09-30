@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
-    phone: { type: String, index: { unique: true  } },
+    phone: { type: String, index: { unique: true, sparse: true  }, required: false },
     role: {type: String, default: "user"},
     password: String,
     mturkAlarm: {type: mongoose.Schema.Types.ObjectId, ref: 'Alarm', default: null},

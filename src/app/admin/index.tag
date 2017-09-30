@@ -21,7 +21,7 @@
 
         console.log("Current user role", this.state.auth.user.role);
         if (IS_CLIENT && this.state.auth.user.role != "admin" && this.state.admin.action != "login") {
-            //page("/admin/login");            
+            page("/admin/login");            
         }
         else if (IS_CLIENT && this.state.auth.user.role == "admin" && this.state.admin.action != "dashboard") {
             page("/admin/dashboard");            
