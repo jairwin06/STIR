@@ -32,7 +32,27 @@ export default class UserContactService {
             phoneValidated: false,
         }
         
-        return this.app.service("users").patch(params.user._id, data)
+        // Check that nobody already has that phone
+        return this.app.service("users").find({query: {phone: data.phone}})
+        .then((result) => {
+            if (result.length > 0) {
+                let user = result[0];
+                console.log("There is already a user with this phone!", user._id);
+                // Remove the phone field
+                return this.app.service("users").patch(user._id, {
+                     $unset: { phone: "" } ,
+                     status: {
+                         phoneValidated: false
+                     }
+                })
+            }            
+            else {
+                return;
+            }
+        })
+        .then(() => {
+            return this.app.service("users").patch(params.user._id, data)
+        })
         .then((result) => {
            console.log("User updated sending text");
            return TwilioUtil.client.messages.create({
