@@ -3,12 +3,14 @@ import AuthSettings from '../auth-settings'
 export function authHook(hook) {
     return new Promise((resolve, reject) => {
         try {
-            console.log("Authentication hook!",hook.data.strategy);
+            console.log("Authentication hook! ",hook.data);
             if (hook.data.strategy == "local") {
                 resolve(hook);
             }
             else {
                 let accessToken = null;
+                let mturk = hook.data.mturk || null;
+
                 if (hook.params.provider == "rest" && hook.params.headers.authorization) {
                     accessToken = hook.params.headers.authorization;
                 }
@@ -19,7 +21,7 @@ export function authHook(hook) {
                 if (!accessToken) {
                     if (hook.params.provider == "rest") {
                         console.log("No token! creating user");
-                        createNewUser(hook.app)
+                        createNewUser(hook.app, mturk)
                         .then((accessToken) => {
                             hook.params.headers.authorization = accessToken;
                             resolve(hook);
@@ -27,13 +29,13 @@ export function authHook(hook) {
                     }
                 } else {
                     console.log("Found token! verifying");
-                    verifyUser(accessToken, hook.app)
+                    verifyUser(accessToken, hook.app, mturk)
                     .then((result) => {
                         resolve(hook);
                     })
                     .catch ((error) => {
                         console.log("Error getting user", error.message,"Creating a new one");
-                        createNewUser(hook.app)
+                        createNewUser(hook.app, mturk)
                         .then((accessToken) => {
                             hook.data.accessToken = accessToken;
                             hook.params.headers.authorization = accessToken;
@@ -68,13 +70,21 @@ export function authMiddleware(req,res,next) {
             })
         }
     } catch (e) {
-        console.log("Error!",e)
+        console.log("Error!o<",e)
         next();
     }
 }
-function createNewUser(app) {
-    return app.service('users').create({
-    }).then(function(user) {
+function createNewUser(app, mturk) {
+    let data = {};
+    if (mturk) {
+        console.log("Assigning mturk user to", mturk);                      
+        data = {
+            role: "mturk",
+            mturkAlarm: mturk
+        }
+    }
+    return app.service('users').create(data)
+    .then(function(user) {
       console.log("Creating JWT token");
       return app.passport.createJWT({userId: user._id}, AuthSettings);
     });
@@ -91,6 +101,7 @@ export function createFixtures(app) {
             })
         }
     })
+    /*
     users.find({query: {role: "mturk"}})
     .then((result) => {
         if (result.length == 0) {
@@ -99,10 +110,10 @@ export function createFixtures(app) {
                 name: "mturk"
             })
         }
-    })
+    })*/
 }
 
-export function verifyUser(accessToken, app) {
+export function verifyUser(accessToken, app, mturk = null) {
     return app.passport.verifyJWT(accessToken, {secret: AuthSettings.secret})
     .then((result) => {
         // Verify the user exists
@@ -110,8 +121,19 @@ export function verifyUser(accessToken, app) {
         return app.service("users").get(result.userId);
     })
     .then((user) => {
+        if (!user) {
+            throw new Error("User not found");
+        }
         console.log("Auth found JWT user! " + user._id);
-        return user;
+        if (mturk) {
+            console.log("Assigning mturk user to", mturk);                      
+            return app.service("users").patch(user._id, {role: "mturk", mturkAlarm: mturk});
+        } else {
+            if (user.role == "mturk") {
+                console.log("This is an mturk user assigned to", user.mturkAlarm)
+            }
+            return user;
+        }
     })
 }
 

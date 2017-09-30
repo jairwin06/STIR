@@ -32,7 +32,7 @@ export default class UserContactService {
             phoneValidated: false,
         }
         
-        return this.app.service("users").update(params.user._id, data)
+        return this.app.service("users").patch(params.user._id, data)
         .then((result) => {
            console.log("User updated sending text");
            return TwilioUtil.client.messages.create({

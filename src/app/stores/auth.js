@@ -40,7 +40,11 @@ export default class AuthStore extends Store {
     async loginRest() {
         try {
             console.log("User login");
-            let response = await FetchUtil.postJSON("/authentication", {strategy: "jwt"}, this.accessToken)
+            let data = {strategy: "jwt"};
+            if (this.mturk) {
+                data.mturk = this.mturk;
+            }
+            let response = await FetchUtil.postJSON("/authentication",data, this.accessToken)
             console.log("REST Login reply: ", response);
             if (response.errors) {
                 this.trigger("login_error", response.message);

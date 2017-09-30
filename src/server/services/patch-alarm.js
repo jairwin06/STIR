@@ -1,6 +1,6 @@
 export default function patchAlarmHook(hook) {
     console.log("Path alarm hook!");
-    if (hook.params.provider == "socketio") {
+    if (hook.params.provider == "socketio" || hook.params.provider == "rest") {
         // User can only update the time
         let newData = {};
         if (hook.data.time) {

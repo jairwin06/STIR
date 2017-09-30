@@ -224,19 +224,21 @@ app.service('/recordings').filter('ready', function(data, connection, hook) {
     }
 });
 
-app.service('/alarms/admin').before({
-  all: [
-    authentication.hooks.authenticate(['jwt']),
-    authHooks.restrictToRoles({
-        roles: ['admin'],
-        fieldName: 'role'
-    })
-  ]
-});
-app.service('/alarms/admin').after({
-  find: [
-    pluck('_id', 'createdAt','time', 'name', 'assignedTo')
-  ]
+app.service('/alarms/admin').hooks({
+  before: {
+    all: [
+      authentication.hooks.authenticate(['jwt']),
+      authHooks.restrictToRoles({
+          roles: ['admin'],
+          fieldName: 'role'
+      })
+   ]
+  },
+  after: {
+    find: [
+      pluck('_id', 'createdAt','time', 'name', 'assignedTo', 'mturk')
+    ]
+  }
 });
 
 createFixtures(app);

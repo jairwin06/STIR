@@ -3,7 +3,7 @@ import User from '../models/user'
 import TwilioUtil from '../util/twilio'
 import Session from '../models/session-persistent'
 
-const ALARMS_IN_QUEUE = 1;
+let ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt"
 
 export default class AlarmManager {
@@ -111,11 +111,23 @@ export default class AlarmManager {
             return Promise.reject(new Error("Phone not validated"));
         } else {
             // First get alarms assigned to this rouser and not finalized
-            return Alarm.find({
-                assignedTo: params.user._id,
-                'recording.finalized': false,
-                time: {$gt: new Date()}
-            }).select(FIELDS_TO_RETURN)
+            let query;
+            if (params.user.role == "mturk") {
+                ALARMS_IN_QUEUE = 1;
+                query = {
+                    _id: params.user.mturkAlarm,
+                    'recording.finalized': false,
+                    time: {$gt: new Date()}
+                };
+            }
+            else {
+                query  = {
+                    assignedTo: params.user._id,
+                    'recording.finalized': false,
+                    time: {$gt: new Date()}
+                };
+            }
+            return Alarm.find(query).select(FIELDS_TO_RETURN)
             .then((result) => {
                 if (result.length < ALARMS_IN_QUEUE) {
                     let alarmsToGo = ALARMS_IN_QUEUE - result.length;
@@ -124,6 +136,7 @@ export default class AlarmManager {
                     console.log("Still need to find " + alarmsToGo + " more alarms");
                     return Alarm.find({
                         assignedTo: null,
+                        mturk: false,
                         time: {$gt: new Date()}
                     }).select("_id").limit(alarmsToGo)
                     .then((newIds) => {

@@ -38,4 +38,9 @@ export default class AdminStore extends Store {
         }
     }
 
+    async assignMTurk(alarm) {
+        let result = await SocketUtil.rpc('alarms/admin::patch', alarm._id, {assignedTo: null, mturk: true});
+        console.log("Result: ", result);
+    }
+
 };

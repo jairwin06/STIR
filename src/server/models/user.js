@@ -3,9 +3,10 @@ import mongoose from 'mongoose'
 const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
-    phone: String,
+    phone: { type: String, index: { unique: true  } },
     role: {type: String, default: "user"},
     password: String,
+    mturkAlarm: {type: mongoose.Schema.Types.ObjectId, ref: 'Alarm', default: null},
     status : {
         phoneValidated: {type: Boolean, default: false}
     },

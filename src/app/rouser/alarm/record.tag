@@ -12,6 +12,7 @@
     <input type="submit" value="Receive Call">
   </form>
   <img show="{loading}" src="/images/loading.gif"></img>
+ <b show"{error}" class="error">{error}</b>
  <style>
  </style>
  <script>
@@ -35,6 +36,9 @@
         } 
         catch(e) {
             console.log("Error requesting call", e);
+            this.error = e.message;
+            this.loading = false;
+            this.update();
         }
     }
 

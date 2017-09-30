@@ -70,7 +70,7 @@ export default {
     },
     dispatchRecordingCall: function(hook) {
         console.log("TWIML Dispatch call hook!", hook.data, hook.params);
-        TwilioUtil.client.calls.create({
+        return TwilioUtil.client.calls.create({
                 url: SERVER_URL + '/twiml-rec.xml',
                 to: hook.params.user.phone,
                 from: TwilioUtil.TWILIO_PHONE_NUMBER
