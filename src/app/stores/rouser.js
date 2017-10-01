@@ -50,9 +50,13 @@ export default class RouserStore extends Store {
         this.trigger('record_stage_updated');
     }
 
-    chooseAlarm(id) {
+    async chooseAlarm(id, mturk) {
         console.log("Rouser chooses alarm ", id);
-        this.currentAlarm = MiscUtil.findById(this.alarms,id);
+        if (this.alarms) {
+            this.currentAlarm = MiscUtil.findById(this.alarms,id);
+        } else {
+            this.currentAlarm = await SocketUtil.rpc('alarms/rouser::get', id, {accessToken: this._state.auth.accessToken, mturk: mturk});
+        }
         console.log("Current alarm", this.currentAlarm);
         this.trigger("alarm_loaded");
     }

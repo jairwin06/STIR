@@ -149,30 +149,31 @@ app.service('authentication').hooks({
   }
 });
 
-app.service('/alarms/sleeper').before({
-  create: [
-    authHooks.associateCurrentUser(),
-    GeneratePrompt
-  ],
-  find: [
-    authentication.hooks.authenticate(['jwt']),
-    authHooks.queryWithCurrentUser(),
-    (hook) => {hook.params.query.$select = ['id','time']; return hook}
-  ],
-  patch: [
-      authHooks.restrictToOwner({ ownerField: 'userId' }),
-      patchAlarmHook
-  ],
-  remove: disallow('external')
-});
-
-app.service('/alarms/sleeper').after({
-  create: [
-    pluck('_id', 'time') 
-  ],
-  patch: [
-    pluck('_id', 'time') 
-  ]
+app.service('/alarms/sleeper').hooks({
+    before: {
+        create: [
+          authHooks.associateCurrentUser(),
+          GeneratePrompt
+        ],
+        find: [
+          authentication.hooks.authenticate(['jwt']),
+          authHooks.queryWithCurrentUser(),
+          (hook) => {hook.params.query.$select = ['id','time']; return hook}
+        ],
+        patch: [
+            authHooks.restrictToOwner({ ownerField: 'userId' }),
+            patchAlarmHook
+        ],
+        remove: disallow('external')
+    },
+    after: {
+        create: [
+          pluck('_id', 'time') 
+        ],
+        patch: [
+          pluck('_id', 'time') 
+        ]
+    }
 });
 
 app.service('fbanalyze').before({
@@ -199,10 +200,15 @@ app.service('/user/session').before({
   ]
 });
 
-app.service('/alarms/rouser').before({
-  find: [
-    authentication.hooks.authenticate(['jwt'])
-  ]
+app.service('/alarms/rouser').hooks({
+    before: {
+        find: [
+          authentication.hooks.authenticate(['jwt']),
+        ],
+        get: [
+          authentication.hooks.authenticate(['jwt']),
+        ]
+    }
 });
 
 app.service('/recordings').before({
@@ -266,19 +272,24 @@ app.use(async function (req, res, next) {
     if (!req.handledRoute) {
         res.status(404).send('Nothing to see here!');
     } else {
-        for (let i = 0; i < req.populateQueue.length; i++) {
-            let taskObj = req.populateQueue[i];
-            console.log("Runnint task", taskObj);
-            await req.appState[taskObj.store][taskObj.task].apply(req.appState[taskObj.store], taskObj.args);
+        try {
+            for (let i = 0; i < req.populateQueue.length; i++) {
+                let taskObj = req.populateQueue[i];
+                console.log("Runnint task", taskObj);
+                await req.appState[taskObj.store][taskObj.task].apply(req.appState[taskObj.store], taskObj.args);
+            }
+            console.log("Render riot");
+            mixin({state: req.appState}); // Global state mixin
+            res.render('index', {
+              initialData: JSON.stringify(req.appState, (key,value) => {
+                  return ((key == '_state' || key == 'debug') ? function() {} : value); 
+              }),
+              body: render('main', req.appState)
+            })
+        } catch(err) {
+            console.log("Error in rendering!", err);
+            return next(err);
         }
-        console.log("Render riot");
-        mixin({state: req.appState}); // Global state mixin
-        res.render('index', {
-          initialData: JSON.stringify(req.appState, (key,value) => {
-              return ((key == '_state' || key == 'debug') ? function() {} : value); 
-          }),
-          body: render('main', req.appState)
-        })
     }
 });
 

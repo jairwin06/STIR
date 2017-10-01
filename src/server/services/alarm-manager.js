@@ -2,6 +2,7 @@ import Alarm from '../models/alarm'
 import User from '../models/user'
 import TwilioUtil from '../util/twilio'
 import Session from '../models/session-persistent'
+import Errors from 'feathers-errors'
 
 let ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt"
@@ -130,22 +131,11 @@ export default class AlarmManager {
             return Promise.reject(new Error("Phone not validated"));
         } else {
             // First get alarms assigned to this rouser and not finalized
-            let query;
-            if (params.user.role == "mturk") {
-                ALARMS_IN_QUEUE = 1;
-                query = {
-                    _id: params.user.mturkAlarm,
-                    'recording.finalized': false,
-                    time: {$gt: new Date()}
-                };
-            }
-            else {
-                query  = {
-                    assignedTo: params.user._id,
-                    'recording.finalized': false,
-                    time: {$gt: new Date()}
-                };
-            }
+            let query  = {
+                assignedTo: params.user._id,
+                'recording.finalized': false,
+                time: {$gt: new Date()}
+            };
             return Alarm.find(query).select(FIELDS_TO_RETURN)
             .then((result) => {
                 if (result.length < ALARMS_IN_QUEUE) {
@@ -191,5 +181,17 @@ export default class AlarmManager {
             })
         }
     }
-
+    get(id, params) {
+        console.log("Get specific alarm!", id, params);        
+        return Alarm.findOne({
+            _id: id,
+        }).select(FIELDS_TO_RETURN)
+        .then((alarm) => {
+            console.log("Alarm:", alarm);
+            return alarm;
+        })
+        .catch((err) => {
+            return Promise.reject(new Errors.NotFound());
+        });
+    }
 }
