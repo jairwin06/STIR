@@ -10,6 +10,13 @@ class TwilioUtil {
         this.client = new twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
         this.TWILIO_PHONE_NUMBER = TWILIO_PHONE_NUMBER;
     }
+    sendMessage(to, text) {
+        return this.client.messages.create({
+             body: text,
+             to: to,
+             from: this.TWILIO_PHONE_NUMBER
+        })
+    }
 };
 
 // Singleton

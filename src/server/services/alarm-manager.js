@@ -98,6 +98,20 @@ export default class AlarmManager {
         console.log("ALARM DELIVERED!", alarm);
         this.app.service('alarms/sleeper').patch(alarm._id, {delivered: true});
         Session.setFor(alarm.userId, {pendingAlarm : null});
+        if (alarm.assignedTo) {
+            this.messageUser(alarm.assignedTo, "Your wake-up call was just delieverd to the sleeper! Thank you from STIR");
+        }
+    }
+    messageUser(id, message) {
+        this.app.service('users').find({
+            query: {_id: id}
+        })
+        .then((result) => {
+            if (result.length > 0) {
+                let user = result[0];
+                TwilioUtil.sendMessage(user.phone, message);
+            }
+        })
     }
     alarmDeliveryFailed(alarm) {
         console.log("ALARM DELIVERY FAILED!", alarm);
