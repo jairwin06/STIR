@@ -8,6 +8,13 @@ export default class AuthStore extends Store {
         console.log("Init AuthStore");
         this.user = {};
         this.signUpStage = "contact";
+
+        SocketUtil.on('socket_reconnect', () => {
+            if (this.accessToken) {
+                console.log("Auth login on socket reconnect");
+                this.loginSocket();
+            }
+        });
     }     
 
     setAcessToken(accessToken) {

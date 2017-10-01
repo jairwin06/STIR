@@ -35,17 +35,17 @@ export default class AlarmManager {
         },1000);
     }
     tick() {
-        if (this.nextAlarm && this.nextAlarm.time.getTime() <= new Date().getTime()) {
-            console.log("Time to wake up " + this.nextAlarm.name);
-            
-            let activeAlarm = this.nextAlarm;
-            this.activateAlarm(activeAlarm);
-            // One retry after a minute
-            setTimeout(() => {
-                this.retryAlarm(activeAlarm.userId);
-            },1000 * 60);
+        if (this.nextAlarms.length > 0 && this.nextAlarms[0].time.getTime() <= new Date().getTime()) {
+            while(this.nextAlarms.length > 0) {
+                let activeAlarm = this.nextAlarms.pop();;
+                console.log("Time to wake up " + activeAlarm.name);
+                this.activateAlarm(activeAlarm);
+                // One retry after a minute
+                setTimeout(() => {
+                    this.retryAlarm(activeAlarm.userId);
+                },1000 * 60);
 
-            // Already pop the next alarm to continue processing
+            }
             this.popAlarm();
         }
     }
@@ -80,12 +80,17 @@ export default class AlarmManager {
     popAlarm() {
         if (this.pendingAlarms.length > 0) {
             // Get the next one (it was sorted so first in line)
-            this.nextAlarm = this.pendingAlarms.pop();
-            console.log("Next alarm at", this.nextAlarm.time);
-           
-            // TODO: Support for multiple alarms at the same time!
+            this.nextAlarms = [];            
+            this.nextAlarms.push(this.pendingAlarms.pop());
+    
+            while(this.pendingAlarms.length > 0
+                  && this.pendingAlarms[this.pendingAlarms.length - 1].time.getTime() == this.nextAlarms[0].time.getTime()) {
+                    this.nextAlarms.push(this.pendingAlarms.pop());
+            }
+
+            console.log("Next alarms", this.nextAlarms.map(o => o.name));
         } else {
-            this.nextAlarm = null;
+            this.nextAlarms = [];
         }
 
     }

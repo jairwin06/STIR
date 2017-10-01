@@ -1,4 +1,6 @@
 // Socket Util
+import { observable } from 'riot';
+
 class SocketUtil {
     constructor() {
 
@@ -14,6 +16,12 @@ class SocketUtil {
         this.socket.on('error', (error) => {
             console.log('Error connecting to socket', error);
         }); 
+
+        this.socket.on('reconnect', (attemptNumber) => {
+            console.log("Socket reconnected");
+            this.trigger('socket_reconnect');
+        }); 
+        observable(this);
     }
 
     reconnect() {
