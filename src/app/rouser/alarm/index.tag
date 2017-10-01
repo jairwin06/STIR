@@ -21,6 +21,8 @@
         this.state.rouser.on('alarm_loaded', this.alarmLoaded);
         if (this.state.rouser.recordStage) {
             this.stageTag = mount(this.refs.stage,this.state.rouser.recordStage)[0];
+        } else if (this.state.rouser.currentAlarm && IS_CLIENT) {
+            page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
         }
     });
 

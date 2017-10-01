@@ -14,37 +14,76 @@ class MTurkUtil {
           Reward: '2', /* required */
           Title: 'STIR', /* required */
           AutoApprovalDelayInSeconds: 60 * 60,
-          Keywords: 'record, mobile, phone, recording',
+          Keywords: 'record, recording, alarm, wake-up, STIR',
           MaxAssignments: 1,
         };
         
     }
-    createHIT(id) {
+    createHITForAlarm(id) {
+        console.log("Creating HIT for " + id);
+
+        let params = Object.assign({}, this.params);
+        params.Question = `
+            <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
+              <ExternalURL>` + process.env['SERVER_URL'] + '/rouser/alarm/' + id + `</ExternalURL>
+              <FrameHeight>400</FrameHeight>
+            </ExternalQuestion>
+        `
+        params.RequesterAnnotation = id;
+
+        return this.listHITs()
+        .then((hits) => {
+            for (let i = 0; i < hits.length; i++) {
+                let hit = hits[i];
+                if (hit.RequesterAnnotation == id.toString() && hit.HITStatus != "Disposed") {
+                    console.log("Found!");
+                    throw new Error("A HIT already exists for this alarm!");
+                }
+            }
+            return this.createHIT(params);
+        })
+    }
+
+    createHIT(params) {
         return new Promise((resolve, reject) => {
-            console.log("Creating HIT for " + id);
-
-            let params = Object.assign({}, this.params);
-            params.Question = `
-                <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
-                  <ExternalURL>` + process.env['SERVER_URL'] + '/rouser/alarms?mturk=' + id + `</ExternalURL>
-                  <FrameHeight>400</FrameHeight>
-                </ExternalQuestion>
-            `
-            params.UniqueRequestToken = id;
-
-            console.log(params);
-
             this.mturk.createHIT(params, (err, data) => {
                 if (err) {
-                    console.log("Error!", err);
+                    console.log("Error creating HIT!", err);
                     reject(err);
                 } 
                 else {
-                    console.log(data);
                     resolve(data);
                 }
             });
         });
+    }
+    
+    listHITs() {
+        return new Promise((resolve, reject) => {
+            this.mturk.listHITs({}, (err, data) => {
+                if (err) {
+                    console.log("Error listing HITs!", err);
+                    reject(err);
+                } 
+                else {
+                    console.log(data);
+                    resolve(data.HITs);
+                }
+            });
+        });
+    }
+    
+    getHIT(id) {
+        return new Promise((resolve, reject) => {
+            this.mturk.getHIT({HITId: id}, (err, data) => {
+                if (err) {
+                    console.log("Error getting HIT!", err);
+                    reject(err);
+                } else {
+                    resolve(data.HIT);
+                }
+            })
+        })        
     }
 };
 

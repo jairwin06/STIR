@@ -76,9 +76,12 @@ class Routes {
             this.go(next, req, res);
         });
 
-        app.route('/rouser/alarm/:id').get((req, res, next) => {
+        app.route('/rouser/alarm/:id/:operation?').get((req, res, next) => {
             console.log("Rouser alarm route");
             req.appState.rouser.setAction("alarm");
+            if (req.query && req.query.hitId) {
+                req.appState.auth.mturk = true;
+            }
             this.populate(req, 'rouser', 'chooseAlarm', req.params.id, req.query) 
             this.go(next, req, res);
         });

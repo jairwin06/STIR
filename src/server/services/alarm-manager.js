@@ -1,6 +1,7 @@
 import Alarm from '../models/alarm'
 import User from '../models/user'
 import TwilioUtil from '../util/twilio'
+import MTurkUtil from '../util/mturk' 
 import Session from '../models/session-persistent'
 import Errors from 'feathers-errors'
 
@@ -185,10 +186,31 @@ export default class AlarmManager {
         console.log("Get specific alarm!", id, params);        
         return Alarm.findOne({
             _id: id,
-        }).select(FIELDS_TO_RETURN)
+        }).select(FIELDS_TO_RETURN + " assignedTo mturk")
         .then((alarm) => {
             console.log("Alarm:", alarm);
-            return alarm;
+            if (!alarm) {
+                return Promise.reject(new Errors.NotFound());
+            }
+            else if (params.query.mturk && params.query.mturk.hitId && alarm.mturk) {
+                console.log("It's an MTURK HIT");
+                // This is MTurk, query the hit
+                return MTurkUtil.getHIT(params.query.mturk.hitId)
+                .then((hit) => {
+                    console.log(hit.HITStatus);
+                    if (hit.HITStatus == 'Assignable') {
+                        // OK you can see it
+                        return alarm;
+                    } else {
+                        throw new Errors.NotFound();
+                    }
+                })
+            }
+            else if (params.user && params.user._id.toString() == alarm.assignedTo.toString()) {
+                return alarm;
+            } else {
+                return Promise.reject(new Errors.NotFound());
+            }
         })
         .catch((err) => {
             return Promise.reject(new Errors.NotFound());

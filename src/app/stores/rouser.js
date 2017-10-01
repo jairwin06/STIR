@@ -39,7 +39,11 @@ export default class RouserStore extends Store {
 
     setAction(action) {
         if (this.action != action) {
+            console.log("Set rouser action", action);
             this.action = action;
+            if (action == "alarms") {
+                this.currentAlarm = null;
+            }
             this.trigger('action_updated', action);
         }
     }
@@ -51,14 +55,16 @@ export default class RouserStore extends Store {
     }
 
     async chooseAlarm(id, mturk) {
-        console.log("Rouser chooses alarm ", id);
-        if (this.alarms) {
-            this.currentAlarm = MiscUtil.findById(this.alarms,id);
-        } else {
-            this.currentAlarm = await SocketUtil.rpc('alarms/rouser::get', id, {accessToken: this._state.auth.accessToken, mturk: mturk});
+        if (!this.currentAlarm || this.currentAlarm._id.toString() != id.toString()) {
+            console.log("Rouser chooses alarm ", id);
+            if (this.alarms) {
+                this.currentAlarm = MiscUtil.findById(this.alarms,id);
+            } else {
+                this.currentAlarm = await SocketUtil.rpc('alarms/rouser::get', id, {accessToken: this._state.auth.accessToken, mturk: mturk});
+            }
+            console.log("Current alarm", this.currentAlarm);
+            this.trigger("alarm_loaded");
         }
-        console.log("Current alarm", this.currentAlarm);
-        this.trigger("alarm_loaded");
     }
 
     async requestCall() {

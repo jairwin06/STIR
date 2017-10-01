@@ -51,9 +51,6 @@ export default class AuthStore extends Store {
         try {
             console.log("User login");
             let data = {strategy: "jwt"};
-            if (this.mturk) {
-                data.mturk = this.mturk;
-            }
             let response = await FetchUtil.postJSON("/authentication",data, this.accessToken)
             console.log("REST Login reply: ", response);
             if (response.errors) {

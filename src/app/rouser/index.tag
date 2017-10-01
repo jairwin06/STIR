@@ -53,12 +53,12 @@
     }
 
     validatedCheck() {
-        if (this.state.auth.user.status && !this.state.auth.user.status.phoneValidated) {
+        if (this.state.auth.user.status && !this.state.auth.user.status.phoneValidated && !this.state.auth.mturk) {
             if (IS_CLIENT) {
                 page.show("/rouser/sign-up");
             }
         } else {
-            if (this.state.rouser.action != 'alarms') {
+            if (!this.state.rouser.action) {
                 if (IS_CLIENT) {
                     console.log("Redirecting to alarms");
                     //page.show("/rouser/alarms", null, false);

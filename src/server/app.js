@@ -239,13 +239,13 @@ app.service('/alarms/admin').hooks({
           roles: ['admin'],
           fieldName: 'role'
       })
-   ]
+   ],
+    patch: [dispatchMTurkHook]
   },
   after: {
     find: [
       pluck('_id', 'createdAt','time', 'name', 'assignedTo', 'mturk')
-    ],
-    patch: [dispatchMTurkHook]
+    ]
   }
 });
 

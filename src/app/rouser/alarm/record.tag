@@ -11,7 +11,7 @@
     </p>
     <input type="submit" value="Receive Call">
   </form>
-  <img show="{loading}" src="/images/loading.gif"></img>
+  <img show="{loading}" src="/images/loading.gif">
  <b show"{error}" class="error">{error}</b>
  <style>
  </style>
