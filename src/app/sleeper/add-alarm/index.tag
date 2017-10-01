@@ -1,6 +1,7 @@
 <add-alarm>
  <h1 class="title">Add Alarm</h1>
  <stage ref="stage"></stage>
+ <b show"{error}" class="error">{error}</b>
  <style>
   #sleeper alarms add-alarm {
     h1 {
@@ -18,6 +19,7 @@
     this.on('mount', () => {
         console.log("add-alarm mounted", this.state.sleeper.addAlarmStage);
         this.state.sleeper.on('sleeper_add_alarm_stage', this.stageUpdated);
+        this.state.sleeper.on('alarm_create_error', this.onCreateError);
         this.state.auth.on('user_code_verified', this.onCodeVerified);
 
         if (!this.state.sleeper.addAlarmStage) {
@@ -30,6 +32,7 @@
 
     this.on('unmount', () => {
         this.state.sleeper.off('sleeper_add_alarm_stage', this.stageUpdated);
+        this.state.sleeper.off('alarm_create_error', this.onCreateError);
         this.state.auth.off('user_code_verified', this.onCodeVerified);
     });
 
@@ -42,6 +45,11 @@
     onCodeVerified() {
         // That's the final stage in case the phoen wasn't verified
         this.state.sleeper.addAlarm();
+    }
+
+    onCreateError(err) {
+        this.error = err;
+        this.update();
     }
  </script>
 </add-alarm>

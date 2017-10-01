@@ -57,6 +57,7 @@ export default class SleeperStore extends Store {
 
         catch (e) {
             console.log("Error creating alarm  ", e);                    
+            this.trigger("alarm_create_error", e.message);
         }
     }
 

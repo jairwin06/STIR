@@ -21,8 +21,29 @@ export default class SessionService {
     }
 
     create(data,params) {
-        console.log("Set session state data!",data);
-        Session.setFor(params.user._id, {state: data});
+        console.log("Session create", data);
+        return Promise.resolve()
+        .then(() => {
+            if (data.newAlarm) {
+                return this.app.service("alarms/sleeper").find({
+                    query: {
+                        userId: params.user._id,
+                        time: data.newAlarm.time
+                    }
+                })
+                .then((result) => {
+                    if (result.length > 0) {
+                        throw(new Error("There is already an alarm set at that time"));
+                    }
+                })
+            } else {
+                return;
+            }
+        })
+        .then(() => {
+            console.log("Set session state data!",data);
+            Session.setFor(params.user._id, {state: data});
+        });
     }
 
     patch(id, data, params) {

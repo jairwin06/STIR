@@ -5,6 +5,9 @@
     Date/Time:<input ref="time" type="time" change="{onTimeChange}" required>
     <input type="submit" value="Next">
   </form>
+  <p>
+  <b show"{error}" class="error">{error}</b>
+  </p>
  <style>
  </style>
  <script>
@@ -25,6 +28,7 @@
             console.log("Alarm will be set for tomorrow");
             alarmTime.setDate(alarmTime.getDate() + 1);
         }
+        alarmTime.setMilliseconds(0);
         this.state.sleeper.currentAlarm.time = alarmTime;
         this.update();
 
@@ -33,8 +37,14 @@
     async next(e) {
         e.preventDefault();
         if (this.state.sleeper.action == "add-alarm") {
-            this.state.sleeper.saveProgress();
-            page("/sleeper/alarms/add/personality")
+            try {
+                await this.state.sleeper.saveProgress();
+                page("/sleeper/alarms/add/personality")
+            } catch (e) {
+                console.log("Error saving progress", e);
+                this.error = e.message;
+                this.update();
+            }
         } else {
             try {
                 let result = await this.state.sleeper.saveAlarm();
@@ -44,6 +54,12 @@
                 }
             } catch (e) {
                 console.log("Error saving alarm!", e);
+                if (e.name == "Conflict") {
+                    this.error = "There is already an alarm set for this time";
+                } else {
+                    this.error = e.message;
+                }
+                this.update();
             }
         }
     }
