@@ -103,6 +103,11 @@
             this.refs.status.value = result || "unknown";
             this.update();
         })
+        .catch((err) => {
+            console.log("Error submitting recording!", err);
+            this.error = err;
+            this.update();
+        })
         this.loading = true;
         this.update;
     }

@@ -2,6 +2,7 @@ import Alarm from '../models/alarm'
 import Session from '../models/session-persistent'
 import SoxUtil from '../util/sox'
 import formidable from 'formidable'
+import MTurkUtil from '../util/mturk'
 
 export default class RecordingsService {
     constructor() {
@@ -80,11 +81,57 @@ export default class RecordingsService {
 
     upload(req, res) {
         console.log("Recording upload!");
-        const form = new formidable.IncomingForm();
-
-        form.parse(req, function(err, fields, files) {
-          console.log("Received form", fields, files);
-          res.send({status: "success"})
-        });
+        this.parseForm(req)
+        .then((form) => {
+            // Find the hit
+            return MTurkUtil.getHIT(form.fields.hitId)
+        })
+        .then((hit) => {
+            console.log(hit.HITStatus);
+            if (hit && hit.HITStatus != 'Disposed') {
+                console.log("Got HIT");
+                // Find the alarn
+                return Alarm.findOne({
+                    _id: hit.RequesterAnnotation,
+                    'recording.finalized': false,
+                    time: {$gt: new Date()}
+                })
+            } else {
+                throw new Error("There is no avaialble HIT");
+            }
+        })
+        .then((alarm) => {
+            if (alarm) {
+                console.log("Alarm: ", alarm);
+            } else {
+                throw new Error("There is Alarm for this HIT");
+            }
+        })
+        .then(() => {
+            res.send({status: "success"})
+        })
+        .catch((err) => {
+            console.log("Error receiving upload!", err);
+            res.status(500).send(err.message)
+        })
     }
+
+    parseForm(req) {
+        return new Promise((resolve, reject) => {
+            const form = new formidable.IncomingForm();
+
+            form.parse(req, function(err, fields, files) {
+              console.log("Received form", fields, files);
+              if (!err && fields && files) {
+                resolve({
+                    fields: fields,
+                    files: files
+                })
+              } else {
+                  reject(err);
+              }
+            });
+        })
+    }
+
 }

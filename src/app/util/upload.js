@@ -11,6 +11,9 @@ class UploadUtil {
                 if (request.readyState == 4 && request.status == 200) {
                     resolve(request.responseText);
                 }
+                if (request.readyState == 4 && request.status == 500) {
+                    reject(request.responseText);
+                }
             };
 
             request.onerror = function(e) {

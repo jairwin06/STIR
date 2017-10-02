@@ -232,7 +232,7 @@ app.service('/recordings').after({
 });
 
 // Recording upload
-app.post('/recordings/upload', app.service('recordings').upload);
+app.post('/recordings/upload', (res, req) => {app.service('recordings').upload(res,req);});
 
 app.service('/recordings').filter('ready', function(data, connection, hook) {
     if (connection.user._id.toString() == data.rouserId) {
