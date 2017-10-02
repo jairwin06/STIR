@@ -80,7 +80,7 @@ class Routes {
             console.log("Rouser alarm route");
             req.appState.rouser.setAction("alarm");
             if (req.query && req.query.hitId) {
-                req.appState.auth.mturk = true;
+                req.appState.auth.mturk = req.query;
             }
             this.populate(req, 'rouser', 'chooseAlarm', req.params.id, req.query) 
             this.go(next, req, res);
@@ -94,6 +94,11 @@ class Routes {
         app.route('/rouser/alarm/:id/mix').get((req, res, next) => {
             console.log("Rouser alarm mix route");
             req.appState.rouser.setRecordStage('mix');
+            this.go(next, req, res);
+        });
+        app.route('/rouser/alarm/:id/mturk').get((req, res, next) => {
+            console.log("Rouser alarm mturk route");
+            req.appState.rouser.setRecordStage('mturk');
             this.go(next, req, res);
         });
 

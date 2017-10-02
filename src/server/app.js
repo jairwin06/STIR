@@ -206,7 +206,15 @@ app.service('/alarms/rouser').hooks({
           authentication.hooks.authenticate(['jwt']),
         ],
         get: [
-          authentication.hooks.authenticate(['jwt']),
+          (hook) => {
+            if (hook.params.query && hook.params.query.mturk) {
+                // Bypass authentication with mturk
+                return hook;
+            }
+            else {
+               return authentication.hooks.authenticate(['jwt'])(hook);
+            }
+          }
         ]
     }
 });

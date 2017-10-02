@@ -13,6 +13,7 @@
  <script>
     import './record.tag'
     import './mix.tag'
+    import './mturk.tag'
     import { mount } from 'riot'
 
     this.on('mount', () => {
@@ -22,7 +23,7 @@
         if (this.state.rouser.recordStage) {
             this.stageTag = mount(this.refs.stage,this.state.rouser.recordStage)[0];
         } else if (this.state.rouser.currentAlarm && IS_CLIENT) {
-            page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
+            this.goToRecord();
         }
     });
 
@@ -38,8 +39,18 @@
     alarmLoaded() {
         // Go to record
         if (IS_CLIENT) {
+            this.goToRecord();
+        }
+    }
+
+    goToRecord() {
+        console.log("MTurk? ", this.state.auth.mturk);
+        if (this.state.auth.mturk) {
+            page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/mturk")
+        } else {
             page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
         }
+
     }
  </script>
 </alarm>

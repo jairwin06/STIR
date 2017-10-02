@@ -11,7 +11,11 @@
   <script src="/lib/socket.io.slim.js"></script>
   <script src="/lib/jquery-3.2.1.min.js"></script>
   <script src="/lib/intlTelInput.min.js"></script>
+  <script src="/lib/mediaDevices-getUserMedia-polyfill.js"></script>
+  <script src="/lib/RecordRTC.min.js"></script>
   <script>
+    window.IS_CLIENT = true;
+    window.IS_SERVER = false;
     var initialData = '<%- initialData %>'
   </script>
   </head>

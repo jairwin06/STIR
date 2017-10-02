@@ -198,10 +198,11 @@ export default class AlarmManager {
                 return MTurkUtil.getHIT(params.query.mturk.hitId)
                 .then((hit) => {
                     console.log(hit.HITStatus);
-                    if (hit.HITStatus == 'Assignable') {
+                    if (hit && hit.HITStatus == 'Assignable') {
                         // OK you can see it
                         return alarm;
                     } else {
+                        console.log("No hit found");
                         throw new Errors.NotFound();
                     }
                 })
