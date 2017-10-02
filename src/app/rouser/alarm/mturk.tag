@@ -12,6 +12,10 @@
   </p>
   <img show="{loading}" src="/images/loading.gif"></img>
    <b show"{error}" class="error">{error}</b>
+   <p show="{previewing}">
+        <audio ref="preview" controls="controls">
+        </audio>
+   </p>
  <style>
  </style>
  <script>
@@ -36,7 +40,9 @@
         this.recorder.startRecording()
         .then(() => {
             console.log("Recording started");
+            this.refs.preview.removeChild(this.refs.preview.lastChild);
             this.recording = true;
+            this.previewing = false;
             this.update();
         })
         .catch((err) => { 
@@ -49,9 +55,15 @@
     stopRecording() {
         console.log("Stop recording!");
         this.recorder.stopRecording()
-        .then((dataUrl) => {
-            console.log("Recording stopped", dataUrl);
+        .then((url) => {
+            console.log("Recording stopped", url);
             this.recording = false;
+            this.previewing = true;
+            let source = document.createElement('source');
+            source.src = url;
+            source.type = this.recorder.options.mimeType;
+            this.refs.preview.appendChild(source);
+            this.refs.preview.load();
             this.update();
         })
         .catch((err) => { 
