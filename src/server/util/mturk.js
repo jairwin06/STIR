@@ -7,7 +7,7 @@ class MTurkUtil {
             endpoint: 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
         });
         this.params = {
-          AssignmentDurationInSeconds: 500, /* required */
+          AssignmentDurationInSeconds: 1000, /* required */
           Description: 'STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.', /* required */
           // TODO: Lifetime according to time left?
           LifetimeInSeconds: 60 * 60 * 2, /* required */

@@ -1,4 +1,4 @@
-const RECORDING_SAMPLE_RATE = 22050;
+const RECORDING_SAMPLE_RATE = 8000;
 import BrowserDetect from './browser'
     
 export default class Recorder {
@@ -15,15 +15,18 @@ export default class Recorder {
             };
             if (this.isMimeTypeSupported('audio/ogg')) {
                 this.options.mimeType = 'audio/ogg; codecs=opus'
+                this.options.fileExtension = 'ogg';
             }
             else if (this.isMimeTypeSupported('audio/webm')) {
                 this.options.mimeType = 'audio/webm; codecs=opus'
+                this.options.fileExtension = 'webm';
             }
             else {
                 this.options.mimeType = 'audio/wav';
                 this.options.recorderType = StereoAudioRecorder;
-                this.options.desiredSampRate = 8000;
+                this.options.desiredSampRate = RECORDING_SAMPLE_RATE;
                 this.options.numberOfAudioChannels = 1;
+                this.options.fileExtension = 'wav';
             }
 
             console.log("Supported recording options", this.options);

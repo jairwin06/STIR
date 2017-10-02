@@ -1,6 +1,7 @@
 import Alarm from '../models/alarm'
 import Session from '../models/session-persistent'
 import SoxUtil from '../util/sox'
+import formidable from 'formidable'
 
 export default class RecordingsService {
     constructor() {
@@ -74,6 +75,16 @@ export default class RecordingsService {
             data.status = "error";
             data.message = err.toString();
             this.emit('ready', data);
+        });
+    }
+
+    upload(req, res) {
+        console.log("Recording upload!");
+        const form = new formidable.IncomingForm();
+
+        form.parse(req, function(err, fields, files) {
+          console.log("Received form", fields, files);
+          res.send({status: "success"})
         });
     }
 }

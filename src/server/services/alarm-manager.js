@@ -186,10 +186,13 @@ export default class AlarmManager {
         console.log("Get specific alarm!", id, params);        
         return Alarm.findOne({
             _id: id,
+            'recording.finalized': false,
+            time: {$gt: new Date()}
         }).select(FIELDS_TO_RETURN + " assignedTo mturk")
         .then((alarm) => {
             console.log("Alarm:", alarm);
             if (!alarm) {
+                console.log("Alarm not found!");
                 return Promise.reject(new Errors.NotFound());
             }
             else if (params.query.mturk && params.query.mturk.hitId && alarm.mturk) {
@@ -198,22 +201,24 @@ export default class AlarmManager {
                 return MTurkUtil.getHIT(params.query.mturk.hitId)
                 .then((hit) => {
                     console.log(hit.HITStatus);
-                    if (hit && hit.HITStatus == 'Assignable') {
+                    // TODO: I don't know what's the deal with it getting sometimes "Unassignable"
+                    if (hit && hit.HITStatus != 'Disposed'/*&& hit.HITStatus == 'Assignable'*/) {
                         // OK you can see it
                         return alarm;
                     } else {
-                        console.log("No hit found");
                         throw new Errors.NotFound();
                     }
                 })
             }
             else if (params.user && params.user._id.toString() == alarm.assignedTo.toString()) {
+                console.log("Rouser alarm");
                 return alarm;
             } else {
                 return Promise.reject(new Errors.NotFound());
             }
         })
         .catch((err) => {
+            console.log("Error!",err);
             return Promise.reject(new Errors.NotFound());
         });
     }
