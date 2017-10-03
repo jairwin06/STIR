@@ -3,6 +3,7 @@ import Session from '../models/session-persistent'
 import SoxUtil from '../util/sox'
 import formidable from 'formidable'
 import MTurkUtil from '../util/mturk'
+import DownloadUtil from '../util/download'
 
 export default class RecordingsService {
     constructor() {
@@ -58,14 +59,14 @@ export default class RecordingsService {
         SoxUtil.mixBackingTrack(
             'public/recordings/' + data.alarmId + '-rec.wav',
             'backingtracks/_2014_.wav',
-            'public/recordings/' + data.alarmId + '-mix.wav'
+            'public/recordings/' + data.alarmId + '-mix.mp3'
         )
         .then((result) => {
             console.log("Mixing result", result);
-            data.mixUrl = '/recordings/' + data.alarmId + '-mix.wav?t=' + new Date().getTime();
+            data.mixUrl = '/recordings/' + data.alarmId + '-mix.mp3?t=' + new Date().getTime();
             let recording = Object.assign({}, data);
             recording.finalized = false;
-            data.mixUrl = '/recordings/' + data.alarmId + '-mix.wav?t=' + new Date().getTime();
+            data.mixUrl = '/recordings/' + data.alarmId + '-mix.mp3?t=' + new Date().getTime();
             data.status = "success";
             delete recording.alarmId;
             this.app.service('/alarms/sleeper').patch(data.alarmId,{recording: recording})
@@ -81,9 +82,14 @@ export default class RecordingsService {
 
     upload(req, res) {
         console.log("Recording upload!");
+        let recordingFile;
+        let destinationPath;
+        let mixPath;
+
         this.parseForm(req)
         .then((form) => {
             // Find the hit
+            recordingFile = form.files.file;
             return MTurkUtil.getHIT(form.fields.hitId)
         })
         .then((hit) => {
@@ -94,6 +100,7 @@ export default class RecordingsService {
                 return Alarm.findOne({
                     _id: hit.RequesterAnnotation,
                     'recording.finalized': false,
+                    mturk: true,
                     time: {$gt: new Date()}
                 })
             } else {
@@ -103,12 +110,24 @@ export default class RecordingsService {
         .then((alarm) => {
             if (alarm) {
                 console.log("Alarm: ", alarm);
+                destinationPath = 'recordings/' + alarm._id + '-rec.wav';
+                mixPath = 'recordings/' + alarm._id + '-mix.mp3';
+
+                // Copy the file
+                return DownloadUtil.copyFile(recordingFile.path, 'public/' + destinationPath) ;
             } else {
-                throw new Error("There is Alarm for this HIT");
+                throw new Error("There is no Alarm for this HIT");
             }
         })
         .then(() => {
-            res.send({status: "success"})
+            SoxUtil.mixBackingTrack(
+                'public/' + destinationPath,
+                'backingtracks/_2014_.wav',
+                'public/' + mixPath
+            )
+        })
+        .then(() => {
+            res.send(process.env['SERVER_URL'] + '/' + destinationPath)
         })
         .catch((err) => {
             console.log("Error receiving upload!", err);

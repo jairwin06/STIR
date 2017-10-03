@@ -24,7 +24,8 @@
     Thank you! Click the button to submit the HIT for review.
   <form action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
     <input name="assignmentId" type="hidden" ref="assignmentId">
-    <input name="status" type="hidden" ref="status">
+    <input name="recordingPath" type="hidden" ref="recordingPath">
+    <input name="prompt" type="hidden" ref="prompt">
     <button type="submit">Submit</button>
   </form>
 
@@ -100,12 +101,13 @@
             this.loading = false;
             this.done = true;
             this.refs.assignmentId.value = this.state.auth.mturk.assignmentId;
-            this.refs.status.value = result || "unknown";
+            this.refs.recordingPath.value = result || "unknown";
+            this.refs.prompt.value = this.state.rouser.currentAlarm.prompt;
             this.update();
         })
         .catch((err) => {
             console.log("Error submitting recording!", err);
-            this.error = err;
+            this.error = "Could not submit recording - " + err;
             this.update();
         })
         this.loading = true;

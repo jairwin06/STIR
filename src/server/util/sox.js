@@ -24,9 +24,12 @@ class SoxUtil {
                 .input(backingTrack)
                 .combine('mix')
                 .output(output)
+                .outputFileType('mp3')
+                /*
                 .outputBits(16)
                 .outputEncoding('signed-integer')
                 .outputFileType('wav')
+                */
                 .trim(0, endTimeFormatted);
 
                 let errorThrow = function(err, stdout, stderr) {
