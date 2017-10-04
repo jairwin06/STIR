@@ -201,8 +201,7 @@ export default class AlarmManager {
                 return MTurkUtil.getHIT(params.query.mturk.hitId)
                 .then((hit) => {
                     console.log(hit.HITStatus);
-                    // TODO: I don't know what's the deal with it getting sometimes "Unassignable"
-                    if (hit && hit.HITStatus == 'Assignable') {
+                    if (hit && (hit.HITStatus == 'Assignable' || hit.HITStatus == 'Unassignable' /* Means accepted by worker */)) {
                         // OK you can see it
                         return alarm;
                     } else {

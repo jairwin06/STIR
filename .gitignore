@@ -41,6 +41,7 @@ jspm_packages
 start.sh
 
 public/recordings/*.wav
+public/recordings/*.mp3
 
 backingtracks/*.wav
 

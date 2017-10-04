@@ -43,7 +43,10 @@
     async mturk(e) {
         console.log("Send to MTurk!", e.item);
         try {
-            await this.state.admin.assignMTurk(e.item);
+            let result = await this.state.admin.assignMTurk(e.item);
+            console.log("Result: ", result);
+            e.item.mturk = result.mturk;
+            this.update();
         }
         catch (err) {
             console.log("MTurk error", err);

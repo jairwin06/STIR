@@ -6,7 +6,6 @@ const UserSchema = new mongoose.Schema({
     phone: { type: String, index: { unique: true, sparse: true  }, required: false },
     role: {type: String, default: "user"},
     password: String,
-    mturkAlarm: {type: mongoose.Schema.Types.ObjectId, ref: 'Alarm', default: null},
     status : {
         phoneValidated: {type: Boolean, default: false}
     },

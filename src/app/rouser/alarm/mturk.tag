@@ -22,7 +22,7 @@
   </div>
   <div show="{done}">
     Thank you! Click the button to submit the HIT for review.
-  <form action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
+  <form ref="form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
     <input name="assignmentId" type="hidden" ref="assignmentId">
     <input name="recordingPath" type="hidden" ref="recordingPath">
     <input name="prompt" type="hidden" ref="prompt">
@@ -104,6 +104,8 @@
             this.refs.recordingPath.value = result || "unknown";
             this.refs.prompt.value = this.state.rouser.currentAlarm.prompt;
             this.update();
+            // Submit the form
+            this.refs.form.submit();
         })
         .catch((err) => {
             console.log("Error submitting recording!", err);

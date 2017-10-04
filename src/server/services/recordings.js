@@ -85,6 +85,7 @@ export default class RecordingsService {
         let recordingFile;
         let destinationPath;
         let mixPath;
+        let alarmId;
 
         this.parseForm(req)
         .then((form) => {
@@ -110,6 +111,7 @@ export default class RecordingsService {
         .then((alarm) => {
             if (alarm) {
                 console.log("Alarm: ", alarm);
+                alarmId = alarm._id;
                 destinationPath = 'recordings/' + alarm._id + '-rec.wav';
                 mixPath = 'recordings/' + alarm._id + '-mix.mp3';
 
@@ -125,6 +127,14 @@ export default class RecordingsService {
                 'backingtracks/_2014_.wav',
                 'public/' + mixPath
             )
+        })
+        .then(() => {
+            // Finalize!
+            return this.app.service('/alarms/sleeper').patch(alarmId, {
+                'recording.finalized': true,
+                'recording.recordingUrl':  '/' + destinationPath,
+                'recording.mixUrl': '/' + mixPath,
+            });
         })
         .then(() => {
             res.send(process.env['SERVER_URL'] + '/' + destinationPath)
