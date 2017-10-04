@@ -1,8 +1,14 @@
-<sleeper>
- <section id="sleeper">
-     <h1>Sleeper</h1>
-     <action ref="action"></action>
- </section>
+<sleeper data-page="true" class="app-page">
+ <div id="sleeper">
+    <header class="header-bar">
+        <div class="center">
+            <h1 class="title">SLEEPER</h1>
+        </div>
+    </header>
+    <div class="content">
+        <action ref="action"></action>
+    </div>
+ </div>
  <style>
  #sleeper {
     h1  {
@@ -30,6 +36,12 @@
              }
          }
     });
+
+    console.log("Page object?", page);
+
+    this.on('create', () => {
+        console.log("Sleeper activity created!");
+    })
 
     this.on('unmount', () => {
         this.state.sleeper.off('sleeper_action_updated', this.actionUpdated);

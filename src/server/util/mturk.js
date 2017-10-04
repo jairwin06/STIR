@@ -26,11 +26,12 @@ class MTurkUtil {
         })
         .then((result) => {
             console.log("Updated notification settings", result);
-            return this.testNotification();
+//            return this.testNotification();
         })
+        /*
         .then((result) => {
             console.log("test notification result", result);
-        })
+        })*/
     }
     createHITForAlarm(id, time) {
         console.log("Creating HIT for " + id + " at " + time);

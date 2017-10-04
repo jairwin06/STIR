@@ -9,12 +9,33 @@ import State from '../app/state'
 import 'nodent-runtime'
 import SocketUtil from '../app/util/socket'
 
+import 'phonon'
+
 console.log("Client loading!");
 
 window.IS_SERVER = false
 window.IS_CLIENT = true
 
 SocketUtil.initWithUrl(window.location.protocol + "//" + window.location.host);
+
+// PHONON
+phonon.options({
+	navigator: {
+	    defaultPage: 'main',
+	    hashPrefix: '!', 
+	    animatePages: true,
+	    enableBrowserBackButton: true,
+	    templateRootDirectory: '',
+	    useHash: false,
+        riotEnabled: true,
+        riot: {
+            compile: (fn) => {fn()},
+            mount: mount
+        }
+	},
+	// i18n: null if you do not want to use internationalization
+	i18n: null
+});
 
 window.page = page;
 
@@ -42,9 +63,19 @@ page('*', function(ctx,next) {
 
 Routes.runRoutingTable(window.app);
 
+page('*', function(ctx,next) {
+    console.log("PAGE AFTER MIDDLEWARE",ctx.canonicalPath);    
+    if (ctx.canonicalPath == "/sleeper/alarms") {
+         phonon.navigator().changePage('role');
+    }
+    else if (ctx.canonicalPath == "/") {
+         phonon.navigator().changePage('main');
+    }
+})
+
 console.log("Initial state", state);
 mixin({state: state}); // Global state mixin
 mount('main',state);
 
-
 page();
+phonon.navigator().start();

@@ -15,6 +15,7 @@ var commonjs = require('rollup-plugin-commonjs');
 var buble = require( 'rollup-plugin-buble');
 var riot = require('rollup-plugin-riot');
 var nodent = require('rollup-plugin-nodent');
+var uglify = require('rollup-plugin-uglify');
 var nodemon = require('gulp-nodemon');
 var sass = require('gulp-sass');
 var todo = require('gulp-todo');
@@ -68,7 +69,8 @@ gulp.task('rollup', function() {
       nodeResolve({
         jsnext: true,
         main: true
-      })
+      }),
+      uglify()
     ]
   })
   .on('error', function(error) {

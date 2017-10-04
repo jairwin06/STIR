@@ -24,7 +24,7 @@ export default class AuthStore extends Store {
 
     async loginSocket() {
         try {
-            console.log("User login");
+            console.log("User login SOCKET");
             //let response = await fetchUtil.postJSON("http://localhost:3000/authentication", loginData);
             let response = await SocketUtil.rpc("authenticate", {
                 strategy: "jwt",
@@ -49,7 +49,7 @@ export default class AuthStore extends Store {
 
     async loginRest() {
         try {
-            console.log("User login");
+            console.log("User login REST");
             let data = {strategy: "jwt"};
             let response = await FetchUtil.postJSON("/authentication",data, this.accessToken)
             console.log("REST Login reply: ", response);

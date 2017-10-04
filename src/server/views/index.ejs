@@ -8,19 +8,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/intlTelInput.css">
+  <link rel="stylesheet" href="/css/phonon.min.css">
   <script src="/lib/socket.io.slim.js"></script>
   <script src="/lib/jquery-3.2.1.min.js"></script>
   <script src="/lib/intlTelInput.min.js"></script>
   <script src="/lib/mediaDevices-getUserMedia-polyfill.js"></script>
   <script src="/lib/RecordRTC.min.js"></script>
+  <script src="/lib/platform.js"></script>
   <script>
     window.IS_CLIENT = true;
     window.IS_SERVER = false;
+
     var initialData = '<%- initialData %>'
   </script>
+  <!--script src="/lib/phonon.js"></script-->
   </head>
   <body>
     <%- body %>
+    <!-- PAGES -->
+    <role data-page="true"></role>
     <script src="/bundle.js"></script>
+
   </body>
 </html>
