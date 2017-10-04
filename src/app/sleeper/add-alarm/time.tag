@@ -5,14 +5,21 @@
         </div>
     </header>
   <div class="content">
-  <b>Alarm will be set for: {state.sleeper.currentAlarm.time}</b>
-  <form onsubmit="{ next }">
-    Date/Time:<input ref="time" type="time" change="{onTimeChange}" required>
-    <input type="submit" value="Next">
-  </form>
-  <p>
-  <b show"{error}" class="error">{error}</b>
-  </p>
+      <div class="padded-full">
+           <div id="choice" class="row">
+                When would you like to wake up?
+            </div>
+          <form action="" onsubmit="{ next }">
+            <input ref="time" type="time" change="{onTimeChange}" required>
+            <input type="submit" value="Next">
+          </form>
+          <p>
+          <b>Alarm will be set for: {state.sleeper.currentAlarm.time}</b>
+          </p>
+          <p>
+          <b show"{error}" class="error">{error}</b>
+          </p>
+      </div>
   </div>
  <style>
  </style>

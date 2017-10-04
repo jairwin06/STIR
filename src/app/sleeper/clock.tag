@@ -5,13 +5,15 @@
     </div>
 </header>
 <div class="content">
-     <h1 class="title">Alarm Clock</h1>
+     <div>
+        Your current alarms:
+     </div>
      <ul>
         <li each={ state.sleeper.alarms }>
             <a href="/sleeper/alarm/{_id}"><b>{formatDate(time)}</b></a>
         </li>
     </ul>
-     <a href="/sleeper/alarms/add/time">Add alarm</a>
+     <a href="/sleeper/alarms/add/time">Add an alarm</a>
 </div>
 
  <style>

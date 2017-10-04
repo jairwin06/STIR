@@ -1,4 +1,4 @@
-<personality>
+<sleeper-alarms-add-personality>
  <h1 class="title">Add Alarm personality</h1>
  <p>
   <div class="title">Use my facebook data</div>
@@ -98,4 +98,4 @@
         }
     }
  </script>
-</personality>
+</sleeper-alarms-add-personality>

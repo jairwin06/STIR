@@ -1,3 +1,10 @@
+main .btn {
+  line-height: 3; }
+
+main #choice {
+  margin-top: 50px;
+  margin-bottom: 20px; }
+
 #admin #admin-dashboard h1 {
   color: black; }
 
