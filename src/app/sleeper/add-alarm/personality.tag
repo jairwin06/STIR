@@ -1,25 +1,34 @@
 <sleeper-alarms-add-personality>
- <h1 class="title">Add Alarm personality</h1>
- <p>
-  <div class="title">Use my facebook data</div>
-   <a href="/auth/facebook" class="button">Analyze posts</a>
- </p>
-<img show="{loading}" src="/images/loading.gif"></img>
-  <p>
-      <div class="title">Use my twitter data</div>
-      <a href="/auth/twitter" class="button">Analyze tweets</a>
- </p>
- <b show"{error}" class="error">{error}</b>
- <p>
-  <span class="title">Or Opt-out and answer some questions</span>
-  <form onsubmit="{submitQuestions}">
-    Your name <input type="text" name="name" ref="name">
-    <button type="submit">Submit</button>
-  </form>
-  </p>
-  <p>
-    <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
-  </p>
+    <header class="header-bar">
+        <div class="center">
+            <h1 class="title">STIR:Sleeper</h1>
+        </div>
+    </header>
+  <div class="content">
+   <div id="choice" class="row">
+        How do you want to personalize your experience?
+    </div>
+     <p>
+      <div class="title">Use my facebook data</div>
+       <a href="/auth/facebook" class="button">Analyze posts</a>
+     </p>
+    <img show="{loading}" src="/images/loading.gif"></img>
+      <p>
+          <div class="title">Use my twitter data</div>
+          <a href="/auth/twitter" class="button">Analyze tweets</a>
+     </p>
+     <b show"{error}" class="error">{error}</b>
+     <p>
+      <span class="title">Or Opt-out and answer some questions</span>
+      <form onsubmit="{submitQuestions}">
+        Your name <input type="text" name="name" ref="name">
+        <button type="submit">Submit</button>
+      </form>
+      </p>
+      <p>
+        <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
+      </p>
+  </div>
   
  <style>
      stage[data-is="personality"] {
@@ -49,10 +58,12 @@
         }
 
         this.state.sleeper.on('analysis_status_updated', this.analysisStatusUpdated);
+        this.state.sleeper.on('alarm_created', this.onAlarmCreated);
     });
 
     this.on('unmount', () => {
         this.state.sleeper.off('analysis_status_updated', this.analysisStatusUpdated);
+        this.state.sleeper.off('alarm_created', this.onAlarmCreated);
     });
 
     analyzeFacebook(e) {
@@ -95,6 +106,12 @@
             this.state.sleeper.setAddAlarmStage('sign-up');
         } else {
             this.state.sleeper.addAlarm();
+        }
+    }
+    onAlarmCreated() {
+        console.log("New alarm created!");
+        if (IS_CLIENT) {
+            page("/sleeper/alarms");
         }
     }
  </script>
