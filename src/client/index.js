@@ -64,18 +64,17 @@ page('*', function(ctx,next) {
 Routes.runRoutingTable(window.app);
 
 page('*', function(ctx,next) {
-    console.log("PAGE AFTER MIDDLEWARE",ctx.canonicalPath);    
-    if (ctx.canonicalPath == "/sleeper/alarms") {
-         phonon.navigator().changePage('role');
-    }
-    else if (ctx.canonicalPath == "/") {
+    if (ctx.canonicalPath == "/") {
          phonon.navigator().changePage('main');
+    } else {
+        let tagName = ctx.canonicalPath.substring(1).replace(/\//g,"-");
+        console.log("Phonon change page to ", tagName);
+        phonon.navigator().changePage(tagName);
     }
 })
 
 console.log("Initial state", state);
 mixin({state: state}); // Global state mixin
-mount('main',state);
 
 page();
 phonon.navigator().start();

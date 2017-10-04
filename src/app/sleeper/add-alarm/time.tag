@@ -1,5 +1,10 @@
-<time>
- <h1 class="title">Add Alarm time</h1>
+<sleeper-alarms-add-time>
+    <header class="header-bar">
+        <div class="center">
+            <h1 class="title">STIR:Sleeper</h1>
+        </div>
+    </header>
+  <div class="content">
   <b>Alarm will be set for: {state.sleeper.currentAlarm.time}</b>
   <form onsubmit="{ next }">
     Date/Time:<input ref="time" type="time" change="{onTimeChange}" required>
@@ -8,6 +13,7 @@
   <p>
   <b show"{error}" class="error">{error}</b>
   </p>
+  </div>
  <style>
  </style>
  <script>
@@ -78,4 +84,4 @@
         //    ':' + pad(this.getSeconds());
         }
  </script>
-</time>
+</sleeper-alarms-add-time>

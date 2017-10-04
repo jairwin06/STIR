@@ -7,7 +7,7 @@
                 </div>
             </header>
             <div class="content">
-                <a href="/sleeper">Sleeper</a>
+                <a href="/sleeper/alarms">Sleeper</a>
                 <a href="/rouser">Rouser</a>
             </div>
     </div>
@@ -25,12 +25,6 @@
 
         this.on('mount', () => {
             console.log("Main mounted");
-            console.log("Current role ", this.state.main.role);
-            if (this.state.main.role) {
-                this.roleTag = mount(document.getElementsByTagName('role'), this.state.main.role)[0];
-            }
-
-            this.state.main.on('main_role_updated', this.roleUpdated);
 
             if (IS_CLIENT && !this.state.auth.mturk) {
                this.state.auth.loginRest();

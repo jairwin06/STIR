@@ -69,8 +69,8 @@ gulp.task('rollup', function() {
       nodeResolve({
         jsnext: true,
         main: true
-      }),
-      uglify()
+      })
+      //uglify()
     ]
   })
   .on('error', function(error) {
