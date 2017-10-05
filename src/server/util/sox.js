@@ -24,6 +24,7 @@ class SoxUtil {
                 .input(backingTrack)
                 .combine('mix')
                 .output(output)
+                // TODO: Test this on iPhone/Android
                 .outputFileType('mp3')
                 /*
                 .outputBits(16)

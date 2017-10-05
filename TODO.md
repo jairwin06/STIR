@@ -7,3 +7,4 @@
 | server/services/alarm-manager.js | 40 | Test this with 2 people at the same time
 | server/services/alarm-manager.js | 157 | Backup alarms , only on first usage
 | server/services/fbanalyze.js | 67 | Paging
+| server/util/sox.js | 27 | Test this on iPhone/Android
