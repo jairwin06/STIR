@@ -25,6 +25,7 @@ export default class FBAnalyzeService {
             return this.app.service("users").patch(params.user._id, {name: name})
         })
         .then(() => {
+            // TODO: This should run in background
             return this.getPosts(params.user.facebook.accessToken);
         })
         .then((posts) => {
