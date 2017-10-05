@@ -5,15 +5,20 @@
     </div>
 </header>
 <div class="content">
-     <div>
-        Your current alarms:
+     <div show="{state.sleeper.alarms != null}">
+         <div>
+            Your current alarms:
+         </div>
+         <ul>
+            <li each={ state.sleeper.alarms }>
+                <a href="/sleeper/alarm/{_id}"><b>{formatDate(time)}</b></a>
+            </li>
+        </ul>
+         <a href="/sleeper/alarms/add/time">Add an alarm</a>
      </div>
-     <ul>
-        <li each={ state.sleeper.alarms }>
-            <a href="/sleeper/alarm/{_id}"><b>{formatDate(time)}</b></a>
-        </li>
-    </ul>
-     <a href="/sleeper/alarms/add/time">Add an alarm</a>
+      <div show="{ state.sleeper.alarms == null }" class="circle-progress center active">
+        <div class="spinner"></div>
+     </div>
 </div>
 
  <style>
@@ -28,6 +33,10 @@
         console.log("alarms mounted");
         this.state.sleeper.on('alarms_updated', this.onAlarmsUpdated);
     });
+
+    this.on('ready', () => {
+        this.update();
+    })
 
     this.on('unmount', () => {
         this.state.sleeper.off('alarms_updated', this.onAlarmsUpdated);

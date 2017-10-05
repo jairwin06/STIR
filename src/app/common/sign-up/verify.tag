@@ -1,9 +1,23 @@
-<verify>
- <h1 class="title">Verify your phone</h1>
-  <form onsubmit="{verifyCode}">
-    Verification code:<input ref="code" type="text" pattern="\d\{4\}">
-    <input type="submit" value="Next">
-  </form>
+<sign-up-verify>
+  <header class="header-bar">
+        <div class="center">
+            <h1 class="title">STIR:Contact</h1>
+        </div>
+  </header>
+  <div class="content">
+      <div class="padded-full">
+           <div id="choice" class="row">
+                Verify your phone number with a code
+           </div>
+           <form action="" onsubmit="{verifyCode}">
+                <input ref="code" type="text" pattern="\d\{4\}">
+                <input type="submit" value="Next">
+           </form>
+          <p>
+          <b show"{error}" class="error">{error}</b>
+          </p>
+      </div>
+  </div>
  <style>
  </style>
  <script>
@@ -18,11 +32,24 @@
         e.preventDefault();
         try {
             console.log("Verify code " + this.refs.code.value);
-            this.state.auth.verifyCode(this.refs.code.value);
+            let result = await this.state.auth.verifyCode(this.refs.code.value);
+            if (result.status == "success") {
+                if (this.state.main.role == 'sleeper' && this.state.sleeper.currentAlarm) {
+                    await this.state.sleeper.addAlarm();
+                    page("/sleeper/alarms");
+                } else if (this.state.main.role == 'rouser') {
+                    page("/rouser/alarms");
+                } else {
+                    page("/");
+                }
+            } else {
+                throw new Error("Internal error");
+            }
         }
         catch (err) {
-           console.log("Code verification error", err);
+           this.error = err.message;
+           this.update();
         }
     }
  </script>
-</verify>
+</sign-up-verify>

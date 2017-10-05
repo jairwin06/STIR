@@ -13,6 +13,14 @@ class Routes {
             res();
         }
     }
+    next(next, req, res) {
+        // Route is not yet handled (might be 404)
+        if (next) {
+            next();
+        } else if(res) {
+            res();
+        }
+    }
 
 
     // TODO: Router based tags? 
@@ -29,7 +37,8 @@ class Routes {
             req.appState.main.setRole("sleeper");
             this.populate(req, 'auth', 'getStatus');
             this.populate(req, 'sleeper', 'getAlarms');
-            this.go(next, req, res);
+            this.next(next, req, res);
+            
         });
         app.route('/sleeper/alarms').get((req, res, next) => {
             req.appState.sleeper.setAction("clock");
@@ -39,20 +48,17 @@ class Routes {
             if (IS_SERVER) {
                 this.populate(req, 'sleeper', 'restoreProgress');
             }
-            req.appState.sleeper.setAction("add-alarm");
-            this.go(next, req, res);
+            this.next(next, req, res);
         });
         app.route('/sleeper/alarms/add/time').get((req, res, next) => {
-            req.appState.sleeper.setAddAlarmStage("time");
             this.go(next, req, res);
         });
         app.route('/sleeper/alarms/add/personality').get((req, res, next) => {
-            req.appState.sleeper.setAddAlarmStage("personality");
             this.go(next, req, res);
         });
         app.route('/sleeper/alarm/:id').get((req, res, next) => {
             this.populate(req, 'sleeper', 'chooseAlarm', req.params.id);
-            req.appState.sleeper.setAction("edit-alarm");
+            req.page = "sleeper-edit-alarm";
             this.go(next, req, res);
         });
 
@@ -60,7 +66,7 @@ class Routes {
             console.log("Rouser route");
             req.appState.main.setRole("rouser");
             this.populate(req, 'auth', 'getStatus');
-            this.go(next, req, res);
+            this.next(next, req, res);
         });
 
         app.route('/rouser/alarms').get((req, res, next) => {
@@ -70,9 +76,13 @@ class Routes {
             this.go(next, req, res);
         });
 
-        app.route('/rouser/sign-up').get((req, res, next) => {
-            console.log("Rouser sign-up route");
-            req.appState.rouser.setAction("sign-up");
+        app.route('/sign-up/contact').get((req, res, next) => {
+            this.populate(req, 'auth', 'getStatus');
+            console.log("sign-up contact route");
+            this.go(next, req, res);
+        });
+        app.route('/sign-up/verify').get((req, res, next) => {
+            console.log("sign-up verify route");
             this.go(next, req, res);
         });
 
@@ -106,7 +116,7 @@ class Routes {
             console.log("admin route");
             req.appState.main.setRole("admin");
             this.populate(req, 'auth', 'getStatus');
-            this.go(next, req, res);
+            this.next(next, req, res);
         });
         app.route('/admin/login').get((req, res, next) => {
             console.log("admin login route");

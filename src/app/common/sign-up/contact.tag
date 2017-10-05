@@ -1,16 +1,30 @@
-<contact>
- <h1 class="title">Your contact details</h1>
-  <p>
-    Welcome {state.auth.user.name}!
-  </p>
-  <form onsubmit="{setContact}">
-    Email:<input ref="email" type="email"><br>
-    Phone number:<input id="phone" ref="phone" type="tel" change="{onPhoneChange}" required>
-    <input type="submit" value="Next" disabled="{ !phonePluginLoaded }" >
-  </form>
-  <p>
-    <b>{phoneError}</b>
-  <p>
+<sign-up-contact>
+  <header class="header-bar">
+        <div class="center">
+            <h1 class="title">STIR:Contact</h1>
+        </div>
+  </header>
+  <div class="content">
+      <div show="{ phonePluginLoaded }" class="padded-full">
+           <div id="choice" class="row">
+                {state.auth.user.name ? state.auth.user.name + ', what' : 'What'} is your phone number?
+            </div>
+
+          <form action="" onsubmit="{setContact}">
+            <input id="phone" ref="phone" type="tel" change="{onPhoneChange}" required>
+            <input type="submit" value="Next">
+          </form>
+          <p>
+            <b>{phoneError}</b>
+          </p>
+          <p>
+          <b show"{error}" class="error">{error}</b>
+          </p>
+      </div>
+      <div show="{ !phonePluginLoaded || loading }" class="circle-progress center active">
+        <div class="spinner"></div>
+     </div>
+  </div>
  <style>
  </style>
  <script>
@@ -55,16 +69,18 @@
             let phoneNumber = $("#phone").intlTelInput("getNumber");
             console.log("Joined phone", phoneNumber);
             try {
+                this.loading = true;
+                this.update();
                 let result = await this.state.auth.setContact({
                     phone: phoneNumber,
-                    email: this.refs.email.value,
                     name:  this.state.auth.user.name
                 })
-                this.state.auth.setSignUpStage("verify");
+                page("/sign-up/verify")
             }
             catch (err) {
                console.log("Setting contact error!", err);
                this.phoneError = err.message;
+               this.loading = false;
                this.update();
             }
         } else {
@@ -77,4 +93,4 @@
         }
     }
  </script>
-</contact>
+</sign-up-contact>

@@ -10,7 +10,7 @@
   }
  </style>
  <script>
-    import './time.tag'
+    import './add-time.tag'
     import './personality.tag'
     import '../../common/sign-up/index.tag'
 
@@ -36,6 +36,7 @@
     });
 
     onCodeVerified() {
+        console.log("Sleeper code verified!");
         // That's the final stage in case the phoen wasn't verified
         this.state.sleeper.addAlarm();
     }

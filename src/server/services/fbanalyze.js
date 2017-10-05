@@ -22,6 +22,9 @@ export default class FBAnalyzeService {
         })
         .then((name) => {
             params.user.name = name;
+            return this.app.service("users").patch(params.user._id, {name: name})
+        })
+        .then(() => {
             return this.getPosts(params.user.facebook.accessToken);
         })
         .then((posts) => {

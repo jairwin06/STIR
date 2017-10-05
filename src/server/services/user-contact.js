@@ -5,10 +5,11 @@ export default class UserContactService {
         this.app = app;
     }
     find(params) {
-        // Return just the status + role
+        // Return just the status + role + name
         return Promise.resolve({
             status: params.user.status,
-            role: params.user.role
+            role: params.user.role,
+            name: params.user.name
         });
     }
 

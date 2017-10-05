@@ -103,7 +103,9 @@
 
     validateCheck() {
         if (!this.state.auth.user.status.phoneValidated) {
-            this.state.sleeper.setAddAlarmStage('sign-up');
+            if (IS_CLIENT) {
+                page("/sign-up/contact")
+            }
         } else {
             this.state.sleeper.addAlarm();
         }

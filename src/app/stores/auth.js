@@ -96,6 +96,7 @@ export default class AuthStore extends Store {
                 console.log("User contact status", result);
                 this.user.status = result.status;
                 this.user.role = result.role;
+                this.user.name = result.name;
                 this.trigger("status_updated");
             }
 
@@ -130,17 +131,14 @@ export default class AuthStore extends Store {
     }
 
     async verifyCode(code) {
-        try {
-            console.log("Verify code ", code);
-            let result = await SocketUtil.rpc('user/contact::create',{code: code});
-            console.log("Verify result", result);
-            if (result.status == "success") {
-                this.user.status.phoneValidated = true;
-                this.trigger("user_code_verified");
-            }
-        } catch (e) {
-            console.log("Error verifying code", e);
+        console.log("Verify code ", code);
+        let result = await SocketUtil.rpc('user/contact::create',{code: code});
+        console.log("Verify result", result);
+        if (result.status == "success") {
+            this.user.status.phoneValidated = true;
+            this.trigger("user_code_verified");
         }
+        return result;
     }
 
     setSignUpStage(stage) {

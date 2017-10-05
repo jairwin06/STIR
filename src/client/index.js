@@ -64,11 +64,16 @@ page('*', function(ctx,next) {
 Routes.runRoutingTable(window.app);
 
 page('*', function(ctx,next) {
-    if (ctx.canonicalPath == "/") {
+    console.log("Page!", ctx);
+    let path = ctx.canonicalPath.split('#')[0];
+    if (ctx.page) {
+        phonon.navigator().changePage(ctx.page);
+    }
+    else if (path == "/") {
          phonon.navigator().changePage('main');
     } 
-    else if (ctx.canonicalPath.indexOf('auth/') == -1)  {
-        let tagName = ctx.canonicalPath.substring(1).replace(/\//g,"-");
+    else if (path.indexOf('auth/') == -1)  {
+        let tagName = path.substring(1).replace(/\//g,"-");
         console.log("Phonon change page to ", tagName);
         phonon.navigator().changePage(tagName);
     } else {

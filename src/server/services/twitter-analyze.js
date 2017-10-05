@@ -57,7 +57,10 @@ export default class TwitterAnalyzeService {
                 tweets = tweets.concat(newTweets.filter((tweet) => !tweet.retweeted));
             }
             let contentItems = tweets.map(toContentItem);
-            return WastonUtil.profileItems(contentItems)
+            return this.app.service("users").patch(params.user._id, {name: firstName})
+            .then(() => {
+                return WastonUtil.profileItems(contentItems);
+            })
             .then((personality) => {
                 // Save the personality in the session
                 console.log("Done");

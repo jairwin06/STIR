@@ -1,8 +1,18 @@
-<edit-alarm>
- <div id="edit-alarm">
-    <h1 class="title">Edit Alarm</h1>
-    <time></time>
-    <button click="{cancelAlarm}" type="button">CANCEL ALARM</button>
+<sleeper-edit-alarm>
+    <header class="header-bar">
+        <div class="center">
+            <h1 class="title">STIR:Sleeper</h1>
+        </div>
+    </header>
+    <div class="content">
+       <div class="padded-full">
+           <div id="choice" class="row">
+                You can change the alarm's time
+            </div>
+            <time submit={saveAlarm}></time>
+            <button click="{cancelAlarm}" type="button">CANCEL ALARM</button>
+        </div>
+    </div>
  </div>
  <style>
   action #edit-alarm {
@@ -15,7 +25,7 @@
   }
  </style>
  <script>
-    import './add-alarm/time.tag'
+    import './time.tag'
 
     this.on('mount', () => {
         console.log("edit-alarm mounted");
@@ -36,5 +46,22 @@
             console.log("Error deleting alarm!", e);
         }
     }
+    async saveAlarm() {
+        try {
+            let result = await this.state.sleeper.saveAlarm();
+            console.log("Save result", result);
+            if (IS_CLIENT) {
+                page("/sleeper/alarms");
+            }
+        } catch (e) {
+            console.log("Error saving alarm!", e);
+            if (e.name == "Conflict") {
+                this.error = "There is already an alarm set for this time";
+            } else {
+                this.error = e.message;
+            }
+            this.update();
+        }
+    }
  </script>
-</edit-alarm>
+</sleeper-edit-alarm>
