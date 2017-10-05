@@ -32,17 +32,11 @@ action #edit-alarm h1 {
 action #edit-alarm button {
   color: red; }
 
-#sleeper h1 {
-  color: yellow; }
-
 main #sign-up h1 {
   color: green; }
 
 #rouser #alarm h1 {
   color: yellow; }
-
-#sleeper alarms add-alarm h1 {
-  color: green; }
 
 stage[data-is="personality"] .title {
   font-size: 30px; }

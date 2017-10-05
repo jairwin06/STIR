@@ -41,7 +41,13 @@
 
     <script>
         import { mount } from 'riot'
-        import './sleeper/index.tag'
+
+        import './sleeper/add-alarm/add-time.tag'
+        import './sleeper/add-alarm/personality.tag'
+        import './sleeper/clock.tag'
+        import './sleeper/edit-alarm.tag'
+    
+
         import './rouser/index.tag'
         import './admin/index.tag'
 

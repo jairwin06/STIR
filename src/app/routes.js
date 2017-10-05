@@ -22,8 +22,6 @@ class Routes {
         }
     }
 
-
-    // TODO: Router based tags? 
     // TODO: Webpack lazy loading?
 
     runRoutingTable(app,appState) {
@@ -65,8 +63,16 @@ class Routes {
         app.route('/rouser*').get((req, res, next) => {
             console.log("Rouser route");
             req.appState.main.setRole("rouser");
-            this.populate(req, 'auth', 'getStatus');
-            this.next(next, req, res);
+
+            if (IS_CLIENT) {
+                if (req.appState.auth.user.status && !req.appState.auth.user.status.phoneValidated && !req.appState.auth.mturk) {
+                    page.show("/sign-up/contact");
+                }
+                this.next(next, req, res);
+            } else {
+                this.populate(req, 'auth', 'getStatus');
+                this.next(next, req, res);
+            }
         });
 
         app.route('/rouser/alarms').get((req, res, next) => {
