@@ -116,6 +116,7 @@ class Routes {
         app.route('/rouser/alarm/:id/mturk').get((req, res, next) => {
             console.log("Rouser alarm mturk route");
             req.appState.rouser.setRecordStage('mturk');
+            req.page = "rouser-alarm-mturk";
             this.go(next, req, res);
         });
 

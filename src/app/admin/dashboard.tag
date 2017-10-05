@@ -5,7 +5,7 @@
         </div>
   </header>
   <div class="content">
-     <div class="padded-full">
+     <div class="padded-full" show="{state.admin.alarms != null}">
          <table class="table">
             <thead>
                 <th>Name</th>
@@ -27,6 +27,9 @@
             </tbody>
         </table>
      </div>
+      <div show="{ state.admin.alarms == null || loading }" class="circle-progress center active">
+        <div class="spinner"></div>
+     </div>
       <b show"{error}" class="error">{error}</b>
   </div>
 
@@ -45,7 +48,10 @@
     async mturk(e) {
         console.log("Send to MTurk!", e.item);
         try {
+            this.loading = true;
+            this.update();
             let result = await this.state.admin.assignMTurk(e.item);
+            this.loading = false;
             console.log("Result: ", result);
             e.item.mturk = result.mturk;
             this.update();
@@ -53,6 +59,7 @@
         catch (err) {
             console.log("MTurk error", err);
             this.error = err.message;
+            this.loading = false;
             this.update();
         }
     }

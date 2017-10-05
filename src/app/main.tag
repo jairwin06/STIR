@@ -73,15 +73,6 @@
 
         roleUpdated(role) {
             console.log("Main role updated!", role);
-            if (role) {
-                //this.roleTag = mount(document.getElementsByTagName('role'), this.state.main.role)[0];
-                //this.roleTag = mount(this.refs.role, role)[0];
-            }
-            else if (this.roleTag) {
-             //   this.roleTag.unmount(true);
-            }
-
-            this.update();
         }
     </script>
 </main>

@@ -1,35 +1,43 @@
-<mturk>
- <h1 class="title">MTurk - Record a message</h1>
-  <div id="prompt">
-  <p>
-  {state.rouser.currentAlarm.prompt}
-  </p>
-  </div>
-  <div show="{!done}">
+<rouser-alarm-mturk>
+<header class="header-bar">
+    <div class="pull-left">
+        <h1 class="title">STIR - MTurk</h1>
+    </div>
+</header>
+<div class="content">
+  <div class="padded-full">
       <p>
-        <button show="{ready && !recording}" click="{startRecording}">Start Recording</button>
-        <img show="{recording}" src="/images/recording.gif"></img>
-        <button show="{ready && recording}" click="{stopRecording}">Stop Recording</button>
+      {state.rouser.currentAlarm.prompt}
       </p>
-      <img show="{loading}" src="/images/loading.gif"></img>
-       <b show"{error}" class="error">{error}</b>
-       <p show="{previewing}">
-            <audio ref="preview" controls="controls">
-            </audio>
-       </p>
-       <button show="{previewing}" click="{submitRecording}">Submit Recording</button>
-       <span show="{loading}">{progress}</span>
+      <div show="{!done}">
+          <p>
+            <button show="{ready && !recording}" click="{startRecording}">
+            {previewing ? 'Record again' : 'Start Recording'}
+            </button>
+            <img show="{recording}" src="/images/recording.gif"></img>
+            <button show="{ready && recording}" click="{stopRecording}">Stop Recording</button>
+          </p>
+          <img show="{loading}" src="/images/loading.gif"></img>
+           <b show"{error}" class="error">{error}</b>
+           <p show="{previewing}">
+                <audio ref="preview" controls="controls">
+                </audio>
+           </p>
+           <button show="{previewing}" click="{submitRecording}">Submit Recording</button>
+           <span show="{loading}">{progress}</span>
+      </div>
+      <div show="{done}">
+        Thank you! Submitting HIT
+          <form ref="form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
+            <input name="assignmentId" type="hidden" ref="assignmentId">
+            <input name="recordingPath" type="hidden" ref="recordingPath">
+            <input name="prompt" type="hidden" ref="prompt">
+            <button type="submit">Submit</button>
+          </form>
+      </div>
   </div>
-  <div show="{done}">
-    Thank you! Click the button to submit the HIT for review.
-  <form ref="form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
-    <input name="assignmentId" type="hidden" ref="assignmentId">
-    <input name="recordingPath" type="hidden" ref="recordingPath">
-    <input name="prompt" type="hidden" ref="prompt">
-    <button type="submit">Submit</button>
-  </form>
+</div>
 
-  </div>
  <style>
 
  </style>
@@ -125,4 +133,4 @@
     this.on('unmount', () => {
     });
  </script>
-</mturk>
+</rouser-alarm-mturk>
