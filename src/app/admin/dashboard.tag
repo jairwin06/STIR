@@ -1,34 +1,36 @@
-<dashboard>
- <section id="admin-dashboard">
-     <h1 class="title">Dashboard</h1>
-     <table>
-        <thead>
-            <th>Name</th>
-            <th>Time</th>
-            <th>Assigned to</th>
-            <th>Turk it</th>
-        </thead>
-        <tbody>
-            <tr each={ state.admin.alarms }>
-                <td>{name}</td>
-                <td>{time}</td>
-                <td>{mturk? "MTURK" : assignedTo}</td>
-                <td><button click={parent.mturk}>Turk it</button></td>
-            </tr>
-        </tbody>
-    </table>
-    <b show"{error}" class="error">{error}</b>
- </section>
+<admin-dashboard>
+  <header class="header-bar">
+        <div class="pull-left">
+            <h1 class="title">STIR - Admin</h1>
+        </div>
+  </header>
+  <div class="content">
+     <div class="padded-full">
+         <table class="table">
+            <thead>
+                <th>Name</th>
+                <th>Time</th>
+                <th>Assigned to</th>
+                <th>Recorded</th>
+                <th>Delivered</th>
+                <th>Turk it</th>
+            </thead>
+            <tbody>
+                <tr each={ state.admin.alarms }>
+                    <td>{name}</td>
+                    <td>{time}</td>
+                    <td>{mturk? "MTURK" : assignedTo}</td>
+                    <td>{recording.finalized}</td>
+                    <td>{delivered}</td>
+                    <td><button click={parent.mturk}>Turk it</button></td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+      <b show"{error}" class="error">{error}</b>
+  </div>
 
  <style>
-  #admin #admin-dashboard  {
-    h1 {
-     color: black;
-    }
-    table, th, td {
-       border: 1px solid black;
-    }
-  }
  </style>
  <script>
     this.on('mount', () => {
@@ -60,4 +62,4 @@
     }
 
  </script>
-</dashboard>
+</admin-dashboard>

@@ -5,17 +5,8 @@ main #choice {
   margin-top: 50px;
   margin-bottom: 20px; }
 
-#admin #admin-dashboard h1 {
-  color: black; }
-
-#admin #admin-dashboard table, #admin #admin-dashboard th, #admin #admin-dashboard td {
-  border: 1px solid black; }
-
 #admin h1 {
   color: turquoise; }
-
-#admin login h1 {
-  color: blue; }
 
 #rouser #alarm-queue h1 {
   color: purple; }

@@ -50,7 +50,6 @@
         } else {
             page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
         }
-
     }
  </script>
 </alarm>

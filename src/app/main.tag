@@ -53,7 +53,11 @@
         import './rouser/alarm/record.tag'
         import './rouser/alarm/mturk.tag'
 
-        import './admin/index.tag'
+        import './common/sign-up/contact.tag'
+        import './common/sign-up/verify.tag'
+
+        import './admin/login.tag'
+        import './admin/dashboard.tag'
 
         this.on('mount', () => {
             console.log("Main mounted");

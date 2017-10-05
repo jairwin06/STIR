@@ -256,7 +256,7 @@ app.service('/alarms/admin').hooks({
   },
   after: {
     find: [
-      pluck('_id', 'createdAt','time', 'name', 'assignedTo', 'mturk')
+      pluck('_id', 'createdAt','time', 'name', 'recording.finalized', 'delivered', 'assignedTo', 'mturk')
     ]
   }
 });
@@ -305,7 +305,7 @@ app.use(async function (req, res, next) {
     }
 });
 
-// app.use(errorHandler());
+app.use(errorHandler());
 
 
 console.log("Starting server");

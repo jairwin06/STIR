@@ -122,8 +122,23 @@ class Routes {
         app.route('/admin*').get((req, res, next) => {
             console.log("admin route");
             req.appState.main.setRole("admin");
-            this.populate(req, 'auth', 'getStatus');
-            this.next(next, req, res);
+            if (IS_CLIENT){
+                if(req.appState.auth.user.role != "admin") {
+                    if (req.appState.admin.action != "login") {
+                        req.appState.admin.setAction("login");
+                        page("/admin/login");            
+                    }
+                }
+                else {
+                    if (req.appState.admin.action != "dashboard") {
+                        req.appState.admin.setAction("dashboard");
+                        page("/admin/dashboard");            
+                    }
+                }
+            } else {
+                this.populate(req, 'auth', 'getStatus');
+            }
+            this.go(next, req, res);
         });
         app.route('/admin/login').get((req, res, next) => {
             console.log("admin login route");
