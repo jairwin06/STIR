@@ -2,7 +2,7 @@
     <!--role ref="role"></role-->
     <div if="{!state.main.role}">
             <header class="header-bar">
-                <div class="center">
+                <div class="pull-left">
                     <h1 class="title">STIR</h1>
                 </div>
             </header>
@@ -48,7 +48,11 @@
         import './sleeper/edit-alarm.tag'
     
 
-        import './rouser/index.tag'
+        import './rouser/alarms.tag'
+        import './rouser/alarm/mix.tag'
+        import './rouser/alarm/record.tag'
+        import './rouser/alarm/mturk.tag'
+
         import './admin/index.tag'
 
         this.on('mount', () => {

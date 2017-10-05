@@ -1,5 +1,14 @@
-<mix>
-    <h1 class="title">Mix your recording</h1>
+<rouser-alarm-mix>
+<header class="header-bar">
+    <div class="pull-left">
+        <h1 class="title">STIR - Rouser</h1>
+    </div>
+</header>
+<div class="content">
+   <div id="prompt" class="row">
+      Preview your wake-up message
+   </div>
+   <div>
     <p>
         <audio controls="controls">
             <source src={state.rouser.recording.mixUrl} type="audio/wav">
@@ -7,13 +16,15 @@
     </p>
     <button type="button" click="{recordAgain}">Retry the recording</button>
     <p>
-    <form onsubmit="{finalize}">
+    <form action="" onsubmit="{finalize}">
        <input type="submit" value="Finalize rouse">
     </p>
-  </form>
+    </form>
+    </div>
+</div>
 
-    <style>
-    </style>
+<style>
+</style>
     <script>
         this.on('mount', () => {
             console.log("alarm mix mounted");
@@ -47,5 +58,5 @@
             }
         }
     </script>
-</mix>
+</rouser-alarm-mix>
 

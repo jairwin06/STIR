@@ -1,7 +1,7 @@
 <sleeper-edit-alarm>
     <header class="header-bar">
-        <div class="center">
-            <h1 class="title">STIR:Sleeper</h1>
+        <div class="pull-left">
+            <h1 class="title">STIR - Sleeper</h1>
         </div>
     </header>
     <div class="content">

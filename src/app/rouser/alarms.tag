@@ -1,7 +1,7 @@
 <rouser-alarms>
 <header class="header-bar">
-    <div class="center">
-        <h1 class="title">STIR:Rouser</h1>
+    <div class="pull-left">
+        <h1 class="title">STIR - Rouser</h1>
     </div>
 </header>
 <div class="content">
@@ -11,7 +11,7 @@
             </div>
             <ul>
                 <li each={ state.rouser.alarms }>
-                    <a href="/rouser/alarm/{_id}">{name}</a>
+                    <a href="/rouser/alarm/{_id}/record">{name}</a>
                 </li>
             </ul>
             <p show="{state.rouser.alarms && state.rouser.alarms.length == 0}">No alarms in queue</p>

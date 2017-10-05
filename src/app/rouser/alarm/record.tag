@@ -1,20 +1,26 @@
-<record>
- <h1 class="title">Record a message</h1>
-  <div id="prompt">
-  <p>
-  {state.rouser.currentAlarm.prompt}
-  </p>
-  </div>
-  <form onsubmit="{requestCall}">
+<rouser-alarm-record>
+<header class="header-bar">
+    <div class="pull-left">
+        <h1 class="title">STIR - Rouser</h1>
+    </div>
+</header>
+<div class="content">
+   <div id="prompt" class="row">
+      {state.rouser.currentAlarm.prompt}
+   </div>
+   <form action="" onsubmit="{requestCall}">
     <p>
         <b>Press the button to receive the call</b>
     </p>
     <input type="submit" value="Receive Call">
-  </form>
-  <img show="{loading}" src="/images/loading.gif">
- <b show"{error}" class="error">{error}</b>
+    </form>
+    <img show="{loading}" src="/images/loading.gif">
+    <b show"{error}" class="error">{error}</b>
+</div>
+
  <style>
  </style>
+
  <script>
     this.on('mount', () => {
         console.log("alarm record mounted");
@@ -54,4 +60,4 @@
         }
     }
  </script>
-</record>
+</rouser-alarm-record>

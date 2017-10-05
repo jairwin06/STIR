@@ -78,7 +78,7 @@ const app = feathers()
 
 // Services
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/stir', {useMongoClient: true});
+mongoose.connect(process.env['MONGO_CONNECTION'], {useMongoClient: true});
 
 app
 .use('/users', service({Model: UserModel}))
@@ -207,8 +207,9 @@ app.service('/alarms/rouser').hooks({
         ],
         get: [
           (hook) => {
-            if (hook.params.query && hook.params.query.mturk) {
+            if (hook.params.query && hook.params.query.mturk && hook.params.query.mturk.assignmentId) {
                 // Bypass authentication with mturk
+                console.log("Bypassing authentication!");
                 return hook;
             }
             else {

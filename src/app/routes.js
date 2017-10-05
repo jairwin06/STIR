@@ -68,11 +68,10 @@ class Routes {
                 if (req.appState.auth.user.status && !req.appState.auth.user.status.phoneValidated && !req.appState.auth.mturk) {
                     page.show("/sign-up/contact");
                 }
-                this.next(next, req, res);
             } else {
                 this.populate(req, 'auth', 'getStatus');
-                this.next(next, req, res);
             }
+            this.next(next, req, res);
         });
 
         app.route('/rouser/alarms').get((req, res, next) => {
@@ -99,17 +98,19 @@ class Routes {
                 req.appState.auth.mturk = req.query;
             }
             this.populate(req, 'rouser', 'chooseAlarm', req.params.id, req.query) 
-            this.go(next, req, res);
+            this.next(next, req, res);
         });
 
         app.route('/rouser/alarm/:id/record').get((req, res, next) => {
             console.log("Rouser alarm record route");
             req.appState.rouser.setRecordStage('record');
+            req.page = "rouser-alarm-record";
             this.go(next, req, res);
         });
         app.route('/rouser/alarm/:id/mix').get((req, res, next) => {
             console.log("Rouser alarm mix route");
             req.appState.rouser.setRecordStage('mix');
+            req.page = "rouser-alarm-mix";
             this.go(next, req, res);
         });
         app.route('/rouser/alarm/:id/mturk').get((req, res, next) => {
