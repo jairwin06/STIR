@@ -76,8 +76,13 @@ export default class TwitterAnalyzeService {
             });
         }
         catch(err) {
+            console.log("Twitter analyzer error!", err);
             Session.setFor(params.user._id, {state: {pendingTwitter: false}});
-            return Promise.reject(err);
+            if (Array.isArray(err)) {
+                return Promise.reject(err[0]);
+            } else {
+                return Promise.reject(err);                
+            }
         }
     }
 

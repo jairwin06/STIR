@@ -24,6 +24,12 @@
         console.log("add-alarm-time mounted.");
     });
 
+    this.on('ready', () => {
+        if (this.state.sleeper.currentAlarm == null) {
+            this.state.sleeper.currentAlarm = {};
+        }
+    })
+
     this.on('unmount', () => {
         console.log("add-alarm-time unmounted");
     });

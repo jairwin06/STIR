@@ -42,7 +42,7 @@ export default class AlarmManager {
             while(this.nextAlarms.length > 0) {
                 let activeAlarm = this.nextAlarms.pop();;
                 console.log("Time to wake up " + activeAlarm.name);
-                this.activateAlarm(activeAlarm);
+                this.activateAlarm(activeAlarm._id);
                 // One retry after a minute
                 setTimeout(() => {
                     this.retryAlarm(activeAlarm.userId);
@@ -52,10 +52,19 @@ export default class AlarmManager {
             this.popAlarm();
         }
     }
-    activateAlarm(alarm) {
-        // Get the user
-        User.findOne({
-          _id: alarm.userId  
+    activateAlarm(alarmId) {
+        // Get the alarm
+        let alarm;
+
+        Alarm.findOne({
+            _id: alarmId
+        })
+        .then((result) => {
+            alarm = result;
+            // Get the user
+            return User.findOne({
+              _id: alarm.userId  
+            })
         })
         .then((user) => {
             Session.setFor(user._id, {pendingAlarm : alarm});

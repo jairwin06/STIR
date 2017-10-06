@@ -140,6 +140,9 @@ export default class SleeperStore extends Store {
             this.pendingTwitter = false;
         } catch(e) {
             this.analysisStatus = {status: "error", message: e.message};
+            if (e.code) {
+                this.analysisStatus.code = e.code;
+            }
             this.trigger('analysis_status_updated');
             console.log("Error analyzing twitter", e);
             this.pendingTwitter = false;

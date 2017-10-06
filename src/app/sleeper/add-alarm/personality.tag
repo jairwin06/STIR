@@ -66,17 +66,6 @@
         this.state.sleeper.off('alarm_created', this.onAlarmCreated);
     });
 
-    analyzeFacebook(e) {
-        e.preventDefault();
-        console.log("Logging in to facebook");
-        this.loading = true;
-        this.state.facebook.login()
-        .then(() => {
-            console.log("Connecteed");
-            return this.state.sleeper.analyzeFacebook();
-        })
-    }
-
     analysisStatusUpdated() {
         this.loading = false;
         console.log("analysis status", this.state.sleeper.analysisStatus);
@@ -87,7 +76,16 @@
             this.state.sleeper.currentAlarm.name = this.state.sleeper.analysisStatus.userName;
             this.validateCheck();
         } else {
-            this.error = this.state.sleeper.analysisStatus.message;        
+            let errorText;
+            if (this.state.sleeper.analysisStatus.code == 130) {
+                errorText = "The twitter servers are currently over capacity, please try again in a few minutes!"
+            } else {
+                errorText = "We have encountred the following error: " + this.state.sleeper.analysisStatus.message + ". Please inform our developers!";
+                if (this.state.sleeper.analysisStatus.code) {
+                    errorText += ' (Code ' + this.state.sleeper.analysisStatus.code + ')';
+                }
+            }
+            phonon.alert(errorText, "Something went wrong", false, "Ok");
         }
         this.update();
     }
