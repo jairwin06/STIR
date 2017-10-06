@@ -1,4 +1,6 @@
 import AuthSettings from '../auth-settings'
+import geoip from 'geoip-lite'
+import {countries} from 'country-data'
 
 export function authHook(hook) {
     return new Promise((resolve, reject) => {
@@ -8,6 +10,7 @@ export function authHook(hook) {
                 resolve(hook);
             }
             else {
+                console.log("IP?", hook.params.ip);
                 let accessToken = null;
                 let mturk = hook.data.mturk || null;
 
@@ -21,7 +24,7 @@ export function authHook(hook) {
                 if (!accessToken) {
                     if (hook.params.provider == "rest") {
                         console.log("No token! creating user");
-                        createNewUser(hook.app, mturk)
+                        createNewUser(hook.app, mturk, hook.params.ip)
                         .then((accessToken) => {
                             hook.params.headers.authorization = accessToken;
                             resolve(hook);
@@ -35,7 +38,7 @@ export function authHook(hook) {
                     })
                     .catch ((error) => {
                         console.log("Error getting user", error.message,"Creating a new one");
-                        createNewUser(hook.app, mturk)
+                        createNewUser(hook.app, mturk, hook.params.ip)
                         .then((accessToken) => {
                             hook.data.accessToken = accessToken;
                             hook.params.headers.authorization = accessToken;
@@ -74,7 +77,7 @@ export function authMiddleware(req,res,next) {
         next();
     }
 }
-function createNewUser(app, mturk) {
+function createNewUser(app, mturk, ip) {
     let data = {};
     if (mturk) {
         console.log("Assigning mturk user to", mturk);                      
@@ -83,7 +86,23 @@ function createNewUser(app, mturk) {
             mturkAlarm: mturk
         }
     }
-    return app.service('users').create(data)
+    return Promise.resolve({})
+    .then(() => {
+        if (ip) {
+            // Get the country code
+            let geo = geoip.lookup(ip);
+            if (geo) {
+                data.countryCode = geo.country;
+                if (countries[geo.country]) {
+                    data.country = countries[geo.country].name;
+                }
+            }
+        }
+        return;
+    })
+    .then(() => {
+        return app.service('users').create(data)
+    })
     .then(function(user) {
       console.log("Creating JWT token");
       return app.passport.createJWT({userId: user._id}, AuthSettings);

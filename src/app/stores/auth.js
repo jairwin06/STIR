@@ -7,7 +7,6 @@ export default class AuthStore extends Store {
         super();
         console.log("Init AuthStore");
         this.user = {};
-        this.signUpStage = "contact";
 
         SocketUtil.on('socket_reconnect', () => {
             if (this.accessToken) {
@@ -93,10 +92,9 @@ export default class AuthStore extends Store {
                 console.log("Getting user status");
                 let result = await SocketUtil.rpc('user/contact::find', {accessToken: this.accessToken});
                 this.gettingStatus = false;
-                console.log("User contact status", result);
-                this.user.status = result.status;
-                this.user.role = result.role;
-                this.user.name = result.name;
+                Object.assign(this.user, result);
+                Object.assign(this.user.status, result.status);
+                console.log("User contact status", this.user);
                 this.trigger("status_updated");
             }
 

@@ -37,7 +37,6 @@ export default class AlarmManager {
         },1000);
     }
     tick() {
-        // TODO: Test this with 2 people at the same time
         if (this.nextAlarms.length > 0 && this.nextAlarms[0].time.getTime() <= new Date().getTime()) {
             while(this.nextAlarms.length > 0) {
                 let activeAlarm = this.nextAlarms.pop();;

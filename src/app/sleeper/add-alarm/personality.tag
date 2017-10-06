@@ -20,7 +20,7 @@
      <b show"{error}" class="error">{error}</b>
      <p>
       <span class="title">Or Opt-out and answer some questions</span>
-      <form onsubmit="{submitQuestions}">
+      <form action="" onsubmit="{submitQuestions}">
         Your name <input type="text" name="name" ref="name">
         <button type="submit">Submit</button>
       </form>

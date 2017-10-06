@@ -33,7 +33,8 @@
             this.phonePluginLoaded = false;
 
             let deferred = $("#phone").intlTelInput({
-                utilsScript: "/lib/intl-utils.js"
+                utilsScript: "/lib/intl-utils.js",
+                initialCountry: this.state.auth.user.countryCode || ""
             });
             deferred.done(() => {
                 this.onPhonePluginLoaded();
