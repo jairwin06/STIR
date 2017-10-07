@@ -9,7 +9,11 @@ import State from '../app/state'
 import 'nodent-runtime'
 import SocketUtil from '../app/util/socket'
 
-import 'phonon'
+// Phonon
+import 'phonon/dist/js/phonon-core'
+import 'phonon/dist/js/components/dialogs'
+import 'phonon/dist/js/components/forms'
+import 'phonon/dist/js/components/preloaders'
 
 console.log("Client loading!");
 
