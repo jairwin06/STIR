@@ -9,6 +9,10 @@ import State from '../app/state'
 import 'nodent-runtime'
 import SocketUtil from '../app/util/socket'
 
+import {IntlMixin} from 'riot-intl'
+import Messages from '../app/i18n/messages'
+import Formats from '../app/i18n/formats'
+
 // Phonon
 import 'phonon/dist/js/phonon-core'
 import 'phonon/dist/js/components/dialogs'
@@ -87,6 +91,13 @@ page('*', function(ctx,next) {
 
 console.log("Initial state", state);
 mixin({state: state}); // Global state mixin
+/* Locale */
+mixin(IntlMixin); 
+mixin({
+    locales: [state.auth.locale],
+    messages: Messages[state.auth.locale],
+    formats: Formats
+});
 
 page();
 phonon.navigator().start();

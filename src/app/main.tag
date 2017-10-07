@@ -10,7 +10,7 @@
                 <div>
                 </div>
                 <div id="choice" class="row text-center">
-                    What are you today?
+                    <formatted-message id='HOME_CHOICE'/>
                 </div>
                 <div class="row text-center">
                     <div class="phone-6 tablet-6 column">

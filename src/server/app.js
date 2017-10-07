@@ -51,6 +51,12 @@ import dispatchMTurkHook from './services/dispatch-mturk'
 
 import SocketUtil from '../app/util/socket'
 
+//import {IntlMixin} from '../app/riot-intl/src/main'
+import {IntlMixin} from 'riot-intl'
+
+import Messages from '../app/i18n/messages'
+import Formats from '../app/i18n/formats'
+
 
 global.fetch = require('node-fetch');
 global.io = require('socket.io-client');
@@ -74,6 +80,7 @@ const app = feathers()
 .use(bodyParser.urlencoded({ extended: true  }))
 .use(function(req, res, next) {
     req.feathers.ip = req.ip;
+    req.feathers.locale = req.locale = req.acceptsLanguages('en','fr','de') || 'en';
     next();
 })
 .use(session({ secret: AuthSettings.secret, resave: true, saveUninitialized: true  }));
@@ -277,6 +284,7 @@ app.use(function (req, res, next) {
         req.appState = new State();
         req.populateQueue = [];
         req.appState.auth.setAcessToken(req.accessToken);
+        req.appState.auth.locale = req.locale;
         next();
     } catch (e) {
         console.log("Error in middleware!", e);
@@ -298,6 +306,15 @@ app.use(async function (req, res, next) {
             }
             console.log("Render riot");
             mixin({state: req.appState}); // Global state mixin
+
+            /* Locale */
+            mixin(IntlMixin); 
+            mixin({
+                locales: [req.locale],
+                messages: Messages[req.locale],
+                formats: Formats
+            });
+
             res.render('index', {
               initialData: JSON.stringify(req.appState, (key,value) => {
                   return ((key == '_state' || key == 'debug') ? function() {} : value); 
