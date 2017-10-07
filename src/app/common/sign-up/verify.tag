@@ -10,7 +10,7 @@
                 Verify your phone number with a code
            </div>
            <form action="" onsubmit="{verifyCode}">
-                <input ref="code" type="text" pattern="\d\{4\}">
+                <input ref="code" type="number" min="1000" max="9999">
                 <input type="submit" value="Next">
            </form>
           <p>
