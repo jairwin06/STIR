@@ -84,8 +84,7 @@ export default class TwitterAnalyzeService {
             .then((result) => {
                 // Save the personality in the session
                 console.log("Done");
-                console.log(result);
-                return {status: "success", personality: result.personality};
+                return {status: "success", personality: result};
             })
         }
         catch(err) {

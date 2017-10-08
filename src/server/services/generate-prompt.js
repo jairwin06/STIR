@@ -32,7 +32,7 @@ const promptSyntax = {
 };
 
 export default function (hook) {
-    console.log("Generate prompt!", hook);
+    console.log("Generate prompt!");
 
     Session.setFor(hook.data.userId, {newAlarm: null});
     generatePrompt(hook.app, hook.result._id, hook.data.analysis, hook.params.user, 1);
@@ -57,11 +57,15 @@ function generatePrompt(app, alarmId, analysis,  user, tryNumber) {
             return null;
         }
     })
-    .then((personality) => {
-        if (personality) {
-            addPersonality(promptData, personality)
-            alarmData.debug = {
-                watson: JSON.stringify(personality)
+    .then((result) => {
+        if (result) {
+            if (result.status == "success") {
+                addPersonality(promptData, result.personality)
+                alarmData.debug = {
+                    watson: JSON.stringify(result.personality)
+                }
+            } else {
+                throw new Error(result.message);
             }
         }
         console.log("Final prompt syntax", promptData);
@@ -71,6 +75,7 @@ function generatePrompt(app, alarmId, analysis,  user, tryNumber) {
         return app.service('alarms/sleeper').patch(alarmId,alarmData);
     })
     .catch((err) => {
+        // TODO: Retry when twitter is not available, and any other error?
         console.log("Error generating prompt!", err);
     })
 }

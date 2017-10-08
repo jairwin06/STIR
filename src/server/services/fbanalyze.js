@@ -25,24 +25,29 @@ export default class FBAnalyzeService {
             return this.app.service("users").patch(params.user._id, {name: name})
         })
         .then(() => {
-            // TODO: This should run in background
-            return this.getPosts(params.user.facebook.accessToken);
+            Session.setFor(params.user._id, {state: {pendingFacebook: false}});
+            return {status: "success", userName: params.user.name};
         })
+        .catch((err) => {
+            Session.setFor(params.user._id, {state: {pendingFacebook: false}});
+            return Promise.reject(err);
+        });
+    }
+
+    analyze(user) {
+        return this.getPosts(user.facebook.accessToken)
         .then((posts) => {
             console.log("Analyzing")
             let oneLine = posts.join("\n");
             return WastonUtil.profileText(oneLine);
         })
-        .then((personality) => {
+        .then((result) => {
             // Save the personality in the session
             console.log("Done");
-            Session.setFor(params.user._id, {name: params.user.name, personality : personality});
-            Session.setFor(params.user._id, {state: {pendingFacebook: false}});
-            return Promise.resolve({status: "success", userName: params.user.name});
+            return {status: "success", personality: result};
         })
         .catch((err) => {
             console.log("Error in FBAnalyzerService", err);
-            Session.setFor(params.user._id, {state: {pendingFacebook: false}});
             return Promise.reject(err);
         });
     }
