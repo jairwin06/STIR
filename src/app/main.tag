@@ -15,12 +15,16 @@
                 <div class="row text-center">
                     <div class="phone-6 tablet-6 column">
                         <div class="padded-full btn primary">
-                            <a class="btn primary" href="/sleeper/alarms">Sleeper</a>
+                            <a class="btn primary" href="/sleeper/alarms">
+                            <formatted-message id='SLEEPER'/>
+                            </a>
                         </div>
                     </div>
                     <div class="phone-6 tablet-6 column">
                         <div class="padded-full btn primary">
-                            <a class="btn primary" href="/rouser/alarms">Rouser</a>
+                            <a class="btn primary" href="/rouser/alarms">
+                            <formatted-message id='ROUSER'/>
+                            </a>
                         </div>
                     </div>
                 </div>
