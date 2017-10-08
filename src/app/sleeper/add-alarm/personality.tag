@@ -41,54 +41,66 @@
      }
  </style>
  <script>
-    this.on('mount', () => {
+    this.on('mount', async () => {
         console.log("add-alarm-personality mounted");
         if (IS_CLIENT) {
-            // Did we just get the twitter credentials?
-            if (this.state.sleeper.pendingTwitter) {
-                console.log("Got twitter credentials! analyzing tweets")
-                this.state.sleeper.twitterAnalyze();
-                this.loading = true;
-                this.update();
-            } else if (this.state.sleeper.pendingFacebook){
-                this.state.sleeper.analyzeFacebook();
-                this.loading = true;
-                this.update();
+            try {
+                let analysisStatus = null;
+
+                // Did we just get the twitter credentials?
+                if (this.state.sleeper.pendingTwitter) {
+                    console.log("Got twitter credentials! analyzing tweets")
+                    this.loading = true;
+                    this.update();
+                    analysisStatus = await this.state.sleeper.twitterAnalyze();
+                    this.state.sleeper.currentAlarm.analysis = 'twitter';
+                } else if (this.state.sleeper.pendingFacebook){
+                    this.loading = true;
+                    this.update();
+                    analysisStatus = await this.state.sleeper.analyzeFacebook();
+                    this.state.sleeper.currentAlarm.analysis = 'facebook';
+                }
+
+                if (analysisStatus) {
+                    console.log("analysis status", analysisStatus);
+                    if (analysisStatus.status == "success") {
+                        if (!this.state.auth.user.name) {
+                            this.state.auth.setUserName(analysisStatus.userName);
+                        }
+                        this.state.sleeper.currentAlarm.name = analysisStatus.userName;
+                        this.validateCheck();
+                   } else {
+                        throw new Error(analysisStatus);
+                   }
+                }
+            }
+
+            catch (err) {
+                this.state.sleeper.pendingTwitter = false;
+                this.state.sleeper.pendingFacebook = false;
+                this.showError(analysisStatus);
             }
         }
 
-        this.state.sleeper.on('analysis_status_updated', this.analysisStatusUpdated);
         this.state.sleeper.on('alarm_created', this.onAlarmCreated);
     });
 
+    showError(err) {
+        let errorText;
+        if (err.code == 130) {
+            errorText = "The twitter servers are currently over capacity, please try again in a few minutes!"
+        } else {
+            errorText = "We have encountred the following error: " + err.message + ". Please inform our developers!";
+            if (err.code) {
+                errorText += ' (Code ' + err.code + ')';
+            }
+        }
+        phonon.alert(errorText, "Something went wrong", false, "Ok");
+    }
+
     this.on('unmount', () => {
-        this.state.sleeper.off('analysis_status_updated', this.analysisStatusUpdated);
         this.state.sleeper.off('alarm_created', this.onAlarmCreated);
     });
-
-    analysisStatusUpdated() {
-        this.loading = false;
-        console.log("analysis status", this.state.sleeper.analysisStatus);
-        if (this.state.sleeper.analysisStatus.status == "success") {
-            if (!this.state.auth.user.name) {
-                this.state.auth.setUserName(this.state.sleeper.analysisStatus.userName);
-            }
-            this.state.sleeper.currentAlarm.name = this.state.sleeper.analysisStatus.userName;
-            this.validateCheck();
-        } else {
-            let errorText;
-            if (this.state.sleeper.analysisStatus.code == 130) {
-                errorText = "The twitter servers are currently over capacity, please try again in a few minutes!"
-            } else {
-                errorText = "We have encountred the following error: " + this.state.sleeper.analysisStatus.message + ". Please inform our developers!";
-                if (this.state.sleeper.analysisStatus.code) {
-                    errorText += ' (Code ' + this.state.sleeper.analysisStatus.code + ')';
-                }
-            }
-            phonon.alert(errorText, "Something went wrong", false, "Ok");
-        }
-        this.update();
-    }
 
     submitQuestions(e) {
         e.preventDefault();

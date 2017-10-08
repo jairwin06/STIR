@@ -166,7 +166,6 @@ app.service('/alarms/sleeper').hooks({
     before: {
         create: [
           authHooks.associateCurrentUser(),
-          GeneratePrompt
         ],
         find: [
           authentication.hooks.authenticate(['jwt']),
@@ -181,6 +180,7 @@ app.service('/alarms/sleeper').hooks({
     },
     after: {
         create: [
+          GeneratePrompt,
           pluck('_id', 'time') 
         ],
         patch: [

@@ -16,8 +16,8 @@ import Formats from '../app/i18n/formats'
 // Phonon
 import 'phonon/dist/js/phonon-core'
 import 'phonon/dist/js/components/dialogs'
-import 'phonon/dist/js/components/forms'
 import 'phonon/dist/js/components/preloaders'
+import 'phonon/dist/js/components/forms'
 
 console.log("Client loading!");
 

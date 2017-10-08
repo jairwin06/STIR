@@ -156,6 +156,7 @@ export default class AlarmManager {
                     return Alarm.find({
                         assignedTo: null,
                         mturk: false,
+                        analyzed: true,
                         time: {$gt: new Date()}
                     }).select("_id").limit(alarmsToGo)
                     .then((newIds) => {
@@ -196,6 +197,7 @@ export default class AlarmManager {
         return Alarm.findOne({
             _id: id,
             'recording.finalized': false,
+            analyzed: true,
             time: {$gt: new Date()}
         }).select(FIELDS_TO_RETURN + " assignedTo mturk")
         .then((alarm) => {

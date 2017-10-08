@@ -112,40 +112,20 @@ export default class SleeperStore extends Store {
     }
 
     async analyzeFacebook() {
-        try {
-            console.log("Analyzing FB");
-            let result = await SocketUtil.rpc('fbanalyze::find', {
-                accessToken: this._state.auth.accessToken
-            });
-            console.log("FB Result", result);
-            this.analysisStatus = result;
-            this.trigger('analysis_status_updated');
-            this.pendingFacebook = false;
-        } catch(e) {
-            console.log("Error analyzing FB", e);
-            this.analysisStatus = {status: "error", message: e.message};
-            this.trigger('analysis_status_updated');
-            this.pendingFacebook = false;
-        }
+        console.log("Analyzing FB");
+        let result = await SocketUtil.rpc('fbanalyze::find', {
+            accessToken: this._state.auth.accessToken
+        });
+        console.log("FB Result", result);
+        return result;
     }
     async twitterAnalyze() {
-        try {
-            console.log("Analyzing Twitter");
-            let result = await SocketUtil.rpc('twitter-analyze::find', {
-                accessToken: this._state.auth.accessToken
-            });
-            console.log("Twitter result", result);
-            this.analysisStatus = result;
-            this.trigger('analysis_status_updated');
-            this.pendingTwitter = false;
-        } catch(e) {
-            this.analysisStatus = {status: "error", message: e.message};
-            if (e.code) {
-                this.analysisStatus.code = e.code;
-            }
-            this.trigger('analysis_status_updated');
-            console.log("Error analyzing twitter", e);
-            this.pendingTwitter = false;
-        }
+        console.log("Analyzing Twitter");
+        let result = await SocketUtil.rpc('twitter-analyze::find', {
+            accessToken: this._state.auth.accessToken
+        });
+        console.log("Twitter result", result);
+        this.pendingTwitter = false;
+        return result;
     }
 };

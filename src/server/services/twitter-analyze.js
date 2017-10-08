@@ -34,14 +34,36 @@ export default class TwitterAnalyzeService {
         console.log("Twitter Analyze service! params: ", params);
 
         try {
+            let firstName = params.user.twitter.profile.displayName.split(" ")[0];
+            Session.setFor(params.user._id, {state: {pendingTwitter: false}});
+            return this.app.service("users").patch(params.user._id, {name: firstName})
+            .then(() => {
+                return {status: "success", userName: firstName};
+            })
+            .catch((err) => {
+                throw err;
+            })
+        }
+        catch(err) {
+            console.log("Twitter connect error!", err);
+            Session.setFor(params.user._id, {state: {pendingTwitter: false}});
+            if (Array.isArray(err)) {
+                return Promise.reject(err[0]);
+            } else {
+                return Promise.reject(err);                
+            }
+        }
+    }
+
+    async analyze(user) {
+        try {
             let client = new Twitter({
               consumer_key: process.env['TWITTER_API_KEY'],
               consumer_secret: process.env['TWITTER_API_SECRET'],
-              access_token_key: params.user.twitter.accessToken,
-              access_token_secret: params.user.twitter.refreshToken
+              access_token_key: user.twitter.accessToken,
+              access_token_secret: user.twitter.refreshToken
             });
 
-            let firstName = params.user.twitter.profile.displayName.split(" ")[0];
 
             let tweets = [];
 
@@ -57,23 +79,14 @@ export default class TwitterAnalyzeService {
                 tweets = tweets.concat(newTweets.filter((tweet) => !tweet.retweeted));
             }
             let contentItems = tweets.map(toContentItem);
-            return this.app.service("users").patch(params.user._id, {name: firstName})
-            .then(() => {
-                return WastonUtil.profileItems(contentItems);
-            })
-            .then((personality) => {
+
+            return WastonUtil.profileItems(contentItems)
+            .then((result) => {
                 // Save the personality in the session
                 console.log("Done");
-                console.log(personality);
-                Session.setFor(params.user._id, {name: firstName, personality : personality});
-                Session.setFor(params.user._id, {state: {pendingTwitter: false}});
-                return Promise.resolve({status: "success", userName: firstName});
+                console.log(result);
+                return {status: "success", personality: result.personality};
             })
-            .catch((err) => {
-                console.log("Error in Twitter analyzerService", err);
-                Session.setFor(params.user._id, {state: {pendingTwitter: false}});
-                return Promise.reject(err);
-            });
         }
         catch(err) {
             console.log("Twitter analyzer error!", err);
