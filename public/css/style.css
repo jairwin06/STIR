@@ -34,7 +34,8 @@ sleeper-alarms .clock-desc {
   margin-top: 10px; }
 
 sleeper-alarms .alarm-time {
-  font-size: 28px; }
+  font-size: 28px;
+  margin-right: 5px; }
 
 sleeper-alarms .alarm-date {
   margin-top: 5px;
@@ -47,8 +48,32 @@ sleeper-alarms .alarm {
   margin-right: 20px;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+  -ms-flex-align: center;
+      align-items: center; }
+
+sleeper-alarms #alarm-container {
+  display: -ms-flexbox;
+  display: flex;
   -ms-flex-direction: column;
       flex-direction: column; }
+
+sleeper-alarms #alarm-time-group {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+  -ms-flex-align: baseline;
+      align-items: baseline;
+  color: #1474e0; }
+
+sleeper-alarms #cancel-alarm {
+  color: #ff6969;
+  position: absolute;
+  right: 15%; }
+  sleeper-alarms #cancel-alarm i {
+    font-size: 30px; }
 
 action #edit-alarm h1 {
   color: cyan; }

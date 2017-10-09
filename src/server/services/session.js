@@ -28,7 +28,8 @@ export default class SessionService {
                 return this.app.service("alarms/sleeper").find({
                     query: {
                         userId: params.user._id,
-                        time: data.newAlarm.time
+                        time: data.newAlarm.time,
+                        deleted: false
                     }
                 })
                 .then((result) => {

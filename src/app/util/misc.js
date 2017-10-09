@@ -35,9 +35,10 @@ class MiscUtil {
         }
         return null;
     }
-    getTimezone() {
-        let dtf = Intl.DateTimeFormat(this.locales[0], {timeZoneName: "short"});
-        return dtf.formatToParts(new Date())[6].value;
+    pad(num, size) {
+        let s = num+"";
+        while (s.length < size) s = "0" + s;
+        return s;
     }
 };
 

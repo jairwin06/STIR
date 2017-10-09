@@ -17,6 +17,18 @@ class TimeUtil {
         }
     }
 
+    getAlarmTime(timeInput) {
+        let timeComponents = timeInput.split(":");
+        let alarmTime = new Date(new Date().setHours(timeComponents[0],timeComponents[1],0));
+
+        if (alarmTime.getTime() < new Date().getTime()) {
+            console.log("Alarm will be set for tomorrow");
+            alarmTime.setDate(alarmTime.getDate() + 1);
+        }
+        alarmTime.setMilliseconds(0);
+        return alarmTime;
+    }
+
     getTimezone(locale) {
         let dtf = Intl.DateTimeFormat(locale, {timeZoneName: "short"});
         return dtf.formatToParts(new Date())[6].value;
