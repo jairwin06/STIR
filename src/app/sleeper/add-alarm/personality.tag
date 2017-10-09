@@ -104,6 +104,7 @@
 
     submitQuestions(e) {
         e.preventDefault();
+        this.state.sleeper.currentAlarm.analysis = 'questions';
         this.state.sleeper.currentAlarm.name = this.refs.name.value;
         if (!this.state.auth.user.name) {
             this.state.auth.setUserName(this.refs.name.value);

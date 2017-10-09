@@ -15,14 +15,40 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield !important; }
 
+.header-bar ~ .content {
+  margin-top: 62px; }
+
+.content {
+  padding: 10px; }
+
 #admin h1 {
   color: turquoise; }
 
 #rouser #alarm-queue h1 {
   color: purple; }
 
-#sleeper clock h1 {
-  color: red; }
+sleeper-alarms .welcome-back {
+  font-size: 28px; }
+
+sleeper-alarms .clock-desc {
+  margin-top: 10px; }
+
+sleeper-alarms .alarm-time {
+  font-size: 28px; }
+
+sleeper-alarms .alarm-date {
+  margin-top: 5px;
+  color: #ff5100; }
+
+sleeper-alarms .alarm {
+  background-color: #f9f9f9;
+  margin-top: 15px;
+  padding: 20px;
+  margin-right: 20px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
 
 action #edit-alarm h1 {
   color: cyan; }

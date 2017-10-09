@@ -6,14 +6,18 @@
 </header>
 <div class="content">
      <div show="{state.sleeper.alarms != null}">
-         <div>
-            Your current alarms:
+         <div class="welcome-back">
+            <formatted-message id="CLOCK_WELCOME" name="{state.auth.user.name}"/>            
          </div>
-         <ul>
-            <li each={ state.sleeper.alarms }>
-                <a href="/sleeper/alarm/{_id}"><b>{formatDate(time)}</b></a>
-            </li>
-        </ul>
+         <div class="clock-desc">
+            <formatted-message id="CLOCK_DESC"/>            
+         </div>
+          <article class="alarm" each={ state.sleeper.alarms } click="{changeTime}">
+            <formatted-time class="alarm-time" value="{new Date(time)}" format="short"/>
+            <span class="alarm-timezone">{TimeUtil.getTimezone(locales[0])}</span>
+            <formatted-message class="alarm-date" id="{TimeUtil.getDateMessageId(time)}" date="{new Date(time)}"/>            
+          </article>
+           <input ref="time" type="time" style="display:none;" change="{onTimeChange}" blur="{onTimeBlur}">
          <a href="/sleeper/alarms/add/time">Add an alarm</a>
      </div>
       <div show="{ state.sleeper.alarms == null }" class="circle-progress center active">
@@ -22,11 +26,29 @@
 </div>
 
  <style>
-  #sleeper clock {
-    h1 {
-     color: red;
-    }
-  }
+     sleeper-alarms {
+         .welcome-back {
+            font-size: 28px;
+         } 
+         .clock-desc {
+            margin-top: 10px;
+         }
+         .alarm-time {
+            font-size: 28px;
+         }
+         .alarm-date {
+            margin-top: 5px;
+            color: #ff5100;
+         }
+         .alarm {
+            background-color: #f9f9f9;
+            margin-top: 15px;
+            padding: 20px;
+            margin-right: 20px;
+            display: flex;
+            flex-direction: column;
+         }
+     }
  </style>
  <script>
     this.on('mount', () => {
@@ -46,9 +68,26 @@
         this.update();
     }
 
-    formatDate(time) {
-        let date = new Date(time);
-        return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    changeTime() {
+        console.log("Change time!");
+        $(this.refs.time).show().focus().click();
+        if (phonon.device.os == "iOS") {
+            $(this.refs.time).hide();
+        }
+    }
+
+    onTimeChange() {
+        if (phonon.device.os != "iOS") {
+            phonon.alert("Hi", "Time changed! " + phonon.device.os , false, "Ok");
+            $(this.refs.time).hide();
+        }
+    }
+
+    onTimeBlur() {
+        if (phonon.device.os == "iOS") {
+            phonon.alert("Hi", "Time blurred!" + phonon.device.platform, false, "Ok");
+            $(this.refs.time).hide();
+        }
     }
 
  </script>

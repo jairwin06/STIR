@@ -50,6 +50,7 @@ import patchAlarmHook from './services/patch-alarm'
 import dispatchMTurkHook from './services/dispatch-mturk'
 
 import SocketUtil from '../app/util/socket'
+import TimeUtil from '../app/util/time'
 
 //import {IntlMixin} from '../app/riot-intl/src/main'
 import {IntlMixin} from 'riot-intl'
@@ -170,7 +171,11 @@ app.service('/alarms/sleeper').hooks({
         find: [
           authentication.hooks.authenticate(['jwt']),
           authHooks.queryWithCurrentUser(),
-          (hook) => {hook.params.query.$select = ['id','time']; return hook}
+          (hook) => {
+              hook.params.query.$select = ['id','time']; 
+              hook.params.query.$sort = {time: 1};
+              return hook;
+          }
         ],
         patch: [
             authHooks.restrictToOwner({ ownerField: 'userId' }),
@@ -306,6 +311,7 @@ app.use(async function (req, res, next) {
             }
             console.log("Render riot");
             mixin({state: req.appState}); // Global state mixin
+            mixin({TimeUtil: TimeUtil}); 
 
             /* Locale */
             mixin(IntlMixin); 

@@ -8,10 +8,13 @@ import pageExpressMapper from 'page.js-express-mapper.js';
 import State from '../app/state'
 import 'nodent-runtime'
 import SocketUtil from '../app/util/socket'
+import TimeUtil from '../app/util/time'
 
+// i18n
 import {IntlMixin} from 'riot-intl'
 import Messages from '../app/i18n/messages'
 import Formats from '../app/i18n/formats'
+import 'riot-intl/dist/locale-data/fr'
 
 // Phonon
 import 'phonon/dist/js/phonon-core'
@@ -93,6 +96,7 @@ console.log("Initial state", state);
 mixin({state: state}); // Global state mixin
 /* Locale */
 mixin(IntlMixin); 
+mixin({TimeUtil: TimeUtil}); 
 mixin({
     locales: [state.auth.locale],
     messages: Messages[state.auth.locale],

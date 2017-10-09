@@ -51,6 +51,14 @@
         input[type="number"] {
             -moz-appearance: textfield !important;
         }
+
+        .header-bar ~ .content {
+            margin-top: 62px;
+        }
+
+        .content {
+            padding: 10px;
+        }
     </style>
 
     <script>

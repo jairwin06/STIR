@@ -1,24 +1,24 @@
 const Formats = {
     time: {
         "short": {
+            hour: "numeric",
             minute: "numeric",
-            second: "numeric"
         }
     },
     date: {
-        graphDay:{
-            day: 'numeric',
-            month: 'short'
-        },
-        graphMonth:{
-            month: 'short'
-        },
         short: {
             year: "2-digit",
             month: "2-digit",
             day: "2-digit"
+        },
+        full: {
+            weekday: 'long',
+            month  : 'long',
+            day    : 'numeric',
+            year   : 'numeric',
+            timeZoneName: 'short'
         }
-    }
+    },
 }
 
 export default Formats;
