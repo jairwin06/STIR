@@ -1,12 +1,36 @@
 import graph from 'fbgraph'
 import WastonUtil from '../util/watson'
 import Session from '../models/session-persistent'
+import translate from 'node-google-translate-skidz';
 
 const FB_APP_ID = process.env['FB_APP_ID'];
 const FB_APP_SECRET = process.env['FB_APP_SECRET'];
 
 const FB_APP_TOKEN = FB_APP_ID + '|' + FB_APP_SECRET;
 
+const MAX_POSTS = 1000;
+const MAX_POSTS_PER_FETCH = 200;
+
+
+const toTranslatedContentItem = async (post) => {
+  return {
+    id: post.id,
+    language: 'en', //tweet.lang,
+    contenttype: 'text/plain',
+    content: await toEnglish(post),
+    created: Date.parse(post.created_time),
+    reply: false
+  };
+};
+
+const toEnglish = async (post) => {
+    try {
+        let result = await translate({source: 'auto', text: post.message, target: 'en'});
+        return result.translation || "";
+    } catch(e) {
+        return "";
+    }
+};
 
 export default class FBAnalyzeService {
     setup(app) {
@@ -34,22 +58,39 @@ export default class FBAnalyzeService {
         });
     }
 
-    analyze(user) {
-        return this.getPosts(user.facebook.accessToken)
-        .then((posts) => {
-            console.log("Analyzing")
-            let oneLine = posts.join("\n");
-            return WastonUtil.profileText(oneLine);
-        })
-        .then((result) => {
-            // Save the personality in the session
-            console.log("Done");
-            return {status: "success", personality: result};
-        })
-        .catch((err) => {
+    async analyze(user) {
+        try {
+            let posts = [];
+
+            let newPosts = await this.getPosts(user.facebook.accessToken);
+            posts = posts.concat(newPosts.data.filter((post) => post.message));
+
+            while(newPosts.data.length > 1 && posts.length < MAX_POSTS) {
+                console.log("Received " + newPosts.data.length + " posts");
+                console.log("After filtering posts are now ", posts.length);
+                newPosts = await this.nextPage(newPosts.paging.next);
+                posts = posts.concat(newPosts.data.filter((post) => post.message));
+            }
+
+            let contentItems = posts.map(toTranslatedContentItem);
+            return Promise.all(contentItems)
+            .then((translatedItems) => {
+                return WastonUtil.profileItems(translatedItems)
+            })
+            .then((result) => {
+                // Save the personality in the session
+                console.log("Done");
+                return {status: "success", personality: result};
+            })
+            .catch((err) => {
+                console.log("Error in FBAnalyzerService", err);
+                return Promise.reject(err);
+            });
+        }
+        catch(err) {
             console.log("Error in FBAnalyzerService", err);
             return Promise.reject(err);
-        });
+        }
     }
 
     verifyToken(accessToken) {
@@ -68,24 +109,24 @@ export default class FBAnalyzeService {
 
     getPosts(accessToken) {
         return new Promise((resolve, reject) => {
-            console.log("Getting posts");
-            graph.get('me/posts', {limit: 1000, access_token: accessToken}, function(err, res) {
-                // TODO: Paging
-                let posts = [];
+            graph.get('me/posts', {limit: MAX_POSTS_PER_FETCH, access_token: accessToken}, function(err, res) {
                 if (err) {
                     console.log("Error getting feed!", err);
                     reject(new Error(err));
                 } else {
-                    if (res.data.length == 0) {
-                        reject(new Error("Could not get any posts"));
-                    } else {
-                        res.data.forEach((post) => {
-                            if (post.message) {
-                                posts.push(post.message);
-                            }
-                            resolve(posts);
-                        })
-                    }
+                    resolve({data: res.data, paging: res.paging});
+                }
+            });
+        });
+    }
+    nextPage(pageUrl) {
+        return new Promise((resolve, reject) => {
+            graph.get(pageUrl, function(err, res) {
+                if (err) {
+                    console.log("Error getting feed!", err);
+                    reject(new Error(err));
+                } else {
+                    resolve({data: res.data, paging: res.paging});
                 }
             });
         });

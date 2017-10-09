@@ -104,9 +104,7 @@ export default class TwitterAnalyzeService {
                 newTweets = await this.fetchTweets(client, maxId);
                 tweets = tweets.concat(newTweets.filter((tweet) => !tweet.retweeted));
             }
-            /*
-             * If using contact items
-             * */
+
             let contentItems = tweets.map(toTranslatedContentItem);
             return Promise.all(contentItems)
             .then((translatedItems) => {
