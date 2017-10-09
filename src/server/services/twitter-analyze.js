@@ -1,6 +1,7 @@
 import WastonUtil from '../util/watson'
 import Session from '../models/session-persistent'
 import Twitter from 'twitter'
+import translate from 'node-google-translate-skidz';
 
 const MAX_TWEETS = 1000;
 const MAX_TWEETS_PER_FETCH = 200;
@@ -23,6 +24,31 @@ const toContentItem = (tweet) => {
     reply: tweet.in_reply_to_screen_name != null
         //parentid: parentId(tweet)
   };
+};
+
+const toEnglish = async (tweet) => {
+    try {
+        let result = await translate({source: 'auto', text: tweet.text.replace('[^(\\x20-\\x7F)]*',''), target: 'en'});
+        return result.translation || "";
+    } catch(e) {
+        return "";
+    }
+};
+
+const toTranslatedContentItem = async (tweet) => {
+  return {
+    id: tweet.id_str,
+    language: 'en', //tweet.lang,
+    contenttype: 'text/plain',
+    content: await toEnglish(tweet),
+    created: Date.parse(tweet.created_at),
+    reply: tweet.in_reply_to_screen_name != null
+        //parentid: parentId(tweet)
+  };
+};
+
+const toJustText = (tweet) => {
+  return tweet.text.replace('[^(\\x20-\\x7F)]*','');
 };
 
 
@@ -78,14 +104,19 @@ export default class TwitterAnalyzeService {
                 newTweets = await this.fetchTweets(client, maxId);
                 tweets = tweets.concat(newTweets.filter((tweet) => !tweet.retweeted));
             }
-            let contentItems = tweets.map(toContentItem);
-
-            return WastonUtil.profileItems(contentItems)
+            /*
+             * If using contact items
+             * */
+            let contentItems = tweets.map(toTranslatedContentItem);
+            return Promise.all(contentItems)
+            .then((translatedItems) => {
+                return WastonUtil.profileItems(translatedItems)
+            })
             .then((result) => {
                 // Save the personality in the session
                 console.log("Done");
                 return {status: "success", personality: result};
-            })
+            }) 
         }
         catch(err) {
             console.log("Twitter analyzer error!", err);
