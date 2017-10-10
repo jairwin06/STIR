@@ -173,6 +173,7 @@ app.service('/alarms/sleeper').hooks({
           authHooks.queryWithCurrentUser(),
           (hook) => {
               hook.params.query.$select = ['id','time']; 
+              hook.params.query.time = {$gt: new Date()};
               hook.params.query.$sort = {time: 1};
               return hook;
           }
