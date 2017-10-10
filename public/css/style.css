@@ -21,6 +21,16 @@ input[type="number"] {
 .content {
   padding: 10px; }
 
+.popover {
+  width: 52px;
+  top: 43px !important;
+  border-radius: 10px;
+  background-color: rgba(118, 160, 243, 0.6); }
+  .popover .list li {
+    line-height: 40px;
+    height: auto;
+    min-height: 40px; }
+
 #admin h1 {
   color: turquoise; }
 

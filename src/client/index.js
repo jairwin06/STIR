@@ -21,6 +21,8 @@ import 'phonon/dist/js/phonon-core'
 import 'phonon/dist/js/components/dialogs'
 import 'phonon/dist/js/components/preloaders'
 import 'phonon/dist/js/components/forms'
+import 'phonon/dist/js/components/forms'
+import 'phonon/dist/js/components/popovers'
 
 console.log("Client loading!");
 
@@ -47,6 +49,28 @@ phonon.options({
 	// i18n: null if you do not want to use internationalization
 	i18n: null
 });
+
+let popover = phonon.popover('#lang-popover').onItemChanged(function (data) {
+        if (data.value != state.auth.locale) {
+            console.log("Language changed!", data)
+            state.auth.locale = data.value;
+            let mixinObj = mixin('i18n', null, true);            
+            mixinObj.i18n.messages = Messages[state.auth.locale];
+            mixinObj.i18n.locales = [state.auth.locale];
+            updateTag(phonon.navigator().currentPage);
+        }
+}) 
+
+function updateTag(name) {
+    let tags = phonon.tagManager.getAll();
+    let found = false;
+    for (let i = 0; i < tags.length && !found; i++) {
+        if(tags[i].tagName === name) {
+            tags[i].update();
+            found = true;
+        }
+    }
+}
 
 window.page = page;
 
@@ -95,13 +119,13 @@ page('*', function(ctx,next) {
 console.log("Initial state", state);
 mixin({state: state}); // Global state mixin
 /* Locale */
-mixin(IntlMixin); 
-mixin({TimeUtil: TimeUtil}); 
-mixin({
+IntlMixin.i18n = {
     locales: [state.auth.locale],
     messages: Messages[state.auth.locale],
     formats: Formats
-});
+}
+mixin('i18n', IntlMixin, true); 
+mixin('TimeUtil', {TimeUtil: TimeUtil}); 
 
 page();
 phonon.navigator().start();

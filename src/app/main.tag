@@ -5,6 +5,9 @@
                 <div class="pull-left">
                     <h1 class="title">STIR</h1>
                 </div>
+                <div class="pull-right">
+                    <span class="title arrow pull-right" data-popover-id="lang-popover">{state.auth.locale.toUpperCase()}</span>
+                </div>
             </header>
             <div class="content">
                 <div>
@@ -59,6 +62,18 @@
         .content {
             padding: 10px;
         }
+
+        .popover {
+            width: 52px;
+            top: 43px !important;
+            border-radius: 10px;
+            .list li {
+                line-height: 40px;
+                height: auto;
+                min-height: 40px;
+            }
+            background-color: rgba(118,160,243,0.6);
+        }
     </style>
 
     <script>
@@ -88,6 +103,10 @@
                this.state.auth.loginRest();
             }
         });
+
+        this.on('update', () => {
+            console.log("Main update");
+        })
 
         this.on('unmount', () => {
             this.state.main.off('main_role_updated', this.roleUpdated);

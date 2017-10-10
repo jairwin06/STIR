@@ -3,6 +3,9 @@
     <div class="pull-left">
         <h1 class="title">STIR - Sleeper</h1>
     </div>
+    <div class="pull-right">
+        <span class="title arrow pull-right" data-popover-id="lang-popover">{state.auth.locale.toUpperCase()}</span>
+    </div>
 </header>
 <div class="content">
      <div show="{state.sleeper.alarms != null}">
@@ -16,7 +19,7 @@
             <div id="alarm-container" click="{changeTime}">
                 <div id="alarm-time-group">
                     <formatted-time class="alarm-time" value="{new Date(time)}" format="short"/>
-                    <span class="alarm-timezone">{TimeUtil.getTimezone(locales[0])}</span>
+                    <span class="alarm-timezone">{TimeUtil.getTimezone(i18n.locales[0])}</span>
                 </div>
                 <formatted-message class="alarm-date" id="{TimeUtil.getDateMessageId(time)}" date="{new Date(time)}"/>            
             </div>
@@ -79,6 +82,8 @@
  </style>
  <script>
     import MiscUtil from '../util/misc'
+
+    this.mixin('TimeUtil');
 
     this.on('mount', () => {
         console.log("alarms mounted");
