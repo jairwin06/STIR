@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     phone: { type: String, index: { unique: true, sparse: true  }, required: false },
     country: String,
     countryCode: String,
+    locale: String,
     role: {type: String, default: "user"},
     password: String,
     status : {

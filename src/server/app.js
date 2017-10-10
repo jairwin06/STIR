@@ -309,6 +309,9 @@ app.use(async function (req, res, next) {
                 console.log("Runnint task", taskObj);
                 await req.appState[taskObj.store][taskObj.task].apply(req.appState[taskObj.store], taskObj.args);
             }
+            if (req.appState.auth.user.locale) {
+                req.appState.auth.locale = req.appState.auth.user.locale;
+            }
             console.log("Render riot");
             mixin({state: req.appState}); // Global state mixin
             mixin({TimeUtil: TimeUtil}); 
@@ -316,8 +319,8 @@ app.use(async function (req, res, next) {
             /* Locale */
             mixin(IntlMixin); 
             mixin({
-                locales: [req.locale],
-                messages: Messages[req.locale],
+                locales: [req.appState.auth.locale],
+                messages: Messages[req.appState.auth.locale],
                 formats: Formats
             });
 

@@ -5,14 +5,29 @@ export default class UserContactService {
         this.app = app;
     }
     find(params) {
-        // Return just the status + role + name + country/code
+        // Return just the status + role + name + country/code + locale
         return Promise.resolve({
             status: params.user.status,
             role: params.user.role,
             name: params.user.name,
             country: params.user.country,
-            countryCode: params.user.countryCode
+            countryCode: params.user.countryCode,
+            locale: params.user.locale
         });
+    }
+
+    patch(id,data,params) {
+        console.log("update user contact!", data,params);
+        // Only allow updating the locale
+        if (!data.locale) {
+            return Promise.reject("No locale data");
+        }
+        else return this.app.service("users").patch(params.user._id, {
+                locale: data.locale
+        })
+        .then(() => {
+            return Promise.resolve({status: 'success'})
+        })
     }
 
     create(data,params) {

@@ -74,7 +74,8 @@
                 this.update();
                 let result = await this.state.auth.setContact({
                     phone: phoneNumber,
-                    name:  this.state.auth.user.name
+                    name:  this.state.auth.user.name,
+                    locale: this.state.auth.locale
                 })
                 page("/sign-up/verify")
             }

@@ -54,6 +54,9 @@ let popover = phonon.popover('#lang-popover').onItemChanged(function (data) {
         if (data.value != state.auth.locale) {
             console.log("Language changed!", data)
             state.auth.locale = data.value;
+            state.auth.updateContact(
+                {locale: state.auth.locale}
+            );
             let mixinObj = mixin('i18n', null, true);            
             mixinObj.i18n.messages = Messages[state.auth.locale];
             mixinObj.i18n.locales = [state.auth.locale];

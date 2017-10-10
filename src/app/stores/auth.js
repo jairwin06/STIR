@@ -124,7 +124,14 @@ export default class AuthStore extends Store {
     async setContact(contact) {
         console.log("Set contact", contact);
         let result = await SocketUtil.rpc('user/contact::create',contact);
-        console.log("Rouser contact status", result);
+        console.log("user contact status", result);
+        return result;
+    }
+
+    async updateContact(contact) {
+        console.log("Set contact", contact);
+        let result = await SocketUtil.rpc('user/contact::patch',null,contact);
+        console.log("update contact status", result);
         return result;
     }
 
