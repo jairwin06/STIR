@@ -78,7 +78,7 @@
             catch (err) {
                 this.state.sleeper.pendingTwitter = false;
                 this.state.sleeper.pendingFacebook = false;
-                this.showError(analysisStatus);
+                this.showError(err.message);
             }
         }
 
@@ -102,14 +102,22 @@
         this.state.sleeper.off('alarm_created', this.onAlarmCreated);
     });
 
-    submitQuestions(e) {
+    async submitQuestions(e) {
         e.preventDefault();
-        this.state.sleeper.currentAlarm.analysis = 'questions';
-        this.state.sleeper.currentAlarm.name = this.refs.name.value;
-        if (!this.state.auth.user.name) {
-            this.state.auth.setUserName(this.refs.name.value);
+        try {
+            this.state.sleeper.currentAlarm.analysis = 'questions';
+            this.state.sleeper.currentAlarm.name = this.refs.name.value;
+            if (!this.state.auth.user.name) {
+                this.state.auth.setUserName(this.refs.name.value);
+            }
+            let analysisStatus = await this.state.sleeper.questionsAnalyze();
+            console.log("Analysis status", analysisStatus);
+
+            this.validateCheck();
+        
+        } catch (err) {
+            this.showError(err.message);
         }
-        this.validateCheck();
     }
 
     validateCheck() {

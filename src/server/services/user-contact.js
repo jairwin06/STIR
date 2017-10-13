@@ -19,12 +19,10 @@ export default class UserContactService {
     patch(id,data,params) {
         console.log("update user contact!", data,params);
         // Only allow updating the locale
-        if (!data.locale) {
+        if (!data.locale && !data.alarmLocales) {
             return Promise.reject("No locale data");
         }
-        else return this.app.service("users").patch(params.user._id, {
-                locale: data.locale
-        })
+        else return this.app.service("users").patch(params.user._id, data)
         .then(() => {
             return Promise.resolve({status: 'success'})
         })

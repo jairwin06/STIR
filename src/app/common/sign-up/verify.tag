@@ -34,14 +34,7 @@
             console.log("Verify code " + this.refs.code.value);
             let result = await this.state.auth.verifyCode(this.refs.code.value);
             if (result.status == "success") {
-                if (this.state.main.role == 'sleeper' && this.state.sleeper.currentAlarm) {
-                    await this.state.sleeper.addAlarm();
-                    page("/sleeper/alarms");
-                } else if (this.state.main.role == 'rouser') {
-                    page("/rouser/alarms");
-                } else {
-                    page("/");
-                }
+                page("/sign-up/locale");
             } else {
                 throw new Error("Internal error");
             }

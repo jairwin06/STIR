@@ -153,10 +153,12 @@ export default class AlarmManager {
                     let alarmIds;
 
                     console.log("Still need to find " + alarmsToGo + " more alarms");
+                    console.log("Capable languages ", params.user.alarmLocales);
                     return Alarm.find({
                         assignedTo: null,
                         mturk: false,
                         analyzed: true,
+                        locales: {$in: params.user.alarmLocales},
                         time: {$gt: new Date()}
                     }).select("_id").limit(alarmsToGo)
                     .then((newIds) => {

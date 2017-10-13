@@ -82,7 +82,6 @@
         import './sleeper/add-alarm/add-time.tag'
         import './sleeper/add-alarm/personality.tag'
         import './sleeper/clock.tag'
-        import './sleeper/edit-alarm.tag'
     
 
         import './rouser/alarms.tag'
@@ -92,6 +91,7 @@
 
         import './common/sign-up/contact.tag'
         import './common/sign-up/verify.tag'
+        import './common/sign-up/locale.tag'
 
         import './admin/login.tag'
         import './admin/dashboard.tag'

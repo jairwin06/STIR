@@ -37,21 +37,15 @@ input[type="number"] {
 #rouser #alarm-queue h1 {
   color: purple; }
 
-sleeper-alarms .welcome-back {
-  font-size: 28px; }
-
-sleeper-alarms .clock-desc {
-  margin-top: 10px; }
-
-sleeper-alarms .alarm-time {
+alarm-time .alarm-time {
   font-size: 28px;
   margin-right: 5px; }
 
-sleeper-alarms .alarm-date {
+alarm-time .alarm-date {
   margin-top: 5px;
   color: #ff5100; }
 
-sleeper-alarms .alarm {
+alarm-time .alarm {
   background-color: #f9f9f9;
   margin-top: 15px;
   padding: 20px;
@@ -63,13 +57,13 @@ sleeper-alarms .alarm {
   -ms-flex-align: center;
       align-items: center; }
 
-sleeper-alarms #alarm-container {
+alarm-time #alarm-container {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column; }
 
-sleeper-alarms #alarm-time-group {
+alarm-time #alarm-time-group {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
@@ -78,18 +72,21 @@ sleeper-alarms #alarm-time-group {
       align-items: baseline;
   color: #1474e0; }
 
-sleeper-alarms #cancel-alarm {
+alarm-time #cancel-alarm {
   color: #ff6969;
   position: absolute;
   right: 15%; }
-  sleeper-alarms #cancel-alarm i {
+  alarm-time #cancel-alarm i {
     font-size: 30px; }
 
-action #edit-alarm h1 {
-  color: cyan; }
+sleeper-alarms .welcome-back {
+  font-size: 28px; }
 
-action #edit-alarm button {
-  color: red; }
+sleeper-alarms .clock-desc {
+  margin-top: 10px; }
+
+sign-up-locale .description {
+  font-size: 18px; }
 
 #rouser #alarm h1 {
   color: yellow; }

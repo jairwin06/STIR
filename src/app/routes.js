@@ -90,7 +90,10 @@ class Routes {
             console.log("sign-up verify route");
             this.go(next, req, res);
         });
-
+        app.route('/sign-up/locale').get((req, res, next) => {
+            console.log("sign-up locale route");
+            this.go(next, req, res);
+        });
         app.route('/rouser/alarm/:id/:operation?').get((req, res, next) => {
             console.log("Rouser alarm route");
             req.appState.rouser.setAction("alarm");

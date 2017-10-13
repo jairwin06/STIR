@@ -37,6 +37,8 @@ import TwiMLService from './services/twiml'
 
 import FBAnalyzeService from './services/fbanalyze'
 import TwitterAnalyzeService from './services/twitter-analyze'
+import QuestionsAnalyzeService from './services/questions-analyze'
+
 import UserContactService from './services/user-contact'
 import RecordingsService from './services/recordings'
 import SessionService from './services/session'
@@ -101,6 +103,7 @@ app
 .use('/alarms/rouser', new AlarmManager())
 .use('/fbanalyze', new FBAnalyzeService())
 .use('/twitter-analyze', new TwitterAnalyzeService())
+.use('/questions-analyze', new QuestionsAnalyzeService())
 .use('/user/contact', new UserContactService())
 .use('/recordings',new RecordingsService())
 .use('/user/session',new SessionService());
@@ -167,6 +170,7 @@ app.service('/alarms/sleeper').hooks({
     before: {
         create: [
           authHooks.associateCurrentUser(),
+          (hook) => { hook.data.locales = hook.params.user.alarmLocales }
         ],
         find: [
           authentication.hooks.authenticate(['jwt']),
@@ -206,13 +210,17 @@ app.service('twitter-analyze').before({
   ]
 });
 
-app.service('/user/contact').before({
-  find: [
-    authentication.hooks.authenticate(['jwt']),
-    authHooks.queryWithCurrentUser()
-  ]
-});
-
+app.service('/user/contact').hooks({
+    before: {
+      find: [
+        authentication.hooks.authenticate(['jwt']),
+        authHooks.queryWithCurrentUser()
+      ],
+      patch: [
+        pluck('locale', 'alarmLocales')
+      ]
+    }
+})
 app.service('/user/session').before({
   find: [
     authentication.hooks.authenticate(['jwt'])
@@ -318,12 +326,12 @@ app.use(async function (req, res, next) {
             mixin({TimeUtil: TimeUtil}); 
 
             /* Locale */
-            mixin(IntlMixin); 
-            mixin({
+            IntlMixin.i18n = {
                 locales: [req.appState.auth.locale],
                 messages: Messages[req.appState.auth.locale],
                 formats: Formats
-            });
+            }
+            mixin(IntlMixin); 
 
             res.render('index', {
               initialData: JSON.stringify(req.appState, (key,value) => {

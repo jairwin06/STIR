@@ -12,6 +12,7 @@ const AlarmSchema = new mongoose.Schema({
     failed: {type: Boolean, default: false},
     deleted: {type: Boolean, default: false},
     mturk: {type: Boolean, default: false},
+    locales: [String],
     recording: {
         rouserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         recordingUrl: {type: String, default: null},

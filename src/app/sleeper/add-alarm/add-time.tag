@@ -9,7 +9,7 @@
            <div id="choice" class="row">
                 When would you like to wake up?
             </div>
-            <time submit={next}></time>
+            <time submit={saveProgress}></time>
           <p>
           <b show"{error}" class="error">{error}</b>
           </p>
@@ -18,7 +18,7 @@
  <style>
  </style>
  <script>
-    import '../time.tag'
+    import '../alarm-time.tag'
 
     this.on('mount', () => {
         console.log("add-alarm-time mounted.");
@@ -34,8 +34,9 @@
         console.log("add-alarm-time unmounted");
     });
 
-    async next() {
+    async saveProgress() {
         try {
+            console.log("Saving progress");
             await this.state.sleeper.saveProgress();
             page("/sleeper/alarms/add/personality")
         } catch (e) {
