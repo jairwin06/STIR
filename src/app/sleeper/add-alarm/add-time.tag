@@ -6,33 +6,64 @@
     </header>
   <div class="content">
       <div class="padded-full">
-           <div id="choice" class="row">
+           <div class="description row">
                 When would you like to wake up?
             </div>
-            <time submit={saveProgress}></time>
+            <alarm-time
+              data="{ state.sleeper.currentAlarm }"
+              on-change="{onAlarmTimeChange}"
+              on-cancel={null}
+             >
+             </alarm-time>
           <p>
-          <b show"{error}" class="error">{error}</b>
+          <a class="btn primary" href="" click="{saveProgress}">Next</a>
           </p>
+          <b show"{error}" class="error">{error}</b>
       </div>
   </div>
  <style>
+    sleeper-alarms-add-time {
+         .description {
+            font-size: 18px;
+
+         }
+        .btn {
+            margin-top: 20px;
+            line-height: 3;
+        }
+    }
  </style>
  <script>
     import '../alarm-time.tag'
 
-    this.on('mount', () => {
-        console.log("add-alarm-time mounted.");
+    this.mixin('TimeUtil');
+
+    this.on('before-mount', () => {
+        if (this.state.sleeper.currentAlarm == null) {
+            this.state.sleeper.currentAlarm = {};
+        }
     });
 
     this.on('ready', () => {
         if (this.state.sleeper.currentAlarm == null) {
             this.state.sleeper.currentAlarm = {};
         }
+        this.tags['alarm-time'].changeTime();
     })
+    this.on('update', () => {
+        console.log("add-alarm-time update.");
+    });
 
     this.on('unmount', () => {
         console.log("add-alarm-time unmounted");
     });
+
+    onAlarmTimeChange(item, time) {
+        console.log("Alarm time change!",item,time);
+        let alarmTime = this.TimeUtil.getAlarmTime(time);
+        this.state.sleeper.currentAlarm.time = alarmTime;
+        this.update();
+    }
 
     async saveProgress() {
         try {

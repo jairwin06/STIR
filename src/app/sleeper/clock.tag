@@ -17,7 +17,7 @@
          </div>
           <alarm-time
               each={ state.sleeper.alarms } 
-              data="{this}" 
+              data="{ {time: this.time, _id: this._id} }" 
               on-change="{parent.onAlarmTimeChange}"
               on-cancel="{parent.onAlarmCancel}"
           >

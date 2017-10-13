@@ -2,12 +2,13 @@
     <article class="alarm">
     <div id="alarm-container" click="{changeTime}">
         <div id="alarm-time-group">
-            <formatted-time class="alarm-time" value="{new Date(time)}" format="short"/>
+            <formatted-time if="{opts.data.time}"class="alarm-time" value="{new Date(opts.data.time)}" check="{opts.data.time}" format="short"/>
+            <span class="alarm-time" if="{!opts.data.time}">__ : __</span>
             <span class="alarm-timezone">{TimeUtil.getTimezone(i18n.locales[0])}</span>
         </div>
-        <formatted-message class="alarm-date" id="{TimeUtil.getDateMessageId(time)}" date="{new Date(time)}"/>            
+        <formatted-message if="{opts.data.time}" class="alarm-date" id="{TimeUtil.getDateMessageId(opts.data.time)}" date="{new Date(opts.data.time)}"/>            
     </div>
-    <a id="cancel-alarm" click="{cancelAlarm}" href="#">
+    <a if="{opts.onCancel}" id="cancel-alarm" click="{cancelAlarm}" href="#">
         <i class="material-icons">alarm_off</i>
     </a>
     </article>
@@ -57,12 +58,18 @@
     this.mixin('TimeUtil');
 
     this.on('mount', () => {
-        console.log("time mounted opts", this.opts);
-        this.update();
+        console.log("time mounted ", this.opts);
     });
 
     this.on('unmount', () => {
     });
+
+    this.on('update', () => {
+        console.log('alarm-time update');
+    })
+    this.on('updated', () => {
+        console.log('alarm-time updated');
+    })
 
     changeTime(e) {
         console.log("Change time!",opts.data.time,this.refs.time);
@@ -87,13 +94,15 @@
 
     onTimeBlur(e) {
         if (phonon.device.os != "Android") {
-            console.log("Time Blur!");
+            setTimeout(() => {
+            console.log("Time Blurrr!",this.refs.time);
             $(this.refs.time).hide();
             if (this.refs.time.value) {
                 if (this.opts.onChange) {
                     this.opts.onChange(this.opts.data, this.refs.time.value);
                 }
             }
+            },0)
         }
     }
 

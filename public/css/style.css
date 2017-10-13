@@ -91,6 +91,13 @@ sign-up-locale .description {
 #rouser #alarm h1 {
   color: yellow; }
 
+sleeper-alarms-add-time .description {
+  font-size: 18px; }
+
+sleeper-alarms-add-time .btn {
+  margin-top: 20px;
+  line-height: 3; }
+
 stage[data-is="personality"] .title {
   font-size: 30px; }
 
