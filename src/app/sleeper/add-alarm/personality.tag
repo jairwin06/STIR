@@ -110,13 +110,16 @@
             if (!this.state.auth.user.name) {
                 this.state.auth.setUserName(this.refs.name.value);
             }
-            let analysisStatus = await this.state.sleeper.questionsAnalyze();
+            let analysisStatus = await this.state.sleeper.questionsAnalyze(
+                {name: this.refs.name.value}            
+            );
             console.log("Analysis status", analysisStatus);
 
             this.validateCheck();
         
         } catch (err) {
-            this.showError(err.message);
+            console.log("Questions analyze error!", err);
+            this.showError(err);
         }
     }
 

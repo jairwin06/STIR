@@ -130,11 +130,9 @@ export default class SleeperStore extends Store {
         this.pendingTwitter = false;
         return result;
     }
-    async questionsAnalyze() {
+    async questionsAnalyze(data) {
         console.log("Analyzing Questions");
-        let result = await SocketUtil.rpc('questions-analyze::find', {
-            accessToken: this._state.auth.accessToken
-        });
+        let result = await SocketUtil.rpc('questions-analyze::find',data);
         console.log("Questions result", result);
         return result;
     }
