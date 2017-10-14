@@ -78,11 +78,13 @@
                     this.update();
                     analysisStatus = await this.state.sleeper.twitterAnalyze();
                     this.state.sleeper.currentAlarm.analysis = 'twitter';
+                    this.state.sleeper.pendingTwitter = false;
                 } else if (this.state.sleeper.pendingFacebook){
                     this.loading = true;
                     this.update();
                     analysisStatus = await this.state.sleeper.analyzeFacebook();
                     this.state.sleeper.currentAlarm.analysis = 'facebook';
+                    this.state.sleeper.pendingFacebook = false;
                 }
 
                 if (analysisStatus) {

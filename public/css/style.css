@@ -53,9 +53,6 @@ input[type="number"] {
   bottom: 10%;
   width: 100%; }
 
-#admin h1 {
-  color: turquoise; }
-
 stepper .group {
   display: -ms-flexbox;
   display: flex;
@@ -71,9 +68,6 @@ stepper .dot {
 
 stepper .current {
   background-color: #2196f3; }
-
-#rouser #alarm-queue h1 {
-  color: purple; }
 
 alarm-time .alarm-time {
   font-size: 28px;
@@ -151,8 +145,8 @@ sleeper-alarms .add-alarm {
         font-size: 55px;
         color: white; }
 
-sign-up-locale .description {
-  font-size: 18px; }
+#admin h1 {
+  color: turquoise; }
 
 sleeper-alarms-add-time #next-container {
   display: -ms-flexbox;
@@ -184,6 +178,12 @@ stage[data-is="personality"] .error {
 
 #questions-link {
   font-size: 12px; }
+
+#rouser #alarm-queue h1 {
+  color: purple; }
+
+sign-up-locale .description {
+  font-size: 18px; }
 
 #rouser #alarm h1 {
   color: yellow; }
