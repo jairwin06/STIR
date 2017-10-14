@@ -13,7 +13,7 @@ class MTurkUtil {
           Description: 'STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.', /* required */
           Reward: '2', /* required */
           Title: 'STIR', /* required */
-          AutoApprovalDelayInSeconds: 60 * 60 * 3,
+          AutoApprovalDelayInSeconds: 60 * 60,
           Keywords: 'record, recording, alarm, wake-up, STIR',
         };
 
@@ -70,7 +70,8 @@ class MTurkUtil {
             Destination: 'arn:aws:sns:us-east-1:486219526892:MTurk', /* required */
             //Destination: 'https://sqs.us-east-2.amazonaws.com/486219526892/MTurk',
             EventTypes: [ /* required */
-              'AssignmentAccepted', 'AssignmentSubmitted', 'HITCreated', 'HITExpired', 'HITReviewable'
+              //'AssignmentAccepted', 'AssignmentSubmitted', 'HITCreated', 'HITExpired', 'HITReviewable'
+              'HITReviewable'
             ],
             Transport: 'SNS',
             Version: NOTIFICATION_VERSION
