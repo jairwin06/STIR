@@ -23,9 +23,11 @@
           >
           </alarm-time>
           <div class="add-alarm">
-               <a href="/sleeper/alarms/add/time">
-                    <i class="material-icons">alarm_add</i>
-               </a>
+               <div class="add-button">
+                   <a href="/sleeper/alarms/add/time">
+                        <i class="material-icons">alarm_add</i>
+                   </a>
+               </div>
           </div>
      </div>
       <div show="{ state.sleeper.alarms == null }" class="circle-progress center active">
@@ -49,10 +51,25 @@
             width: 100%;
             bottom: 15%;
             right: 1px;
-             i {
-                font-size: 60px;
-                text-shadow: 1px 1px grey;
-             }
+           .add-button {
+                background-color: #2196f3;
+                border-radius: 35px;
+                box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+                width: 65px;
+                height: 65px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+                a {
+                    width: 55px;
+                    height: 55px;
+                   i {
+                        font-size: 55px;
+                        color: white;
+                   }
+                }
+            }
          }
      }
  </style>

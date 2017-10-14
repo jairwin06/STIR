@@ -101,9 +101,24 @@ sleeper-alarms .add-alarm {
   width: 100%;
   bottom: 15%;
   right: 1px; }
-  sleeper-alarms .add-alarm i {
-    font-size: 60px;
-    text-shadow: 1px 1px grey; }
+  sleeper-alarms .add-alarm .add-button {
+    background-color: #2196f3;
+    border-radius: 35px;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    width: 65px;
+    height: 65px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    -ms-flex-align: center;
+        align-items: center; }
+    sleeper-alarms .add-alarm .add-button a {
+      width: 55px;
+      height: 55px; }
+      sleeper-alarms .add-alarm .add-button a i {
+        font-size: 55px;
+        color: white; }
 
 sign-up-locale .description {
   font-size: 18px; }
