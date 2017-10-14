@@ -53,6 +53,9 @@ input[type="number"] {
   bottom: 10%;
   width: 100%; }
 
+#admin h1 {
+  color: turquoise; }
+
 stepper .group {
   display: -ms-flexbox;
   display: flex;
@@ -68,6 +71,9 @@ stepper .dot {
 
 stepper .current {
   background-color: #2196f3; }
+
+#rouser #alarm-queue h1 {
+  color: purple; }
 
 alarm-time .alarm-time {
   font-size: 28px;
@@ -145,43 +151,6 @@ sleeper-alarms .add-alarm {
         font-size: 55px;
         color: white; }
 
-#admin h1 {
-  color: turquoise; }
-
-sleeper-alarms-add-time #next-container {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-      justify-content: center;
-  margin-top: 60px; }
-  sleeper-alarms-add-time #next-container a {
-    width: 100px; }
-
-stage[data-is="personality"] .title {
-  font-size: 30px; }
-
-stage[data-is="personality"] .error {
-  color: red; }
-
-#choose-text {
-  margin-top: 20px; }
-
-#social-buttons {
-  display: -ms-flexbox;
-  display: flex;
-  margin-top: 15px;
-  margin-bottom: 15px; }
-  #social-buttons a {
-    line-height: 1.5;
-    margin-left: 10px;
-    margin-right: 10px; }
-
-#questions-link {
-  font-size: 12px; }
-
-#rouser #alarm-queue h1 {
-  color: purple; }
-
 sign-up-locale .description {
   font-size: 18px; }
 
@@ -245,3 +214,34 @@ rouser-alarm-mturk #after-recording audio {
 
 rouser-alarm-mturk .circle-progress {
   position: unset; }
+
+sleeper-alarms-add-time #next-container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  margin-top: 60px; }
+  sleeper-alarms-add-time #next-container a {
+    width: 100px; }
+
+stage[data-is="personality"] .title {
+  font-size: 30px; }
+
+stage[data-is="personality"] .error {
+  color: red; }
+
+#choose-text {
+  margin-top: 20px; }
+
+#social-buttons {
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+  #social-buttons a {
+    line-height: 1.5;
+    margin-left: 10px;
+    margin-right: 10px; }
+
+#questions-link {
+  font-size: 12px; }

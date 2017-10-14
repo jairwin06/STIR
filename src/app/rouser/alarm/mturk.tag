@@ -58,6 +58,7 @@
                     <input name="assignmentId" type="hidden" ref="assignmentId">
                     <input name="recordingPath" type="hidden" ref="recordingPath">
                     <input name="prompt" type="hidden" ref="prompt">
+                    <input name="locales" type="hidden" ref="locales">
                     <button type="submit">Submit</button>
                   </form>
               </div>
@@ -215,6 +216,7 @@
             this.refs.assignmentId.value = this.state.auth.mturk.assignmentId;
             this.refs.recordingPath.value = result || "unknown";
             this.refs.prompt.value = this.state.rouser.currentAlarm.prompt;
+            this.refs.locales.value = this.state.rouser.currentAlarm.locales.join(',');
             this.update();
             // Submit the form
             this.refs.form.submit();
