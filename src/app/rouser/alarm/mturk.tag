@@ -11,8 +11,16 @@
               <div class="row stir-description">
                     STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.
               </div>
+              <div class="row stir-details">
+                You’ve joined STIR as a Rouser, and today you’ll be leaving a pre-recorded wakeup message for a Sleeper. Keep the following guidelines in mind as you create your wakeup message:
+                <ul>
+                    <li>Hearing one’s name is powerfully personal. To be most effective, incorporate the Sleeper’s name into your message.</li>
+                    <li>As a Rouser, you are the face of our service. Be kind and compassionate to our Sleepers!</li>
+                    <li>Remember, you’re giving a gift. You’re this Sleeper’s first encounter with a new day!</li>
+                </ul>
+              </div>
               <div class="row language-requirement">
-                You will need to record a wakeup message in <b>one</b> of the following languages:
+                You will can record the message in <b>one</b> of the following languages:
                 <ul>
                     <li each="{getLanguages()}" class="language-item">
                         {name}
@@ -54,7 +62,7 @@
               </div>
               <div show="{done}">
                 Thank you! Submitting HIT
-                  <form ref="form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
+                  <form ref="form" action="{state.rouser.currentAlarm.mturkSubmit}" method="POST">
                     <input name="assignmentId" type="hidden" ref="assignmentId">
                     <input name="recordingPath" type="hidden" ref="recordingPath">
                     <input name="prompt" type="hidden" ref="prompt">
@@ -93,6 +101,9 @@
    .stir-description {
         font-size: 20px;
         margin-bottom: 20px;
+    }
+    .stir-details {
+        font-size: 14px;
     }
    .language-requirement {
         font-size: 16px;

@@ -31,6 +31,9 @@ const promptSyntax = {
   "prompt_sentence": null
 };
 
+const DUMMY_PROMPT = "Today you’ll be waking Charlotte, from New York City. Here are some things about Charlotte that may help you create your message: Charlotte is deeply philosophical and is an appreciator of beauty, art and nature. Charlotte is supremely intellectual. She is intrigued by new ideas and loves to explore them. She needs curiosity in her life. One thing you might want to know about Charlotte too, is that she is easily rattled, easily irked. She can be uneasy and fearful about the future. For your message to Charlotte, we encourage you to share how deeply impressed you are by her intellect. Remind her to let her curiosity and quest for novel ideas guide her through this new day. And, reassure her that it’s okay to feel anxious sometimes, and that it doesn’t have to get in her way and she goes forth.";
+
+
 export default function (hook) {
     console.log("Generate prompt!");
 
@@ -70,7 +73,9 @@ function generatePrompt(app, alarmId, analysis,  user, tryNumber) {
         }
         console.log("Final prompt syntax", promptData);
         let grammar = tracery.createGrammar(promptData);
-        alarmData.prompt = grammar.flatten('#sentences#')
+        //alarmData.prompt = grammar.flatten('#sentences#')
+        alarmData.prompt = DUMMY_PROMPT;
+
         console.log("Final prompt", alarmData.prompt);
         return app.service('alarms/sleeper').patch(alarmId,alarmData);
     })

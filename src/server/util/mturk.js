@@ -6,10 +6,10 @@ class MTurkUtil {
     constructor() {
         this.mturk = new MTurk({
             region: 'us-east-1',
-            endpoint: 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
+            endpoint: process.env['MTURK_ENDPOINT']
         });
         this.params = {
-          AssignmentDurationInSeconds: 300, /* required */
+          AssignmentDurationInSeconds: 600, /* required */
           Description: 'STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.', /* required */
           Reward: '2', /* required */
           Title: 'STIR', /* required */

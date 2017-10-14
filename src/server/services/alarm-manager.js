@@ -215,7 +215,11 @@ export default class AlarmManager {
                     console.log(hit.HITStatus);
                     if (hit && hit.RequesterAnnotation == id && (hit.HITStatus == 'Assignable' || hit.HITStatus == 'Unassignable' /* Means accepted by worker */)) {
                         // OK you can see it
-                        return alarm;
+                        // Adding also the mturk for submit url
+                        let response = alarm.toObject();
+                        response.mturkSubmit = process.env['MTURK_SUBMIT'];
+                        console.log("Returning", response);
+                        return response;
                     } else {
                         throw new Errors.NotFound();
                     }
