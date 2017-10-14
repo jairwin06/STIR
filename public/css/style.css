@@ -1,3 +1,6 @@
+body {
+  font-family: Roboto, Helvetica; }
+
 main .btn {
   line-height: 3; }
 
@@ -125,6 +128,22 @@ sign-up-locale .description {
 
 #rouser #alarm h1 {
   color: yellow; }
+
+rouser-alarm-mturk .web-background {
+  width: 100%;
+  height: 100%;
+  background: lightgrey;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center; }
+  rouser-alarm-mturk .web-background .web-content {
+    width: 768px;
+    background: white; }
+    rouser-alarm-mturk .web-background .web-content .header-bar {
+      position: relative; }
+    rouser-alarm-mturk .web-background .web-content .content {
+      position: relative; }
 
 sleeper-alarms-add-time .description {
   font-size: 18px; }

@@ -1,44 +1,71 @@
 <rouser-alarm-mturk>
-<header class="header-bar">
-    <div class="pull-left">
-        <h1 class="title">STIR - MTurk</h1>
+<div class="web-background">
+    <div class="web-content">
+        <header class="header-bar">
+            <div class="pull-left">
+                <h1 class="title">STIR - MTurk</h1>
+            </div>
+        </header>
+        <div class="content">
+          <div class="padded-full">
+              <p>
+              {state.rouser.currentAlarm.prompt}
+              </p>
+              <div show="{!done}">
+                  <p>
+                    <button show="{ready && !recording}" click="{startRecording}">
+                    {previewing ? 'Record again' : 'Start Recording'}
+                    </button>
+                    <img show="{recording}" src="/images/recording.gif"></img>
+                    <button show="{ready && recording}" click="{stopRecording}">Stop Recording</button>
+                  </p>
+                  <img show="{loading}" src="/images/loading.gif"></img>
+                   <b show"{error}" class="error">{error}</b>
+                   <p show="{previewing}">
+                        <audio ref="preview" controls="controls">
+                        </audio>
+                   </p>
+                   <button show="{previewing}" click="{submitRecording}">Submit Recording</button>
+                   <span show="{loading}">{progress}</span>
+              </div>
+              <div show="{done}">
+                Thank you! Submitting HIT
+                  <form ref="form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
+                    <input name="assignmentId" type="hidden" ref="assignmentId">
+                    <input name="recordingPath" type="hidden" ref="recordingPath">
+                    <input name="prompt" type="hidden" ref="prompt">
+                    <button type="submit">Submit</button>
+                  </form>
+              </div>
+          </div>
+        </div>
     </div>
-</header>
-<div class="content">
-  <div class="padded-full">
-      <p>
-      {state.rouser.currentAlarm.prompt}
-      </p>
-      <div show="{!done}">
-          <p>
-            <button show="{ready && !recording}" click="{startRecording}">
-            {previewing ? 'Record again' : 'Start Recording'}
-            </button>
-            <img show="{recording}" src="/images/recording.gif"></img>
-            <button show="{ready && recording}" click="{stopRecording}">Stop Recording</button>
-          </p>
-          <img show="{loading}" src="/images/loading.gif"></img>
-           <b show"{error}" class="error">{error}</b>
-           <p show="{previewing}">
-                <audio ref="preview" controls="controls">
-                </audio>
-           </p>
-           <button show="{previewing}" click="{submitRecording}">Submit Recording</button>
-           <span show="{loading}">{progress}</span>
-      </div>
-      <div show="{done}">
-        Thank you! Submitting HIT
-          <form ref="form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST">
-            <input name="assignmentId" type="hidden" ref="assignmentId">
-            <input name="recordingPath" type="hidden" ref="recordingPath">
-            <input name="prompt" type="hidden" ref="prompt">
-            <button type="submit">Submit</button>
-          </form>
-      </div>
-  </div>
 </div>
 
  <style>
+ rouser-alarm-mturk {
+   .web-background {
+        width: 100%;
+        height: 100%;
+        background: lightgrey;
+        display: flex;
+        justify-content: center;
+
+        .web-content {
+            width: 768px;
+            background: white;
+
+            .header-bar {
+                position: relative;
+
+            }
+            .content {
+                position: relative;            
+            }
+        }
+    }
+
+ }
 
  </style>
  <script>
