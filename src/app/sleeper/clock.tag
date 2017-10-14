@@ -22,7 +22,11 @@
               on-cancel="{parent.onAlarmCancel}"
           >
           </alarm-time>
-           <a href="/sleeper/alarms/add/time">Add an alarm</a>
+          <div class="add-alarm">
+               <a href="/sleeper/alarms/add/time">
+                    <i class="material-icons">alarm_add</i>
+               </a>
+          </div>
      </div>
       <div show="{ state.sleeper.alarms == null }" class="circle-progress center active">
         <div class="spinner"></div>
@@ -36,6 +40,19 @@
          } 
          .clock-desc {
             margin-top: 10px;
+         }
+
+         .add-alarm {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            width: 100%;
+            bottom: 15%;
+            right: 1px;
+             i {
+                font-size: 60px;
+                text-shadow: 1px 1px grey;
+             }
          }
      }
  </style>

@@ -92,6 +92,22 @@ sleeper-alarms .welcome-back {
 sleeper-alarms .clock-desc {
   margin-top: 10px; }
 
+sleeper-alarms .add-alarm {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  position: absolute;
+  width: 100%;
+  bottom: 15%;
+  right: 1px; }
+  sleeper-alarms .add-alarm i {
+    font-size: 60px;
+    text-shadow: 1px 1px grey; }
+
+sign-up-locale .description {
+  font-size: 18px; }
+
 #rouser #alarm h1 {
   color: yellow; }
 
@@ -107,6 +123,3 @@ stage[data-is="personality"] .title {
 
 stage[data-is="personality"] .error {
   color: red; }
-
-sign-up-locale .description {
-  font-size: 18px; }
