@@ -30,8 +30,16 @@ class TimeUtil {
     }
 
     getTimezone(locale) {
+        // TODO: This needs a polyfill
         let dtf = Intl.DateTimeFormat(locale, {timeZoneName: "short"});
         return dtf.formatToParts(new Date())[6].value;
+    }
+
+    getDefaultTime() {
+        let defaultTime = new Date(new Date().setHours(9,0,0));
+        defaultTime.setDate(defaultTime.getDate() + 1);
+        defaultTime.setMilliseconds(0);
+        return defaultTime;
     }
 };
 

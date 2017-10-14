@@ -10,8 +10,6 @@ const FIELDS_TO_RETURN = "_id time name prompt"
 
 export default class AlarmManager {
     constructor() {
-        console.log("Alarm manager starting");
-        this.getPendingAlarms();
     }
     setup(app) {
         this.app = app;
@@ -158,7 +156,7 @@ export default class AlarmManager {
                         assignedTo: null,
                         mturk: false,
                         analyzed: true,
-                        locales: {$in: params.user.alarmLocales},
+                        locales: {$elemMatch: {$in: params.user.alarmLocales}},
                         time: {$gt: new Date()}
                     }).select("_id").limit(alarmsToGo)
                     .then((newIds) => {

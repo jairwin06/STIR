@@ -114,8 +114,5 @@ const BrowserDetect =  {
 	}
 }
 
-if (IS_CLIENT) {
-    BrowserDetect.init();
-}
 export default BrowserDetect;
 

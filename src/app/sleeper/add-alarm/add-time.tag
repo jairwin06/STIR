@@ -48,7 +48,6 @@
         if (this.state.sleeper.currentAlarm == null) {
             this.state.sleeper.currentAlarm = {};
         }
-        this.tags['alarm-time'].changeTime();
     })
     this.on('update', () => {
         console.log("add-alarm-time update.");
@@ -68,6 +67,9 @@
     async saveProgress() {
         try {
             console.log("Saving progress");
+            if (!this.state.sleeper.currentAlarm.time) {
+                this.state.sleeper.currentAlarm.time = this.TimeUtil.getDefaultTime().toString();            
+            }
             await this.state.sleeper.saveProgress();
             page("/sleeper/alarms/add/personality")
         } catch (e) {

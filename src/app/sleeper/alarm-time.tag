@@ -2,14 +2,18 @@
     <article class="alarm">
     <div id="alarm-container" click="{changeTime}">
         <div id="alarm-time-group">
-            <formatted-time if="{opts.data.time}"class="alarm-time" value="{new Date(opts.data.time)}" check="{opts.data.time}" format="short"/>
-            <span class="alarm-time" if="{!opts.data.time}">__ : __</span>
+            <formatted-time if="{opts.data.time}"class="alarm-time" value="{new Date(opts.data.time)}" format="short"/>
+            <formatted-time if="{!opts.data.time}"class="alarm-time" value="{defaultTime}" format="short"/>
             <span class="alarm-timezone">{TimeUtil.getTimezone(i18n.locales[0])}</span>
         </div>
         <formatted-message if="{opts.data.time}" class="alarm-date" id="{TimeUtil.getDateMessageId(opts.data.time)}" date="{new Date(opts.data.time)}"/>            
+        <formatted-message if="{!opts.data.time}" class="alarm-date" id="{TimeUtil.getDateMessageId(this.defaultTime)}" date="{new Date(this.defaultTime)}"/>            
     </div>
-    <a if="{opts.onCancel}" id="cancel-alarm" click="{cancelAlarm}" href="#">
+    <a if="{opts.onCancel}" class="alarm-action" id="cancel-alarm" click="{cancelAlarm}" href="#">
         <i class="material-icons">alarm_off</i>
+    </a>
+    <a id="choose-time" class="alarm-action" if="{!opts.onCancel}" click="{changeTime}">
+        <i class="material-icons">arrow_drop_down</i>
     </a>
     </article>
     <input ref="time" type="time" style="display:none;" change="{onTimeChange}" blur="{onTimeBlur}">
@@ -42,7 +46,7 @@
             align-items: baseline;
             color: #1474e0;
          }
-         #cancel-alarm {
+         .alarm-action {
             color: #ff6969;
             position: absolute;
             right: 15%;
@@ -56,6 +60,8 @@
     import MiscUtil from '../util/misc'
 
     this.mixin('TimeUtil');
+
+    this.defaultTime = this.TimeUtil.getDefaultTime();
 
     this.on('mount', () => {
         console.log("time mounted ", this.opts);

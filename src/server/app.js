@@ -93,8 +93,6 @@ app.enable('trust proxy');
 //app.use(authMiddleware);
 
 // Services
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env['MONGO_CONNECTION'], {useMongoClient: true});
 
 app
 .use('/users', service({Model: UserModel}))
@@ -290,7 +288,12 @@ app.service('/alarms/admin').hooks({
   }
 });
 
-createFixtures(app);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env['MONGO_CONNECTION'], {useMongoClient: true})
+.then(() => {
+    createFixtures(app);
+    app.service('alarms/rouser').getPendingAlarms();
+})
 
 // Client routes
 app.use(authMiddleware);
@@ -335,12 +338,15 @@ app.use(async function (req, res, next) {
             }
             mixin(IntlMixin); 
 
-            res.render('index', {
-              initialData: JSON.stringify(req.appState, (key,value) => {
+            let initialData = JSON.stringify(req.appState, (key,value) => {
                   return ((key == '_state' || key == 'debug') ? function() {} : value); 
-              }),
+            });
+            initialData = initialData.replace(/\'/g,"\\'");
+            console.log(initialData);
+            res.render('index', {
+              initialData: initialData,
               body: render('main', req.appState)
-            })
+            });
         } catch(err) {
             console.log("Error in rendering!", err);
             return next(err);

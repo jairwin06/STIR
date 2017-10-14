@@ -6,6 +6,7 @@ export default class Recorder {
     }
 
     init() {
+        BrowserDetect.init();
         console.log("Browser: ", BrowserDetect.browser);
         this.isSupported = (navigator.mediaDevices.getUserMedia);
         if (this.isSupported) {

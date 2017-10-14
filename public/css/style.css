@@ -72,11 +72,11 @@ alarm-time #alarm-time-group {
       align-items: baseline;
   color: #1474e0; }
 
-alarm-time #cancel-alarm {
+alarm-time .alarm-action {
   color: #ff6969;
   position: absolute;
   right: 15%; }
-  alarm-time #cancel-alarm i {
+  alarm-time .alarm-action i {
     font-size: 30px; }
 
 sleeper-alarms .welcome-back {
