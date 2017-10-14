@@ -8,27 +8,29 @@
     </div>
 </header>
 <div class="content">
-     <div show="{state.sleeper.alarms != null}">
-         <div class="welcome-back">
-            <formatted-message id="CLOCK_WELCOME" name="{state.auth.user.name}"/>            
+     <div class="padded-full">
+         <div show="{state.sleeper.alarms != null}">
+             <div class="welcome-back">
+                <formatted-message id="CLOCK_WELCOME" name="{state.auth.user.name}"/>            
+             </div>
+             <div class="clock-desc">
+                <formatted-message id="CLOCK_DESC"/>            
+             </div>
+              <alarm-time
+                  each={ state.sleeper.alarms } 
+                  data="{ {time: this.time, _id: this._id} }" 
+                  on-change="{parent.onAlarmTimeChange}"
+                  on-cancel="{parent.onAlarmCancel}"
+              >
+              </alarm-time>
+              <div class="add-alarm">
+                   <div class="add-button">
+                       <a href="/sleeper/alarms/add/time">
+                            <i class="material-icons">alarm_add</i>
+                       </a>
+                   </div>
+              </div>
          </div>
-         <div class="clock-desc">
-            <formatted-message id="CLOCK_DESC"/>            
-         </div>
-          <alarm-time
-              each={ state.sleeper.alarms } 
-              data="{ {time: this.time, _id: this._id} }" 
-              on-change="{parent.onAlarmTimeChange}"
-              on-cancel="{parent.onAlarmCancel}"
-          >
-          </alarm-time>
-          <div class="add-alarm">
-               <div class="add-button">
-                   <a href="/sleeper/alarms/add/time">
-                        <i class="material-icons">alarm_add</i>
-                   </a>
-               </div>
-          </div>
      </div>
       <div show="{ state.sleeper.alarms == null }" class="circle-progress center active">
         <div class="spinner"></div>

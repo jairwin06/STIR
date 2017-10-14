@@ -5,29 +5,36 @@
         </div>
     </header>
   <div class="content">
-   <div id="choice" class="row">
-        How do you want to personalize your experience?
-    </div>
-     <p>
-      <div class="title">Use my facebook data</div>
-       <a href="/auth/facebook" class="button">Analyze posts</a>
-     </p>
-    <img show="{loading}" src="/images/loading.gif"></img>
-      <p>
-          <div class="title">Use my twitter data</div>
-          <a href="/auth/twitter" class="button">Analyze tweets</a>
-     </p>
-     <b show"{error}" class="error">{error}</b>
-     <p>
-      <span class="title">Or Opt-out and answer some questions</span>
-      <form action="" onsubmit="{submitQuestions}">
-        Your name <input type="text" name="name" ref="name">
-        <button type="submit">Submit</button>
-      </form>
-      </p>
-      <p>
-        <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
-      </p>
+    <div class="padded-full">
+       <div class="description">
+            How do you want to personalize your experience?
+        </div>
+        <div id="choose-text" class="row">
+            Choose the social media account you post on most frequently
+        </div>
+        <div id="social-buttons" class="row">
+          <a href="/auth/facebook" class="btn primary raised">Connect with Facebook</a>
+          <a href="/auth/twitter" class="btn primary raised">Connect with Twitter</a>
+        </div>
+        <div class="row">
+            <a id="questions-link" href="/sleeper/alarms/add/questions">Not on social media?</a>
+        </div>
+        <div style="margin-top:30px;"></div>
+         <b show"{error}" class="error">{error}</b>
+          <span class="title">Opt-out and answer some questions</span>
+          <form action="" onsubmit="{submitQuestions}">
+            Your name <input type="text" name="name" ref="name">
+            <button type="submit">Submit</button>
+          </form>
+          </p>
+          <p>
+            <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
+          </p>
+      </div>
+      <div class="stepper-container">
+          <stepper size="5" current="2"></stepper>
+      </div>
+      <img show="{loading}" src="/images/loading.gif"></img>
   </div>
   
  <style>
@@ -38,6 +45,23 @@
          .error {
             color: red;
          }
+     }
+     #choose-text {
+        margin-top: 20px;
+     } 
+     #social-buttons {
+         display: flex;
+         margin-top: 15px;
+         margin-bottom: 15px;
+         
+         a {
+            line-height: 1.5;
+            margin-left: 10px;
+            margin-right: 10px;
+         }
+     }
+     #questions-link {
+        font-size: 12px;     
      }
  </style>
  <script>

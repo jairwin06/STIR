@@ -10,19 +10,29 @@
             <thead>
                 <th>Name</th>
                 <th>Time</th>
+                <th>Analyzed</th>
                 <th>Assigned to</th>
                 <th>Recorded</th>
                 <th>Delivered</th>
+                <th>Recording</th>
                 <th>Turk it</th>
             </thead>
             <tbody>
                 <tr each={ state.admin.alarms }>
                     <td>{name}</td>
                     <td>{time}</td>
+                    <td>{analyzed}</td>
                     <td>{mturk? "MTURK" : assignedTo}</td>
                     <td>{recording.finalized}</td>
                     <td>{delivered}</td>
-                    <td><button click={parent.mturk}>Turk it</button></td>
+                    <td>
+                        <span if="{recording.mixUrl}">
+                            <audio ref="preview" controls="controls">
+                                <source src="{recording.mixUrl}"></source>
+                            </audio>
+                        </span>
+                    <td>
+                    <td><button class="btn primary" disabled={!analyzed} click={parent.mturk}>Turk it</button></td>
                 </tr>
             </tbody>
         </table>

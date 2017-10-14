@@ -1,7 +1,10 @@
 body {
   font-family: Roboto, Helvetica; }
 
-main .btn {
+.btn.raised {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12); }
+
+a.btn {
   line-height: 3; }
 
 main #choice {
@@ -26,10 +29,10 @@ input[type="number"] {
     line-height: 62px; }
 
 .header-bar ~ .content {
-  margin-top: 62px; }
+  margin-top: 65px; }
 
-.content {
-  padding: 10px; }
+.description {
+  font-size: 18px; }
 
 .popover {
   width: 52px;
@@ -41,8 +44,33 @@ input[type="number"] {
     height: auto;
     min-height: 40px; }
 
+.stepper-container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  position: absolute;
+  bottom: 10%;
+  width: 100%; }
+
 #admin h1 {
   color: turquoise; }
+
+stepper .group {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row; }
+
+stepper .dot {
+  width: 8px;
+  height: 8px;
+  margin: 0 2px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.26); }
+
+stepper .current {
+  background-color: #2196f3; }
 
 #rouser #alarm-queue h1 {
   color: purple; }
@@ -126,6 +154,37 @@ sleeper-alarms .add-alarm {
 sign-up-locale .description {
   font-size: 18px; }
 
+sleeper-alarms-add-time #next-container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  margin-top: 60px; }
+  sleeper-alarms-add-time #next-container a {
+    width: 100px; }
+
+stage[data-is="personality"] .title {
+  font-size: 30px; }
+
+stage[data-is="personality"] .error {
+  color: red; }
+
+#choose-text {
+  margin-top: 20px; }
+
+#social-buttons {
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+  #social-buttons a {
+    line-height: 1.5;
+    margin-left: 10px;
+    margin-right: 10px; }
+
+#questions-link {
+  font-size: 12px; }
+
 #rouser #alarm h1 {
   color: yellow; }
 
@@ -143,17 +202,46 @@ rouser-alarm-mturk .web-background {
     rouser-alarm-mturk .web-background .web-content .header-bar {
       position: relative; }
     rouser-alarm-mturk .web-background .web-content .content {
+      margin-top: 10px;
       position: relative; }
 
-sleeper-alarms-add-time .description {
-  font-size: 18px; }
+rouser-alarm-mturk .stir-description {
+  font-size: 20px;
+  margin-bottom: 20px; }
 
-sleeper-alarms-add-time .btn {
-  margin-top: 20px;
-  line-height: 3; }
+rouser-alarm-mturk .language-requirement {
+  font-size: 16px; }
 
-stage[data-is="personality"] .title {
-  font-size: 30px; }
+rouser-alarm-mturk .prompt {
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  font-size: 16px;
+  line-height: 23px; }
 
-stage[data-is="personality"] .error {
-  color: red; }
+rouser-alarm-mturk .placeholder {
+  margin-top: 50px;
+  text-align: center; }
+
+rouser-alarm-mturk #recording-box {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  margin-top: 50px; }
+
+rouser-alarm-mturk #while-recording {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  width: 70px; }
+  rouser-alarm-mturk #while-recording img {
+    height: 40px;
+    width: 40px;
+    margin-bottom: 10px; }
+
+rouser-alarm-mturk #after-recording audio {
+  width: 400px; }
+
+rouser-alarm-mturk .circle-progress {
+  position: unset; }

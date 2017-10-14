@@ -8,25 +8,49 @@
         </header>
         <div class="content">
           <div class="padded-full">
-              <p>
-              {state.rouser.currentAlarm.prompt}
-              </p>
-              <div show="{!done}">
-                  <p>
-                    <button show="{ready && !recording}" click="{startRecording}">
-                    {previewing ? 'Record again' : 'Start Recording'}
+              <div class="row stir-description">
+                    STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.
+              </div>
+              <div class="row language-requirement">
+                You will need to record a wakeup message in <b>one</b> of the following languages:
+                <ul>
+                    <li each="{getLanguages()}" class="language-item">
+                        {name}
+                    </li>
+                </ul>
+              </div>
+              <div class="row prompt">
+                  {state.rouser.currentAlarm.prompt}
+              </div>
+              <div show="{!ready}" class="row placeholder">
+                <i>Accept the HIT to begin recording</i>
+              </div>
+              <div id="recording-box" show="{!done}">
+                    <button class="btn primary raised" show="{ready && !recording && !loading && !previewing}" click="{startRecording}">
+                    Start Recording
                     </button>
-                    <img show="{recording}" src="/images/recording.gif"></img>
-                    <button show="{ready && recording}" click="{stopRecording}">Stop Recording</button>
-                  </p>
-                  <img show="{loading}" src="/images/loading.gif"></img>
-                   <b show"{error}" class="error">{error}</b>
-                   <p show="{previewing}">
-                        <audio ref="preview" controls="controls">
-                        </audio>
-                   </p>
-                   <button show="{previewing}" click="{submitRecording}">Submit Recording</button>
-                   <span show="{loading}">{progress}</span>
+                    <div id="while-recording" class="row" show="{ready && recording}">
+                        <img src="/images/recording.gif"></img>
+                        <button class="btn primary raised" click="{stopRecording}">STOP</button>
+                    </div>
+                    <div id="after-recording" show="{previewing && !loading}">
+                        <div class="row">
+                            <audio ref="preview" controls="controls">
+                            </audio>
+                        </div>
+                        <div class="row actions">
+                            <button class="btn primary raised" click="{startRecording}">
+                                Record Again
+                            </button>
+                            <button class="btn positive raised" click="{submitRecording}">Submit Recording</button>
+                            </button>
+                        </div>
+                    </div>
+                  <div show="{ loading }" class="circle-progress active">
+                    <div class="spinner"></div>
+                 </div>
+                   <div><b show"{error}" class="error">{error}</b></div>
+                   <div show="{loading}">{progress}</div>
               </div>
               <div show="{done}">
                 Thank you! Submitting HIT
@@ -60,11 +84,55 @@
 
             }
             .content {
+                margin-top: 10px;
                 position: relative;            
             }
         }
     }
+   .stir-description {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+   .language-requirement {
+        font-size: 16px;
+    }
+   .prompt {
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+        font-size: 16px;
+        line-height: 23px;
+    }
+    
+   .placeholder {
+       margin-top: 50px;
+       text-align: center;
+   }
 
+   #recording-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+   }
+
+    #while-recording {
+        display: flex;
+        flex-direction: column;
+        width: 70px;
+           img {
+                height: 40px;
+                width: 40px;
+                margin-bottom: 10px;
+           }
+    }
+
+    #after-recording {
+        audio {
+            width: 400px;
+        }
+    }
+    .circle-progress {
+        position: unset;
+    }
  }
 
  </style>
@@ -86,6 +154,15 @@
         }
         this.update();
     });
+
+    getLanguages() {
+        const names = {
+            'en': 'English',
+            'fr': 'French',
+            'de': 'German'
+        }
+        return this.state.rouser.currentAlarm.locales.map(code => {return {name: names[code]}});
+    }
 
     startRecording() {
         console.log("Start recording!");

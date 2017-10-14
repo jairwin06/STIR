@@ -30,9 +30,12 @@ class TimeUtil {
     }
 
     getTimezone(locale) {
-        // TODO: This needs a polyfill
         let dtf = Intl.DateTimeFormat(locale, {timeZoneName: "short"});
-        return dtf.formatToParts(new Date())[6].value;
+        if (dtf.formatToParts) {
+            return dtf.formatToParts(new Date())[6].value;
+        } else {
+            return "LOCAL TIME";
+        }
     }
 
     getDefaultTime() {

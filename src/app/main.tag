@@ -17,18 +17,14 @@
                 </div>
                 <div class="row text-center">
                     <div class="phone-6 tablet-6 column">
-                        <div class="padded-full btn primary">
-                            <a class="btn primary" href="/sleeper/alarms">
-                            <formatted-message id='SLEEPER'/>
-                            </a>
-                        </div>
+                        <a class="btn primary raised" href="/sleeper/alarms">
+                        <formatted-message id='SLEEPER'/>
+                        </a>
                     </div>
                     <div class="phone-6 tablet-6 column">
-                        <div class="padded-full btn primary">
-                            <a class="btn primary" href="/rouser/alarms">
-                            <formatted-message id='ROUSER'/>
-                            </a>
-                        </div>
+                        <a class="btn primary" href="/rouser/alarms">
+                        <formatted-message id='ROUSER'/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -38,10 +34,14 @@
         body {
             font-family: Roboto, Helvetica;
         }
+        .btn.raised {
+                box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)
+                }
+        a.btn {
+            line-height: 3;
+
+        }
         main {
-            .btn {
-                line-height: 3;
-            }
             #choice {
                 margin-top: 50px;
                 margin-bottom: 20px;
@@ -69,13 +69,12 @@
             }
 
         }
-
         .header-bar ~ .content {
-            margin-top: 62px;
+            margin-top: 65px;
         }
 
-        .content {
-            padding: 10px;
+        .description {
+            font-size: 18px;
         }
 
         .popover {
@@ -88,6 +87,13 @@
                 min-height: 40px;
             }
             background-color: rgba(118,160,243,0.6);
+        }
+        .stepper-container {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
         }
     </style>
 

@@ -6,7 +6,7 @@ import Session from '../models/session-persistent'
 import Errors from 'feathers-errors'
 
 let ALARMS_IN_QUEUE = 1;
-const FIELDS_TO_RETURN = "_id time name prompt"
+const FIELDS_TO_RETURN = "_id time name prompt locales"
 
 export default class AlarmManager {
     constructor() {
@@ -211,8 +211,9 @@ export default class AlarmManager {
                 // This is MTurk, query the hit
                 return MTurkUtil.getHIT(params.query.mturk.hitId)
                 .then((hit) => {
+                    console.log(hit);
                     console.log(hit.HITStatus);
-                    if (hit && (hit.HITStatus == 'Assignable' || hit.HITStatus == 'Unassignable' /* Means accepted by worker */)) {
+                    if (hit && hit.RequesterAnnotation == id && (hit.HITStatus == 'Assignable' || hit.HITStatus == 'Unassignable' /* Means accepted by worker */)) {
                         // OK you can see it
                         return alarm;
                     } else {

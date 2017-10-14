@@ -15,26 +15,30 @@
               on-cancel={null}
              >
              </alarm-time>
-          <p>
-          <a class="btn primary" href="" click="{saveProgress}">Next</a>
-          </p>
-          <b show"{error}" class="error">{error}</b>
+          <div id="next-container">
+              <a class="btn primary raised" href="" click="{saveProgress}">Next</a>
+          </div>
+      </div>
+      <div class="stepper-container">
+          <stepper size="5" current="1"></stepper>
       </div>
   </div>
  <style>
     sleeper-alarms-add-time {
-         .description {
-            font-size: 18px;
+        #next-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
 
-         }
-        .btn {
-            margin-top: 20px;
-            line-height: 3;
+            a {
+                width: 100px;
+            }
         }
     }
  </style>
  <script>
     import '../alarm-time.tag'
+    import '../../common/stepper.tag'
 
     this.mixin('TimeUtil');
 
@@ -74,8 +78,7 @@
             page("/sleeper/alarms/add/personality")
         } catch (e) {
             console.log("Error saving progress", e);
-            this.error = e.message;
-            this.update();
+            phonon.alert(e.message, "Oops!", false, "Ok");
         }
     }
 
