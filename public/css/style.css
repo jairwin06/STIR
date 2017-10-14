@@ -15,6 +15,13 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield !important; }
 
+.header-bar {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  background-color: #2196f3;
+  height: 62px; }
+  .header-bar .title {
+    line-height: 62px; }
+
 .header-bar ~ .content {
   margin-top: 62px; }
 
@@ -85,9 +92,6 @@ sleeper-alarms .welcome-back {
 sleeper-alarms .clock-desc {
   margin-top: 10px; }
 
-sign-up-locale .description {
-  font-size: 18px; }
-
 #rouser #alarm h1 {
   color: yellow; }
 
@@ -103,3 +107,6 @@ stage[data-is="personality"] .title {
 
 stage[data-is="personality"] .error {
   color: red; }
+
+sign-up-locale .description {
+  font-size: 18px; }

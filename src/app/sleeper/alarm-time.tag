@@ -99,6 +99,7 @@
     }
 
     onTimeBlur(e) {
+        console.log("Time Blurrr!",this.refs.time);
         if (phonon.device.os != "Android") {
             setTimeout(() => {
             console.log("Time Blurrr!",this.refs.time);
