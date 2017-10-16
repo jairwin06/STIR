@@ -94,6 +94,10 @@ class Routes {
             console.log("sign-up locale route");
             this.go(next, req, res);
         });
+        app.route('/sign-up/pronoun').get((req, res, next) => {
+            console.log("sign-up pronoun route");
+            this.go(next, req, res);
+        });
         app.route('/rouser/alarm/:id/:operation?').get((req, res, next) => {
             console.log("Rouser alarm route");
             req.appState.rouser.setAction("alarm");

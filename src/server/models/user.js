@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
     country: String,
     countryCode: String,
     locale: String,
+    pronoun: String,
     alarmLocales: [String],
     role: {type: String, default: "user"},
     password: String,

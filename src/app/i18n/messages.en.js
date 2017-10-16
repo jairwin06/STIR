@@ -8,6 +8,7 @@ const Messages =
     ALARM_TODAY:  "Today",
     ALARM_LOCALES_SLEEPER: "I would prefer to receive my wakeup message in...",
     ALARM_LOCALES_ROUSER: "I can record wakeup messages in...",
+    CONTACT_PRONOUN: "I would like to be referred to as a...",
     SLEEPER:  'SLEEPER',
     ROUSER:  'ROUSER'
 };

@@ -113,6 +113,7 @@
         import './common/sign-up/contact.tag'
         import './common/sign-up/verify.tag'
         import './common/sign-up/locale.tag'
+        import './common/sign-up/pronoun.tag'
 
         import './admin/login.tag'
         import './admin/dashboard.tag'

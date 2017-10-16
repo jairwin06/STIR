@@ -154,6 +154,9 @@ sleeper-alarms .add-alarm {
 sign-up-locale .description {
   font-size: 18px; }
 
+sign-up-pronoun .description {
+  font-size: 18px; }
+
 #rouser #alarm h1 {
   color: yellow; }
 

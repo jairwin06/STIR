@@ -135,6 +135,13 @@ export default class AuthStore extends Store {
         return result;
     }
 
+    async setPronoun(pronoun) {
+        console.log("set user pronoun", pronoun);
+        let result = await SocketUtil.rpc('user/contact::patch', null, {pronoun: pronoun});
+        this.user.pronoun = pronoun;
+        return result;
+    }
+
     async updateContact(contact) {
         console.log("Set contact", contact);
         let result = await SocketUtil.rpc('user/contact::patch',null,contact);

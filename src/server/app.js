@@ -217,7 +217,7 @@ app.service('/user/contact').hooks({
         authHooks.queryWithCurrentUser()
       ],
       patch: [
-        pluck('locale', 'alarmLocales')
+        pluck('locale', 'alarmLocales','pronoun')
       ]
     }
 })

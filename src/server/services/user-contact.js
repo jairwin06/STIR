@@ -5,22 +5,26 @@ export default class UserContactService {
         this.app = app;
     }
     find(params) {
-        // Return just the status + role + name + country/code + locale
+        // Return just the status + role + name + country/code + locale + pronoun
         return Promise.resolve({
             status: params.user.status,
             role: params.user.role,
             name: params.user.name,
             country: params.user.country,
             countryCode: params.user.countryCode,
-            locale: params.user.locale
+            locale: params.user.locale,
+            pronoun: params.user.pronoun
         });
     }
 
     patch(id,data,params) {
         console.log("update user contact!", data,params);
-        // Only allow updating the locale
-        if (!data.locale && !data.alarmLocales) {
-            return Promise.reject("No locale data");
+        // Only allow updating the locale or pronoun
+        if (!data.locale && !data.alarmLocales && !data.pronoun) {
+            return Promise.reject(new Error("No user data"));
+        }
+        else if (data.pronoun && data.pronoun != 'he' && data.pronoun != 'she' && data.pronoun != 'they') {
+            return Promise.reject(new Error("Invalid pronoun!"));
         }
         else return this.app.service("users").patch(params.user._id, data)
         .then(() => {

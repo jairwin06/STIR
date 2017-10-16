@@ -154,7 +154,12 @@
             if (IS_CLIENT) {
                 page("/sign-up/contact")
             }
-        } else {
+        } else if (!this.state.auth.user.pronoun) {
+            if (IS_CLIENT) {
+                page("/sign-up/pronoun")
+            }
+        }
+        else {
             this.state.sleeper.addAlarm();
         }
     }

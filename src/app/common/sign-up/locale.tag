@@ -79,8 +79,7 @@
             let result = await this.state.auth.setAlarmLocales(locales);
             if (result.status == "success") {
                 if (this.state.main.role == 'sleeper' && this.state.sleeper.currentAlarm) {
-                    await this.state.sleeper.addAlarm();
-                    page("/sleeper/alarms");
+                    page("/sign-up/pronoun");
                 } else if (this.state.main.role == 'rouser') {
                     page("/rouser/alarms");
                 } else {
