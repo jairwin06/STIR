@@ -28,6 +28,7 @@ node_modules
 .lock-wscript
 
 bundle.js
+style.css
 
 # JSPM packages
 jspm_packages
