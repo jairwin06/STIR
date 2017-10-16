@@ -44,6 +44,7 @@ export default class SessionService {
         .then(() => {
             console.log("Set session state data!",data);
             Session.setFor(params.user._id, {state: data});
+            return {status: "success"}
         });
     }
 

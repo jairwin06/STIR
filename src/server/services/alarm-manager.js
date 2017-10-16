@@ -169,7 +169,8 @@ export default class AlarmManager {
                             return Alarm.update(
                                 {_id: {$in: alarmIds}},
                                 {"$set": {
-                                    assignedTo: params.user._id
+                                    assignedTo: params.user._id,
+                                    assignedAt: new Date(),
                                 }}, {multi: true}
                             )
                         }

@@ -47,6 +47,7 @@ import UserModel from './models/user'
 import AlarmModel from './models/alarm'
 
 import GeneratePrompt from './services/generate-prompt'
+import TooEarlyHook from './services/too-early-hook'
 import AlarmManager from './services/alarm-manager'
 import patchAlarmHook from './services/patch-alarm'
 import dispatchMTurkHook from './services/dispatch-mturk'
@@ -168,7 +169,7 @@ app.service('/alarms/sleeper').hooks({
     before: {
         create: [
           authHooks.associateCurrentUser(),
-          (hook) => { hook.data.locales = hook.params.user.alarmLocales }
+          (hook) => { hook.data.locales = hook.params.user.alarmLocales },
         ],
         find: [
           authentication.hooks.authenticate(['jwt']),
@@ -184,6 +185,7 @@ app.service('/alarms/sleeper').hooks({
         ],
         patch: [
             authHooks.restrictToOwner({ ownerField: 'userId' }),
+            TooEarlyHook,
             patchAlarmHook
         ],
         remove: disallow('external')
@@ -194,7 +196,11 @@ app.service('/alarms/sleeper').hooks({
           pluck('_id', 'time') 
         ],
         patch: [
-          pluck('_id', 'time') 
+          (hook) => {
+            if (!hook.result) {
+                return pluck('_id', 'time')(hook);
+            }
+          }
         ]
     }
 });
@@ -221,10 +227,15 @@ app.service('/user/contact').hooks({
       ]
     }
 })
-app.service('/user/session').before({
-  find: [
-    authentication.hooks.authenticate(['jwt'])
-  ]
+app.service('/user/session').hooks({
+    before: {
+        find: [
+          authentication.hooks.authenticate(['jwt'])
+        ],
+        create: [
+            TooEarlyHook
+        ]
+    }
 });
 
 app.service('/alarms/rouser').hooks({

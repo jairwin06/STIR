@@ -105,10 +105,25 @@
     async saveAlarm(time) {
         console.log("Save alarm!", this.state.sleeper.currentAlarm._id, time);
         try {
+            let prevTime = this.state.sleeper.currentAlarm.time;
             let alarmTime = this.TimeUtil.getAlarmTime(time);
             let result = await this.state.sleeper.saveAlarmTime(alarmTime);
             console.log("Save result", result);
-            console.log(this.state.sleeper.alarms);
+            if (result.status == "too_early") {
+                let confirm = phonon.confirm("STIR needs at least " + result.hours + " hours to prepare your message, your alarm will be set for the follwing day day", "Notice", true, "Ok", "Cancel");
+
+                confirm.on('confirm', async () => {
+                    alarmTime.setDate(alarmTime.getDate() + 1);
+                    let result = await this.state.sleeper.saveAlarmTime(alarmTime);
+                    this.update();
+                });
+                confirm.on('cancel', () => {
+                    this.state.sleeper.currentAlarm.time = prevTime;
+                    this.update();
+                });
+            } else {
+                this.update();
+            }
             this.update();
         } catch (e) {
             console.log("Error saving alarm!", e);
