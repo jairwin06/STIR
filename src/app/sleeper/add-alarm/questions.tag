@@ -73,6 +73,7 @@
  <script>
     this.on('mount', async () => {
         console.log("add-alarm-questions mounted");
+        this.state.sleeper.on('alarm_created', this.onAlarmCreated);
         if (IS_CLIENT) {
           $( function() {
             $( "#sortable" ).sortable();
@@ -88,25 +89,27 @@
         e.preventDefault();
         console.log("Submit questions!");
         let questions = $(this.refs.questions).find('li').toArray().map(dom => $(dom).data("question-id"));
-        console.log(questions);
-        /*
+        console.log(questions,this.refs.name.value);
         try {
+            let analysisStatus = await this.state.sleeper.questionsAnalyze(
+                {
+                    name: this.refs.name.value,
+                    questions: questions
+                }
+            );
+            console.log("Analysis status", analysisStatus);
             this.state.sleeper.currentAlarm.analysis = 'questions';
             this.state.sleeper.currentAlarm.name = this.refs.name.value;
             if (!this.state.auth.user.name) {
                 this.state.auth.setUserName(this.refs.name.value);
             }
-            let analysisStatus = await this.state.sleeper.questionsAnalyze(
-                {name: this.refs.name.value}            
-            );
-            console.log("Analysis status", analysisStatus);
 
             this.validateCheck();
         
         } catch (err) {
             console.log("Questions analyze error!", err);
-            this.showError(err);
-        }*/
+            phonon.alert(err.message, "Something went wrong", false, "Ok");
+        }
     }
 
     validateCheck() {
@@ -121,6 +124,13 @@
         }
         else {
             this.state.sleeper.addAlarm();
+        }
+    }
+
+    onAlarmCreated() {
+        console.log("New alarm created!");
+        if (IS_CLIENT) {
+            page("/sleeper/alarms");
         }
     }
  </script>

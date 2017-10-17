@@ -54,6 +54,7 @@ import dispatchMTurkHook from './services/dispatch-mturk'
 
 import SocketUtil from '../app/util/socket'
 import TimeUtil from '../app/util/time'
+import PersistentSession from './models/session-persistent'
 
 //import {IntlMixin} from '../app/riot-intl/src/main'
 import {IntlMixin} from 'riot-intl'
@@ -170,6 +171,14 @@ app.service('/alarms/sleeper').hooks({
         create: [
           authHooks.associateCurrentUser(),
           (hook) => { hook.data.locales = hook.params.user.alarmLocales },
+          (hook) => { 
+              if (hook.data.analysis == 'questions') {
+                  console.log("Pulling questions from session!");
+                  let sessionData = PersistentSession.getFor(hook.params.user._id.toString());
+                  console.log("Pulled", sessionData.questions);
+                  hook.data.questions = sessionData.questions;
+              }
+          },
         ],
         find: [
           authentication.hooks.authenticate(['jwt']),
@@ -215,6 +224,14 @@ app.service('twitter-analyze').before({
     authentication.hooks.authenticate(['jwt'])
   ]
 });
+
+app.service('/questions-analyze').hooks({
+    before: {
+      create: [
+        pluck('questions', 'name')
+      ]
+    }
+})
 
 app.service('/user/contact').hooks({
     before: {

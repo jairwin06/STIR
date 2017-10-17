@@ -16,6 +16,7 @@ const AlarmSchema = new mongoose.Schema({
     notifiedSleeper: {type: Boolean, default: false},
     notifiedRousers: {type: Boolean, default: false},
     locales: [String],
+    questions: [String],
     recording: {
         rouserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         recordingUrl: {type: String, default: null},

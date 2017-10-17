@@ -1,22 +1,26 @@
+import Session from '../models/session-persistent'
+
 export default class QuestionsAnalyzeService {
     setup(app) {
         this.app = app;
     }
-    find(params) {
-        console.log("Questions Analyze service! params: ", params);
+    create(data, params) {
+        console.log("Questions Analyze service! params: ", data);
+        Session.setFor(params.user._id, {questions: data.questions });
 
-        return this.app.service("users").patch(params.user._id, {name: params.query.name})
+        return this.app.service("users").patch(params.user._id, data)
         .then(() => {
-            return {status: "success", userName: params.user.name};
+            return {status: "success", userName: data.name};
         })
         .catch((err) => {
             return Promise.reject(err);
         });
     }
 
-    async analyze(user) {
+    analyze(user) {
         try {
             console.log("Done");
+            Session.setFor(user._id, {questions: null });
             return Promise.resolve({status: "success", personality: {}});
         }
         catch(err) {
