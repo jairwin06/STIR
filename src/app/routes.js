@@ -54,6 +54,9 @@ class Routes {
         app.route('/sleeper/alarms/add/personality').get((req, res, next) => {
             this.go(next, req, res);
         });
+        app.route('/sleeper/alarms/add/questions').get((req, res, next) => {
+            this.go(next, req, res);
+        });
         app.route('/sleeper/alarm/:id').get((req, res, next) => {
             this.populate(req, 'sleeper', 'chooseAlarm', req.params.id);
             req.page = "sleeper-edit-alarm";

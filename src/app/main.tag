@@ -102,6 +102,7 @@
 
         import './sleeper/add-alarm/add-time.tag'
         import './sleeper/add-alarm/personality.tag'
+        import './sleeper/add-alarm/questions.tag'
         import './sleeper/clock.tag'
     
 

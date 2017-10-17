@@ -20,13 +20,6 @@
             <a id="questions-link" href="/sleeper/alarms/add/questions">Not on social media?</a>
         </div>
         <div style="margin-top:30px;"></div>
-         <b show"{error}" class="error">{error}</b>
-          <span class="title">Opt-out and answer some questions</span>
-          <form action="" onsubmit="{submitQuestions}">
-            Your name <input type="text" name="name" ref="name">
-            <button type="submit">Submit</button>
-          </form>
-          </p>
           <p>
             <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
           </p>
@@ -38,30 +31,25 @@
   </div>
   
  <style>
-     stage[data-is="personality"] {
-         .title {
-            font-size: 30px;
+
+     sleeper-alarms-add-personality {
+         #choose-text {
+            margin-top: 20px;
+         } 
+         #social-buttons {
+             display: flex;
+             margin-top: 15px;
+             margin-bottom: 15px;
+             
+             a {
+                line-height: 1.5;
+                margin-left: 10px;
+                margin-right: 10px;
+             }
          }
-         .error {
-            color: red;
+         #questions-link {
+            font-size: 12px;     
          }
-     }
-     #choose-text {
-        margin-top: 20px;
-     } 
-     #social-buttons {
-         display: flex;
-         margin-top: 15px;
-         margin-bottom: 15px;
-         
-         a {
-            line-height: 1.5;
-            margin-left: 10px;
-            margin-right: 10px;
-         }
-     }
-     #questions-link {
-        font-size: 12px;     
      }
  </style>
  <script>
@@ -128,26 +116,6 @@
         this.state.sleeper.off('alarm_created', this.onAlarmCreated);
     });
 
-    async submitQuestions(e) {
-        e.preventDefault();
-        try {
-            this.state.sleeper.currentAlarm.analysis = 'questions';
-            this.state.sleeper.currentAlarm.name = this.refs.name.value;
-            if (!this.state.auth.user.name) {
-                this.state.auth.setUserName(this.refs.name.value);
-            }
-            let analysisStatus = await this.state.sleeper.questionsAnalyze(
-                {name: this.refs.name.value}            
-            );
-            console.log("Analysis status", analysisStatus);
-
-            this.validateCheck();
-        
-        } catch (err) {
-            console.log("Questions analyze error!", err);
-            this.showError(err);
-        }
-    }
 
     validateCheck() {
         if (!this.state.auth.user.status.phoneValidated) {
