@@ -5,20 +5,47 @@
     </div>
 </header>
 <div class="content">
-   <div id="prompt" class="row">
-      {state.rouser.currentAlarm.prompt}
-   </div>
+   <div id="prompt" class="padded-full">
+        <div class="intro row">
+            Today you'll be waking {state.rouser.currentAlarm.name}.
+        </div> 
+        <p each="{text, i in state.rouser.currentAlarm.prompt.paragraphs}">{text}</p>
+        <ul class="">
+          <li each="{text, i in state.rouser.currentAlarm.prompt.instructions}">
+            {text}
+          </li>
+        </ul>
+
    <form action="" onsubmit="{requestCall}">
     <p>
         <b>Press the button to receive the call</b>
     </p>
-    <input type="submit" value="Receive Call">
+    <button class="btn primary raised" type="submit">Receive Call</button>
     </form>
     <img show="{loading}" src="/images/loading.gif">
     <b show"{error}" class="error">{error}</b>
+   </div>
 </div>
 
- <style>
+ <style>    
+    #prompt {
+        .intro {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }        
+        p {
+            font-size: 16px;
+        }
+        ul {
+            padding-left: 10px;
+            margin-top: 0;
+
+            li {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+        }
+    }
  </style>
 
  <script>

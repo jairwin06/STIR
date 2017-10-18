@@ -1,6 +1,6 @@
 import tracery from 'tracery-grammar'
-import PromptLogic from '../server/models/prompt-logic'
 import Personality from './personality'
+import PromptLogic from '../server/models/prompt-logic'
 import MiscUtil from '../app/util/misc'
 
 const promptSyntax = {

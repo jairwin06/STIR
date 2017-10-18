@@ -3,7 +3,10 @@ import mongoose from 'mongoose'
 const AlarmSchema = new mongoose.Schema({
     time: {type: Date, required: true},
     name: {type: String, required: true},
-    prompt: {type: String, required: false},
+    prompt: {
+        paragraphs: [String],
+        instructions: [String]
+    },
     analysis: {type: String, required: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     assignedTo: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},

@@ -1,38 +1,16 @@
 import Session from '../models/session-persistent'
 import tracery from 'tracery-grammar'
 import WatsonUtil from '../util/watson'
+import PromptLogic from '../models/prompt-logic'
+import MiscUtil from '../../app/util/misc'
 
 const promptSyntax = {
-  "sentences": [
-    "#intro_sentence#"
+  "sentence": [
+    ""
   ],
-  "intro_sentence": [
-    "Today you’ll be waking: #name#."
-  ],
-  "location_sentence": [
-    "#name# lives in #location#, where it's #weather#.",
-    "Right now it's #weather# in #name#'s neck of the woods, #location#.",
-    "In #location#, where #name# lives, it's currently #weather#.",
-    "The weather in #pronoun_possessive# city, #location#, is currently #weather#."
-  ],
-  "personality_sentence": [
-    "#name# #description_sentence#, with a strong leaning toward #personality1_child1# and #personality1_child2#.",
-    "As someone who #description_sentence#, #name# has a talent for #personality1_child1# and #personality1_child2#.",
-    "#name# #description_sentence#, with a strong leaning towards #personality1_child1# and #personality1_child2#."
-  ],
-  "pronoun": "They",
-  "pronoun_possessive": "Their",
-  "location": "Somewhere",
-  "weather": "Unknown",
-  "personality1": null,
-  "personality1_child1": null,
-  "personality1_child2": null,
-  "description_sentence": null,
-  "prompt_sentence": null
+  "name": "Sleeper",
+  "pronoun": "he"
 };
-
-const DUMMY_PROMPT = "Today you’ll be waking Charlotte, from New York City. Here are some things about Charlotte that may help you create your message: Charlotte is deeply philosophical and is an appreciator of beauty, art and nature. Charlotte is supremely intellectual. She is intrigued by new ideas and loves to explore them. She needs curiosity in her life. One thing you might want to know about Charlotte too, is that she is easily rattled, easily irked. She can be uneasy and fearful about the future. For your message to Charlotte, we encourage you to share how deeply impressed you are by her intellect. Remind her to let her curiosity and quest for novel ideas guide her through this new day. And, reassure her that it’s okay to feel anxious sometimes, and that it doesn’t have to get in her way and she goes forth.";
-
 
 export default function (hook) {
     console.log("Generate prompt!");
@@ -45,6 +23,7 @@ export default function (hook) {
 function generatePrompt(app, alarmId, analysis,  user, tryNumber) {
     let promptData = Object.assign({}, promptSyntax);
     promptData.name = user.name;
+    promptData.pronoun = user.pronoun;
 
     let alarmData = {
         analyzed: true
@@ -57,26 +36,22 @@ function generatePrompt(app, alarmId, analysis,  user, tryNumber) {
         } else if (analysis == 'facebook') {
             return app.service('fbanalyze').analyze(user)
         } else {
-            return null;
+            return app.service('questions-analyze').analyze(user)
         }
     })
     .then((result) => {
         if (result) {
             if (result.status == "success") {
-                addPersonality(promptData, result.personality)
                 alarmData.debug = {
                     watson: JSON.stringify(result.personality)
                 }
+                alarmData.prompt = runLogic(promptData, result.personality)
             } else {
                 throw new Error(result.message);
             }
         }
-        console.log("Final prompt syntax", promptData);
-        let grammar = tracery.createGrammar(promptData);
-        //alarmData.prompt = grammar.flatten('#sentences#')
-        alarmData.prompt = DUMMY_PROMPT;
-
         console.log("Final prompt", alarmData.prompt);
+
         return app.service('alarms/sleeper').patch(alarmId,alarmData);
     })
     .catch((err) => {
@@ -85,9 +60,71 @@ function generatePrompt(app, alarmId, analysis,  user, tryNumber) {
     })
 }
 
-function addPersonality(promptData, data) {
-    console.log("Adding personality data");
-    promptData.sentences[0] += " #personality_sentence# #prompt_sentence#";
-    Object.assign(promptData, WatsonUtil.getDataForPrompt(data));
-}
 
+function runLogic(promptData, data) {
+    let promptParagraphs = [];
+    let promptInstructions = [];
+
+    const PRONOUN = promptData.pronoun;
+
+    // Sory the big5s by percentile
+    let big5s = data.personality.sort((a,b) => a.percentile < b.percentile);
+
+    let biggestBig5 = big5s[0];
+    console.log(biggestBig5.trait_id);
+
+    let remaining = {
+        highs : big5s.slice(1,3),
+        lows  : big5s.slice(3,5),
+    }
+
+    // Choose a high or a low?
+    let choice = (Math.random() < 0.5) ? 'highs' : 'lows';
+    console.log("Chose " + choice);
+
+    // Choose the big5
+    let chosenBig5 = MiscUtil.getRandomElement(remaining[choice]);
+    console.log(chosenBig5.trait_id)
+
+    promptParagraphs.push(PromptLogic.big5s[biggestBig5.trait_id][choice][chosenBig5.trait_id].paragraph[PRONOUN]);
+    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id][choice][chosenBig5.trait_id].instruction[PRONOUN]);
+
+    // Choose the facet
+    // Sort them, get rancom from top 2
+    let facets = biggestBig5.children.sort((a,b) => a.percentile < b.percentile);
+    let top2Facets = facets.slice(0,2);
+    let facet = MiscUtil.getRandomElement(top2Facets); 
+    console.log(facet.trait_id);
+
+    promptParagraphs.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].paragraph[PRONOUN]);
+    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].instructions[0][PRONOUN]);
+    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].instructions[1][PRONOUN]);
+
+    // Choose the need
+    let needs = data.needs.sort((a,b) => a.percentile < b.percentile);
+    let top2Needs = needs.slice(0,2);
+    let need = MiscUtil.getRandomElement(top2Needs); 
+    console.log(need.trait_id);
+
+    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].needs[need.trait_id].instruction[PRONOUN]);
+
+    // Result
+    let resultParagraphs = [];
+    let resultInstructions = [];
+
+    for (promptParagraph of promptParagraphs) {
+        promptData.sentence[0] = promptParagraph;
+        let grammar = tracery.createGrammar(promptData);
+        resultParagraphs.push(grammar.flatten('#sentence#'));
+    }
+    for (promptInstruction of promptInstructions) {
+        promptData.sentence[0] = promptInstruction;
+        let grammar = tracery.createGrammar(promptData);
+        resultInstructions.push(grammar.flatten('#sentence#'));
+    }
+
+    return {
+        paragraphs: resultParagraphs,
+        instructions: resultInstructions
+    }
+}
