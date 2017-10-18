@@ -5,47 +5,63 @@
     </div>
 </header>
 <div class="content">
-   <div id="prompt" class="padded-full">
-        <div class="intro row">
-            Today you'll be waking {state.rouser.currentAlarm.name}.
-        </div> 
-        <p each="{text, i in state.rouser.currentAlarm.prompt.paragraphs}">{text}</p>
-        <ul class="">
-          <li each="{text, i in state.rouser.currentAlarm.prompt.instructions}">
-            {text}
-          </li>
-        </ul>
-
-   <form action="" onsubmit="{requestCall}">
-    <p>
-        <b>Press the button to receive the call</b>
-    </p>
-    <button class="btn primary raised" type="submit">Receive Call</button>
-    </form>
-    <img show="{loading}" src="/images/loading.gif">
-    <b show"{error}" class="error">{error}</b>
+  <div class="padded-full">
+      <div class="description row">
+            <b>Once you’ve read the prompt below, press the button to record your message.</b>
+      </div>
+      <p>
+      <div class="row notice">
+          We’ll give you a call to do the recording, so have your phone close by.
+      </div>
+      </p>
+      <div id="prompt">
+            <div class="intro row">
+                Today you'll be waking {state.rouser.currentAlarm.name}.
+            </div> 
+            <p each="{text, i in state.rouser.currentAlarm.prompt.paragraphs}">{text}</p>
+            <p><i>For your message to {state.rouser.currentAlarm.name}, consider the following, and feel free to elaborate:</i></p>
+            <ul class="">
+              <li each="{text, i in state.rouser.currentAlarm.prompt.instructions}">
+                {text}
+              </li>
+            </ul>
+       </div>
+       <form action="" onsubmit="{requestCall}">
+            <button class="btn primary raised" type="submit">Receive a call to leave a message</button>
+       </form>
+       <img show="{loading}" src="/images/loading.gif">
+       <b show"{error}" class="error">{error}</b>
    </div>
 </div>
 
  <style>    
-    #prompt {
-        .intro {
-            font-size: 18px;
+     rouser-alarm-record {
+        .description {
             margin-bottom: 10px;
-        }        
-        p {
-            font-size: 16px;
         }
-        ul {
-            padding-left: 10px;
-            margin-top: 0;
-
-            li {
+        .notice {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        #prompt {
+            .intro {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }        
+            p {
                 font-size: 16px;
-                margin-bottom: 5px;
+            }
+            ul {
+                padding-left: 10px;
+                margin-top: 0;
+
+                li {
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                }
             }
         }
-    }
+     }
  </style>
 
  <script>

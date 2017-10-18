@@ -5,25 +5,46 @@
     </div>
 </header>
 <div class="content">
-   <div id="prompt" class="row">
-      Preview your wake-up message
-   </div>
-   <div>
-    <p>
-        <audio controls="controls">
-            <source src={state.rouser.recording.mixUrl} type="audio/wav">
-        </audio>
-    </p>
-    <button type="button" click="{recordAgain}">Retry the recording</button>
-    <p>
-    <form action="" onsubmit="{finalize}">
-       <input type="submit" value="Finalize rouse">
-    </p>
-    </form>
+    <div class="padded-full">
+       <div class="row description">
+          <b>Here’s a preview of your wakeup message</b>
+       </div>
+       <div class="row explanation">
+            <p>We mixed your message with some personalized music for the Sleeper.</p>
+
+            <p>If you’re happy, submit your message and we’ll deliver it to your Sleeper at their chosen wakeup time.</p>
+
+            <p>If you’d like to rerecord, we’ll call you back.</p>
+       </div>
+       <div>
+        <p>
+            <audio controls="controls">
+                <source src={state.rouser.recording.mixUrl} type="audio/wav">
+            </audio>
+        </p>
+        <button class="btn primary raised" type="button" click="{recordAgain}">Rerecord</button>
+        <form action="" onsubmit="{finalize}">
+           <button class="btn positive raised" type="submit" click="{recordAgain}">Submit Message</button>
+        </form>
+        </div>
     </div>
 </div>
 
 <style>
+    rouser-alarm-mix {
+        .description {
+            margin-bottom: 10px;
+        }
+        .explanation {
+            p {
+                font-size: 16px;
+            }
+        }
+        form {
+            display: inline-block;
+        }
+
+    }
 </style>
     <script>
         this.on('mount', () => {
