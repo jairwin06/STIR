@@ -8,6 +8,9 @@ import Errors from 'feathers-errors'
 let ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt locales"
 
+const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
+const STALLLING_TIMEOUT_HOURS = 1;
+
 export default class AlarmManager {
     constructor() {
     }
@@ -33,6 +36,11 @@ export default class AlarmManager {
         setInterval(() => {
             this.tick();
         },1000);
+
+        // Routine tasks
+        setInterval(() => {
+            this.routineTasks();            
+        },ROUTINE_TASKS_INTERVAL)
     }
     tick() {
         if (this.nextAlarms.length > 0 && this.nextAlarms[0].time.getTime() <= new Date().getTime()) {
@@ -239,4 +247,32 @@ export default class AlarmManager {
             return Promise.reject(new Errors.NotFound());
         });
     }
+
+
+    // Routine tasks
+    // ---------------
+    //
+    routineTasks() {
+        console.log("Routine tasks\n-------------");   
+        console.log("Free stalled alarms");
+        this.freeStalledAlarms()
+        .then((result) => {
+            console.log(result);
+        })
+    }
+
+    freeStalledAlarms() {
+        let timeout = new Date();
+        timeout.setHours(timeout.getHours() - STALLLING_TIMEOUT_HOURS);
+
+        return Alarm.update(
+            { 
+               'recording.finalized' : false,
+               'assignedTo': {$ne: null},
+               'assignedAt': {$lt: timeout}
+            }, 
+            { $set: { assignedTo: null  } }
+        );
+    }
+
 }
