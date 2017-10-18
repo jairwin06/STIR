@@ -27,9 +27,18 @@
                     </li>
                 </ul>
               </div>
-              <div class="row prompt">
-                  {state.rouser.currentAlarm.prompt}
-              </div>
+              <div id="prompt">
+                    <div class="intro row">
+                        Today you'll be waking {state.rouser.currentAlarm.name}.
+                    </div> 
+                    <p each="{text, i in state.rouser.currentAlarm.prompt.paragraphs}">{text}</p>
+                    <p><i>For your message to {state.rouser.currentAlarm.name}, consider the following, and feel free to elaborate:</i></p>
+                    <ul class="">
+                      <li each="{text, i in state.rouser.currentAlarm.prompt.instructions}">
+                        {text}
+                      </li>
+                    </ul>
+               </div>
               <div show="{!ready}" class="row placeholder">
                 <i>Accept the HIT to begin recording</i>
               </div>
@@ -107,10 +116,10 @@
     }
    .language-requirement {
         font-size: 16px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
     }
    .prompt {
-        border-top: 1px solid #ddd;
-        padding-top: 20px;
         font-size: 16px;
         line-height: 23px;
     }

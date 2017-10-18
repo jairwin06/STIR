@@ -95,6 +95,24 @@
             bottom: 10%;
             width: 100%;
         }
+        #prompt {
+            .intro {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }        
+            p {
+                font-size: 16px;
+            }
+            ul {
+                padding-left: 10px;
+                margin-top: 0;
+
+                li {
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                }
+        }
+    }
     </style>
 
     <script>
