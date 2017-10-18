@@ -41,10 +41,10 @@ for (big5 in PromptLogic.big5s) {
                                     promptParagraphs.push(PromptLogic.person_types[big5Obj.person_type].instruction[PRONOUN]);
 
                                     let flattenedPargraphs = [];
-                                    for (promptParagraph of promptParagraphs) {
-                                        promptSyntax.sentence[0] = promptParagraph;
-                                        let grammar = tracery.createGrammar(promptSyntax);
-                                        flattenedPargraphs.push(grammar.flatten('#sentence#'));
+                                    for (promptparagraph of promptparagraphs) {
+                                        promptsyntax.sentence[0] = promptparagraph;
+                                        let grammar = tracery.creategrammar(promptsyntax);
+                                        flattenedpargraphs.push(grammar.flatten('#sentence#'));
                                     }
                                     console.log(flattenedPargraphs.join("\n"));
                                     console.log("-------------------------------");

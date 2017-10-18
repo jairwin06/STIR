@@ -40,6 +40,11 @@ class MiscUtil {
         while (s.length < size) s = "0" + s;
         return s;
     }
+
+    getRandomElement(arr) {
+        let item = arr[Math.floor(Math.random()*arr.length)];
+        return item;
+    }
 };
 
 // Singleton
