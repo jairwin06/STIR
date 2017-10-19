@@ -53,6 +53,7 @@
         if (this.state.sleeper.currentAlarm == null) {
             this.state.sleeper.currentAlarm = {};
         }
+        this.state.sleeper.currentAlarm.timezone = this.TimeUtil.getTimezone();
         this.verified = false;
     })
     this.on('update', () => {

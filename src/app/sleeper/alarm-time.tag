@@ -4,7 +4,7 @@
         <div id="alarm-time-group">
             <formatted-time if="{opts.data.time}"class="{alarm-time: true, verifying:opts.verifying}" value="{new Date(opts.data.time)}" format="short"/>
             <formatted-time if="{!opts.data.time}"class="{alarm-time: true, verifying:opts.verifying}" value="{defaultTime}" format="short"/>
-            <span class="{alarm-timezone: true, verifying:opts.verifying}">{TimeUtil.getTimezone(i18n.locales[0])}</span>
+            <span class="{alarm-timezone: true, verifying:opts.verifying}">LOCAL TIME</span>
         </div>
         <formatted-message if="{opts.data.time}" class="{alarm-date:true, verifying:opts.verifying}" id="{TimeUtil.getDateMessageId(opts.data.time)}" date="{new Date(opts.data.time)}"/>            
         <formatted-message if="{!opts.data.time}" class="{alarm-date:true, verifying:opts.verifying}" id="{TimeUtil.getDateMessageId(this.defaultTime)}" date="{new Date(this.defaultTime)}"/>            

@@ -10,7 +10,8 @@ const Messages =
     ALARM_LOCALES_ROUSER: "I can record wakeup messages in...",
     CONTACT_PRONOUN: "I would like to be referred to as a...",
     SLEEPER:  'SLEEPER',
-    ROUSER:  'ROUSER'
+    ROUSER:  'ROUSER',
+    SLEEPER_NOTIFY: 'Hi {name}, this is a reminder from STIR. You have an alarm set at {time, time, short}'
 };
 
 export default Messages;

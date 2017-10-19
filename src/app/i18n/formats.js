@@ -2,7 +2,7 @@ const Formats = {
     time: {
         "short": {
             hour: "numeric",
-            minute: "numeric",
+            minute: "numeric"
         }
     },
     date: {

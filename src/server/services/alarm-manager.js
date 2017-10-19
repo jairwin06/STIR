@@ -4,12 +4,15 @@ import TwilioUtil from '../util/twilio'
 import MTurkUtil from '../util/mturk' 
 import Session from '../models/session-persistent'
 import Errors from 'feathers-errors'
+import {IntlMixin} from 'riot-intl'
+import I18N from '../../app/i18n/i18n'
 
 let ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt locales"
 
-const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
+const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.1;
 const STALLLING_TIMEOUT_HOURS = 1;
+const NOTIFY_SLEEPERS_HOURS = 12;
 
 export default class AlarmManager {
     constructor() {
@@ -125,7 +128,7 @@ export default class AlarmManager {
         }
     }
     messageUser(id, message) {
-        this.app.service('users').find({
+        return this.app.service('users').find({
             query: {_id: id}
         })
         .then((result) => {
@@ -254,10 +257,11 @@ export default class AlarmManager {
     //
     routineTasks() {
         console.log("Routine tasks\n-------------");   
-        console.log("Free stalled alarms");
         this.freeStalledAlarms()
         .then((result) => {
-            console.log(result);
+            console.log("Free stalled alarms: " + result.n);
+
+            return this.notifySleepers();
         })
     }
 
@@ -268,6 +272,7 @@ export default class AlarmManager {
         return Alarm.update(
             { 
                'recording.finalized' : false,
+               'deleted': false,
                'assignedTo': {$ne: null},
                'assignedAt': {$lt: timeout}
             }, 
@@ -275,4 +280,41 @@ export default class AlarmManager {
         );
     }
 
+    notifySleepers() {
+        if (process.env.NODE_ENV == 'production') {
+            let notifyTime = new Date();
+            notifyTime.setHours(notifyTime.getHours() + NOTIFY_SLEEPERS_HOURS);
+            return Alarm.find({
+                $and: [
+                    {time: {$lt: notifyTime}},
+                    {time: {$gt: new Date()}}
+                ],
+                deleted: false,
+                notifiedSleeper: false,
+                analyzed: true
+            })
+            .then((alarms) => {
+                console.log("Notify alarms", alarms.length);                
+                for (let alarm of alarms) {
+                    this.app.service('users').get(alarm.userId)
+                    .then((user) => {
+                        let message = IntlMixin.formatMessage('SLEEPER_NOTIFY',{
+                            name: user.name,
+                            time: alarm.time
+                        },I18N,user.locale);
+                        console.log("Message user: ",message);
+                    })
+                    .catch((err) => {
+                        console.log("Error notifying sleeper", err);
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log("Error notifying sleepers!", err);
+            });
+        }
+        else {
+            return Promise.resolve({n: 0});
+        }
+    }
 }

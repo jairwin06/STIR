@@ -1,3 +1,5 @@
+import jstz from 'jstimezonedetect'
+
 class TimeUtil {
     constructor() {
     }
@@ -29,13 +31,33 @@ class TimeUtil {
         return alarmTime;
     }
 
-    getTimezone(locale) {
-        let dtf = Intl.DateTimeFormat(locale, {timeZoneName: "short"});
-        if (dtf.formatToParts) {
+    getTimezone() {
+        let dtf = Intl.DateTimeFormat();
+        let timezone;
+
+        if (dtf.resolvedOptions) {
+            timezone = dtf.resolvedOptions().timeZone;
+        }
+        else {
+            let tz = jstz.determine();
+            timezone = tz.name();
+        }
+        console.log("User timezone: ", timezone);
+        return timezone;
+        
+        /*
+        else if (dtf.formatToParts) {
             return dtf.formatToParts(new Date())[6].value;
         } else {
-            return "LOCAL TIME";
+            let tz = null;
+            try {
+                tz = (new Date).toString().split('(')[1].slice(0, -1);
+            }
+            catch (err) {
+            }
+            return tz || "LOCAL TIME";
         }
+        return "LOCAL TIME"; */
     }
 
     getDefaultTime() {
