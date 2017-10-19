@@ -5,9 +5,9 @@
                 <div class="pull-left">
                     <h1 class="title">STIR</h1>
                 </div>
-                <div class="pull-right">
+                <!--div class="pull-right">
                     <span class="title arrow pull-right" data-popover-id="lang-popover">{state.auth.locale.toUpperCase()}</span>
-                </div>
+                </div-->
             </header>
             <div class="content">
                 <div>

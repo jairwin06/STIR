@@ -6,6 +6,7 @@ class NFBUtil {
     }
 
     async getSettings(url,ip) {
+        console.log("NFB: ", ip);
         return FetchUtil.postJSON(
             url,
             {

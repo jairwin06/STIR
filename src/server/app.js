@@ -71,6 +71,12 @@ global.SERVER_URL = process.env['SERVER_URL'];
 
 SocketUtil.initWithUrl("http://localhost:3030");
 
+const LANGUAGE_PATHS = {
+    '/en' : 'en',
+    '/fr': 'fr',
+    '/de': 'de'
+}
+
 const app = feathers()
 .set('views', process.env.APP_BASE_PATH + "/src/server/views")
 .set('view engine', 'ejs')
@@ -86,7 +92,11 @@ const app = feathers()
 .use(bodyParser.urlencoded({ extended: true  }))
 .use(function(req, res, next) {
     req.feathers.ip = req.ip;
-    req.feathers.locale = req.locale = req.acceptsLanguages('en','fr','de') || 'en';
+    if (LANGUAGE_PATHS[req.path]) {
+        req.feathers.locale = req.locale = LANGUAGE_PATHS[req.path];
+    } else {
+        req.feathers.locale = req.locale = req.acceptsLanguages('en','fr','de') || 'en';
+    }
     next();
 })
 .use(session({ secret: AuthSettings.secret, resave: true, saveUninitialized: true  }));
@@ -347,7 +357,10 @@ app.use(async function (req, res, next) {
         res.status(404).send('Nothing to see here!');
     } else {
         try {
-            let nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip);
+            let nfbSettings = null;
+            if (!req.query.assignmentId) {
+                nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip);
+            }
 
             console.log(nfbSettings);
 
@@ -375,12 +388,21 @@ app.use(async function (req, res, next) {
                   return ((key == '_state' || key == 'debug') ? function() {} : value); 
             });
             initialData = initialData.replace(/\'/g,"\\'");
-            console.log(initialData);
-            res.render('index', {
+
+            let renderOpts = {
               initialData: initialData,
-              body: render('main', req.appState),
-              nfbShare: nfbSettings.share
-            });
+              body: render('main', req.appState)
+            };
+
+            if (nfbSettings) {
+                Object.assign(renderOpts, {
+                    nfbShare: nfbSettings.share,
+                    nfbDeps: nfbSettings.dependencies,
+                    nfbHeader: nfbSettings.header
+                });
+            } 
+            res.render('index', renderOpts);
+
         } catch(err) {
             console.log("Error in rendering!", err);
             return next(err);
@@ -388,7 +410,7 @@ app.use(async function (req, res, next) {
     }
 });
 
-app.use(errorHandler());
+//app.use(errorHandler());
 
 
 console.log("Starting server");

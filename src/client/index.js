@@ -21,8 +21,7 @@ import 'phonon/dist/js/phonon-core'
 import 'phonon/dist/js/components/dialogs'
 import 'phonon/dist/js/components/preloaders'
 import 'phonon/dist/js/components/forms'
-import 'phonon/dist/js/components/forms'
-import 'phonon/dist/js/components/popovers'
+//import 'phonon/dist/js/components/popovers'
 
 console.log("Client loading!");
 
@@ -50,6 +49,7 @@ phonon.options({
 	i18n: null
 });
 
+/*
 let popover = phonon.popover('#lang-popover').onItemChanged(function (data) {
         if (data.value != state.auth.locale) {
             console.log("Language changed!", data)
@@ -62,7 +62,7 @@ let popover = phonon.popover('#lang-popover').onItemChanged(function (data) {
             mixinObj.i18n.locales = [state.auth.locale];
             updateTag(phonon.navigator().currentPage);
         }
-}) 
+})*/ 
 
 function updateTag(name) {
     let tags = phonon.tagManager.getAll();

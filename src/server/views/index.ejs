@@ -7,15 +7,17 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 
-  <%- nfbShare.join('\n') %>
+  <%- typeof nfbShare != 'undefined' ? nfbShare.join('\n') : '' %>
 
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
   <link rel="stylesheet" href="/css/material-icons.css">
   <link rel="stylesheet" href="/css/intlTelInput.css">
   <link rel="stylesheet" href="/css/phonon.min.css">
   <link rel="stylesheet" href="/css/style.css">
+
+  <%- typeof nfbDeps != 'undefined' ? nfbDeps.join('\n') : '' %>
+
   <script src="/lib/socket.io.slim.js"></script>
-  <script src="/lib/jquery-3.2.1.min.js"></script>
   <script src="/lib/jquery-ui.min.js"></script>
   <script src="/lib/jquery.ui.touch-punch.min.js"></script>
   <script src="/lib/intlTelInput.min.js"></script>
@@ -28,19 +30,20 @@
 
     var initialData = '<%- initialData %>'
   </script>
-  <!--script src="/lib/phonon.js"></script-->
   </head>
   <body>
+    <%- typeof nfbHeader != 'undefined' ? nfbHeader.join('\n') : '' %>
     <%- body %>
 
     <!--Language Popover-->
-    <div class="popover" id="lang-popover">
+    <!--div class="popover" id="lang-popover">
         <ul class="list">
             <li><a data-value="en" class="padded-list">EN</a></li>
             <li><a data-value="fr" class="padded-list">FR</a></li>
             <li><a data-value="de" class="padded-list">DE</a></li>
         </ul>
-    </div>
+    </div-->
+
     <!-- PAGES -->
     <sleeper-alarms data-page="true"></sleeper-alarms>
     <sleeper-alarms-add data-page="true"></sleeper-alarms-add>
