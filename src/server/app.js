@@ -55,6 +55,7 @@ import dispatchMTurkHook from './services/dispatch-mturk'
 import SocketUtil from '../app/util/socket'
 import TimeUtil from '../app/util/time'
 import PersistentSession from './models/session-persistent'
+import NFBUtil from './util/nfb'
 
 //import {IntlMixin} from '../app/riot-intl/src/main'
 import {IntlMixin} from 'riot-intl'
@@ -346,6 +347,10 @@ app.use(async function (req, res, next) {
         res.status(404).send('Nothing to see here!');
     } else {
         try {
+            let nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip);
+
+            console.log(nfbSettings);
+
             for (let i = 0; i < req.populateQueue.length; i++) {
                 let taskObj = req.populateQueue[i];
                 console.log("Runnint task", taskObj);
@@ -373,7 +378,8 @@ app.use(async function (req, res, next) {
             console.log(initialData);
             res.render('index', {
               initialData: initialData,
-              body: render('main', req.appState)
+              body: render('main', req.appState),
+              nfbShare: nfbSettings.share
             });
         } catch(err) {
             console.log("Error in rendering!", err);
