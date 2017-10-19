@@ -11,7 +11,7 @@ const Messages =
     CONTACT_PRONOUN: "I would like to be referred to as a...",
     SLEEPER:  'SLEEPER',
     ROUSER:  'ROUSER',
-    SLEEPER_NOTIFY: 'Hi {name}, this is a reminder from STIR. You have an alarm set at {time, time, short}'
+    SLEEPER_NOTIFY: 'Hi {name}, this is a reminder from STIR. You have a wakeup call set for {time, time, short}.'
 };
 
 export default Messages;

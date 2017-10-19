@@ -61,9 +61,9 @@ export default class SleeperStore extends Store {
         }
     }
 
-    async saveAlarmTime(newTime) {
-        console.log("Saving alarm", this.currentAlarm, newTime);
-        let result = await SocketUtil.rpc('alarms/sleeper::patch', this.currentAlarm._id, {time: newTime});
+    async saveAlarmTime(newTime, timezone) {
+        console.log("Saving alarm", this.currentAlarm, newTime, timezone);
+        let result = await SocketUtil.rpc('alarms/sleeper::patch', this.currentAlarm._id, {time: newTime, timezone: timezone});
         this.currentAlarm.time = newTime.toString();
         return result;
     }

@@ -52,8 +52,8 @@ gulp.task('css-watch',['css'], function() {
 });
 
 gulp.task('rollup', function() {
-
- var stream = rollup({
+ 
+ var rollupOptions = {
     entry: 'src/client/index.js',
     external: ['jquery'],
     globals: {
@@ -70,9 +70,14 @@ gulp.task('rollup', function() {
         jsnext: true,
         main: true
       })
-      //uglify()
     ]
-  })
+ };
+
+ if (process.env.NODE_ENV == 'production') {
+     rollupOptions.plugins.push(uglify());
+ }
+
+ var stream = rollup(rollupOptions)
   .on('error', function(error) {
       console.error("Rollup error", error);
       stream.end();

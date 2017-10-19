@@ -5,12 +5,12 @@ import MTurkUtil from '../util/mturk'
 import Session from '../models/session-persistent'
 import Errors from 'feathers-errors'
 import {IntlMixin} from 'riot-intl'
-import I18N from '../../app/i18n/i18n'
+import {withTimezone} from '../../app/i18n/i18n'
 
 let ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt locales"
 
-const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.1;
+const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;
 const NOTIFY_SLEEPERS_HOURS = 12;
 
@@ -263,6 +263,9 @@ export default class AlarmManager {
 
             return this.notifySleepers();
         })
+        .then((result) => {
+            console.log("Notified sleepers: " + result.n);
+        })
     }
 
     freeStalledAlarms() {
@@ -294,20 +297,31 @@ export default class AlarmManager {
                 analyzed: true
             })
             .then((alarms) => {
-                console.log("Notify alarms", alarms.length);                
-                for (let alarm of alarms) {
-                    this.app.service('users').get(alarm.userId)
+                let action = (alarm) => {
+                    return this.app.service('users').get(alarm.userId)
                     .then((user) => {
                         let message = IntlMixin.formatMessage('SLEEPER_NOTIFY',{
                             name: user.name,
                             time: alarm.time
-                        },I18N,user.locale);
-                        console.log("Message user: ",message);
+                        },withTimezone(alarm.timezone),user.locale);
+
+                        return this.messageUser(user._id, message);
+                    })
+                    .then((result) => {
+                        return this.app.service('alarms/sleeper').patch(alarm._id, {notifiedSleeper: true});
                     })
                     .catch((err) => {
                         console.log("Error notifying sleeper", err);
                     })
                 }
+                let actions = [];
+                for (let alarm of alarms) {
+                    actions.push(action(alarm));
+                }
+                return Promise.all(actions);
+            })
+            .then((results) => {
+                return {n: results.length}
             })
             .catch((err) => {
                 console.log("Error notifying sleepers!", err);
