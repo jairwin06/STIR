@@ -13,6 +13,7 @@ const FIELDS_TO_RETURN = "_id time name prompt locales"
 const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;
 const NOTIFY_SLEEPERS_HOURS = 12;
+const MTURK_TRIGGER_HOURS = 3;
 
 export default class AlarmManager {
     constructor() {
@@ -256,15 +257,27 @@ export default class AlarmManager {
     // ---------------
     //
     routineTasks() {
-        console.log("Routine tasks\n-------------");   
         this.freeStalledAlarms()
         .then((result) => {
-            console.log("Free stalled alarms: " + result.n);
-
+            if (result.n > 0) {
+                console.log("Free stalled alarms: " + result.n);
+            }
             return this.notifySleepers();
         })
         .then((result) => {
-            console.log("Notified sleepers: " + result.n);
+            if (result.n > 0) {
+                console.log("Notified sleepers: " + result.n);
+            }
+
+            return this.dispathMturk();
+        })
+        .then((result) => {
+            if (result.n > 0) {
+                console.log("Dispatched MTurk" + result.n);
+            }
+        })
+        .catch((err) => {
+            console.log("Unexpected error in routine tasks", err);
         })
     }
 
@@ -325,6 +338,44 @@ export default class AlarmManager {
             })
             .catch((err) => {
                 console.log("Error notifying sleepers!", err);
+                return Promise.resolve({n: 0});
+            });
+        }
+        else {
+            return Promise.resolve({n: 0});
+        }
+    }
+
+    dispathMturk() {
+        if (process.env.NODE_ENV == 'production') {
+            let triggerTime = new Date();
+            triggerTime.setHours(triggerTime.getHours() + MTURK_TRIGGER_HOURS);
+            return Alarm.find({
+                $and: [
+                    {time: {$lt: triggerTime}},
+                    {time: {$gt: new Date()}}
+                ],
+                deleted: false,
+                analyzed: true,
+                assignedTo: null,
+                mturk: false
+            })
+            .then((alarms) => {
+                let action = (alarm) => {
+                    return this.app.service('alarms/admin').patch(alarm._id, {assignedTo: null, mturk: true});
+                }
+                let actions = [];
+                for (let alarm of alarms) {
+                    actions.push(action(alarm));
+                }
+                return Promise.all(actions);
+            })
+            .then((results) => {
+                return {n: results.length}
+            })
+            .catch((err) => {
+                return Promise.resolve({n: 0});
+                console.log("Error Dispatching mturk", err);
             });
         }
         else {

@@ -45,7 +45,7 @@ class MTurkUtil {
               <FrameHeight>900</FrameHeight>
             </ExternalQuestion>
         `
-        params.RequesterAnnotation = id;
+        params.RequesterAnnotation = id.toString();
         params.MaxAssignments = 1;
         params.LifetimeInSeconds = timeLeft;
 
