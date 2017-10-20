@@ -5,12 +5,12 @@ class NFBUtil {
 
     }
 
-    async getSettings(url,ip) {
+    async getSettings(url,ip, locale = "") {
         console.log("NFB: ", ip);
         return FetchUtil.postJSON(
             url,
             {
-                language: "", 
+                language: locale, 
                 folder:"", 
                 ip:ip,
                 settings: process.env.SERVER_URL + "/nfb_settings.json"

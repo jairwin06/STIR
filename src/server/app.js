@@ -359,7 +359,7 @@ app.use(async function (req, res, next) {
         try {
             let nfbSettings = null;
             if (!req.query.assignmentId) {
-                nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip);
+                nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip, req.forceLocale);
             }
 
             console.log(nfbSettings);
