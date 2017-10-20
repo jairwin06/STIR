@@ -28,6 +28,7 @@ class Routes {
         app.route('/').get((req, res, next) => {
             console.log("Default route!")
             req.appState.main.setRole(null)
+            this.populate(req, 'auth', 'getStatus');
             this.go(next, req, res);
         });
 

@@ -71,10 +71,10 @@ global.SERVER_URL = process.env['SERVER_URL'];
 
 SocketUtil.initWithUrl("http://localhost:3030");
 
-const LANGUAGE_PATHS = {
-    '/en' : 'en',
-    '/fr': 'fr',
-    '/de': 'de'
+const SUPPORTED_LANGS = {
+    'en' : 'en',
+    'fr': 'fr',
+    'de': 'de'
 }
 
 const app = feathers()
@@ -92,8 +92,8 @@ const app = feathers()
 .use(bodyParser.urlencoded({ extended: true  }))
 .use(function(req, res, next) {
     req.feathers.ip = req.ip;
-    if (LANGUAGE_PATHS[req.path]) {
-        req.feathers.locale = req.locale = LANGUAGE_PATHS[req.path];
+    if (req.query.lang && SUPPORTED_LANGS[req.query.lang]) {
+        req.feathers.locale = req.forceLocale = req.locale = req.query.lang;
     } else {
         req.feathers.locale = req.locale = req.acceptsLanguages('en','fr','de') || 'en';
     }
@@ -369,7 +369,7 @@ app.use(async function (req, res, next) {
                 console.log("Runnint task", taskObj);
                 await req.appState[taskObj.store][taskObj.task].apply(req.appState[taskObj.store], taskObj.args);
             }
-            if (req.appState.auth.user.locale) {
+            if (req.appState.auth.user.locale && !req.forceLocale) {
                 req.appState.auth.locale = req.appState.auth.user.locale;
             }
             console.log("Render riot");

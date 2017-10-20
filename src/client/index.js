@@ -28,6 +28,12 @@ console.log("Client loading!");
 window.IS_SERVER = false
 window.IS_CLIENT = true
 
+const SUPPORTED_LANGS = {
+    en: 1,
+    fr: 1,
+    de: 1
+}
+
 SocketUtil.initWithUrl(window.location.protocol + "//" + window.location.host);
 
 // PHONON
@@ -103,6 +109,29 @@ Routes.runRoutingTable(window.app);
 
 page('*', function(ctx,next) {
     console.log("Page!", ctx);
+    if (ctx.querystring && ctx.querystring.indexOf('lang') >= 0) {
+        let newLocale = ctx.querystring.split('=')[1];
+        if (SUPPORTED_LANGS[newLocale] && newLocale != ctx.appState.auth.locale) {
+//            window.location = ctx.canonicalPath;
+            console.log("Language switch!", newLocale);
+            ctx.appState.auth.locale = newLocale;
+            ctx.appState.auth.updateContact(
+                {locale: ctx.appState.auth.locale}
+            );
+            let mixinObj = mixin('i18n', null, true);            
+            mixinObj.i18n.messages = Messages[ctx.appState.auth.locale];
+            mixinObj.i18n.locales = [ctx.appState.auth.locale];
+            updateTag(phonon.navigator().currentPage);
+
+            let header = $('.next-language');
+            header.removeClass('is-expanded');
+            header.find('a > span')[0].innerHTML = newLocale;
+            header.find('li.is-active').removeClass('is-active');
+            header.find('a[data-code=' + newLocale+ ']').parent().addClass('is-active');
+
+        }
+        ctx.canonicalPath = ctx.canonicalPath.split('?')[0];
+    }
     let path = ctx.canonicalPath.split('#')[0];
     if (ctx.page) {
         phonon.navigator().changePage(ctx.page);

@@ -13,7 +13,7 @@ class NFBUtil {
                 language: "", 
                 folder:"", 
                 ip:ip,
-                settings: "http://veryveryshort-dev.nfb.ca/common/sample_settings.json"
+                settings: process.env.SERVER_URL + "/nfb_settings.json"
             }
         )
     }
