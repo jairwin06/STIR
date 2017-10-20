@@ -204,6 +204,11 @@ export default class AlarmManager {
                     return result;
                 }
             })
+            .then((result) => {
+                let waitingForAlarms = (result.length == 0);
+                this.app.service("users").patch(params.user._id, {waitingForAlarms: waitingForAlarms});
+                return result;
+            })
         }
     }
     get(id, params) {
