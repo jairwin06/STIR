@@ -14,6 +14,7 @@ const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;
 const NOTIFY_SLEEPERS_HOURS = 12;
 const MTURK_TRIGGER_HOURS = 3;
+const ROUSERS_TO_NOTIFY = 5;
 
 export default class AlarmManager {
     constructor() {
@@ -312,6 +313,53 @@ export default class AlarmManager {
                 ],
                 deleted: false,
                 notifiedSleeper: false,
+                analyzed: true
+            })
+            .then((alarms) => {
+                let action = (alarm) => {
+                    return this.app.service('users').get(alarm.userId)
+                    .then((user) => {
+                        let message = IntlMixin.formatMessage('SLEEPER_NOTIFY',{
+                            name: user.name,
+                            time: alarm.time
+                        },withTimezone(alarm.timezone),user.locale);
+
+                        return this.messageUser(user._id, message);
+                    })
+                    .then((result) => {
+                        return this.app.service('alarms/sleeper').patch(alarm._id, {notifiedSleeper: true});
+                    })
+                    .catch((err) => {
+                        console.log("Error notifying sleeper", err);
+                    })
+                }
+                let actions = [];
+                for (let alarm of alarms) {
+                    actions.push(action(alarm));
+                }
+                return Promise.all(actions);
+            })
+            .then((results) => {
+                return {n: results.length}
+            })
+            .catch((err) => {
+                console.log("Error notifying sleepers!", err);
+                return Promise.resolve({n: 0});
+            });
+        }
+        else {
+            return Promise.resolve({n: 0});
+        }
+    }
+    notifyRousers() {
+        if (process.env.NODE_ENV == 'production') {
+            let notifyTime = new Date();
+            return Alarm.count({
+                time: {$gt: new Date()},
+                deleted: false,
+                notifiedRousers: false,
+                mturk: false,
+                assignedTo: null,
                 analyzed: true
             })
             .then((alarms) => {

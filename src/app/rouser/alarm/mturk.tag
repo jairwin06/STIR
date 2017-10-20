@@ -27,6 +27,9 @@
                     </li>
                 </ul>
               </div>
+              <div class="row length-requirement">
+                <b>Please record a message between 30 and 90 seconds long</b>
+              </div>
               <div id="prompt">
                     <div class="intro row">
                         Today you'll be waking {state.rouser.currentAlarm.name}.
@@ -116,8 +119,12 @@
     }
    .language-requirement {
         font-size: 16px;
-        border-bottom: 1px solid #ddd;
+    }
+   .length-requirement {
+        font-size: 16px;
+        padding-bottom: 10px;
         margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
     }
    .prompt {
         font-size: 16px;
