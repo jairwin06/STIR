@@ -26,7 +26,7 @@
               </li>
             </ul>
        </div>
-       <form action="" onsubmit="{requestCall}">
+       <form show="{!loading}" action="" onsubmit="{requestCall}">
             <button class="btn primary raised" type="submit">Receive a call to leave a message</button>
        </form>
        <img show="{loading}" src="/images/loading.gif">
@@ -43,24 +43,6 @@
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
         }
-        #prompt {
-            .intro {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }        
-            p {
-                font-size: 16px;
-            }
-            ul {
-                padding-left: 10px;
-                margin-top: 0;
-
-                li {
-                    font-size: 16px;
-                    margin-bottom: 5px;
-                }
-            }
-        }
      }
  </style>
 
@@ -72,6 +54,11 @@
 
     this.on('unmount', () => {
         this.state.rouser.off('recording_ready', this.onRecordingReady);
+    });
+
+    this.on('ready', () => {
+        this.loading = false;
+        this.update();
     });
 
 

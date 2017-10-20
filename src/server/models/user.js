@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
     pronoun: String,
     alarmLocales: [String],
     role: {type: String, default: "user"},
+    alarmsRecorded: {type: Number, default: 0},
     password: String,
     status : {
         phoneValidated: {type: Boolean, default: false}

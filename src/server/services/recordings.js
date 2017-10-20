@@ -45,6 +45,7 @@ export default class RecordingsService {
             if (data['recording.finalized'] == true) {
                 console.log("Alarm set!", result);
                 this.emit('finalized', result);
+                this.app.service("users").patch(params.user._id, {$inc: {alarmsRecorded: 1}});
                 return {status: "success"}
             }
         });

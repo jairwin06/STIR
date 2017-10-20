@@ -18,7 +18,7 @@
        </div>
        <div>
         <p>
-            <audio controls="controls">
+            <audio ref="audio" controls="controls">
                 <source src={state.rouser.recording.mixUrl} type="audio/wav">
             </audio>
         </p>
@@ -55,6 +55,10 @@
         this.on('unmount', () => {
 
         });
+
+        this.on('ready', () => {
+            this.refs.audio.load();
+        })
 
         recordAgain() {
             //window.history.back();
