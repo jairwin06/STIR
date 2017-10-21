@@ -15,6 +15,8 @@ const Messages =
     ROUSER_SLEEPER_EXPLANATION: 'Once you record a message for your assigned Sleeper, we’ll give you the option to record a message for another Sleeper.',
     ROUSER_NO_SLEEPERS: 'There are currently no Sleepers in need of a wakeup message.',
     ROUSER_NO_SLEEPERS_EXPLANATION: 'We’ll text you when we have a Sleeper who needs a message so you can help us bring them into the new day.',
+    ANOTHER_SLEEPER: 'Find another sleeper',
+    BE_A_SLEEPER: 'Be a sleeper',
     WAKE_he: 'Wake him',
     WAKE_she: 'Wake her',
     WAKE_they: 'Wake them',

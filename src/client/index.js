@@ -134,6 +134,7 @@ page('*', function(ctx,next) {
     }
     let path = ctx.canonicalPath.split('#')[0];
     if (ctx.page) {
+        console.log("Phonon page: ", ctx.page);
         phonon.navigator().changePage(ctx.page);
     }
     else if (path == "/") {

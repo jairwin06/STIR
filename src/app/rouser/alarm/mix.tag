@@ -73,7 +73,7 @@
                 console.log("Finalize result", result);
                 if (result.status == "success") {
                     this.state.rouser.invalidateAlarms();
-                    page("/rouser/alarms");
+                    page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/thankyou")
                 } else {
                     console.log("Error finalizing alarm!", result);
                 }

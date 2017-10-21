@@ -127,6 +127,7 @@
         import './rouser/alarms.tag'
         import './rouser/alarm/mix.tag'
         import './rouser/alarm/record.tag'
+        import './rouser/alarm/thankyou.tag'
         import './rouser/alarm/mturk.tag'
 
         import './common/sign-up/contact.tag'
