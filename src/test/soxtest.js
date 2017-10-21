@@ -4,26 +4,27 @@ var TimeFormat = SoxCommand.TimeFormat;
 runTest();
 
 function runTest() {
-    Promise.all([identifyWav('59b99f3cdea0a60947cf47f6-rec.wav'),identifyWav('_2014_.wav')])
+    Promise.all([identifyWav('public/recordings/59ea026846bcaa7bb9327211-rec.wav'),identifyWav('backingtracks/_2014_.wav')])
     .then((waveInfo) => {
         console.log("Wave info", waveInfo);
         
         var endTimeFormatted = TimeFormat.formatTimeRelativeToEnd(waveInfo[1].duration - waveInfo[0].duration);
 
-        var subCommand = SoxCommand('59b99f3cdea0a60947cf47f6-rec.wav')
-        .output('-p')
+        var subCommand = SoxCommand('public/recordings/59ea026846bcaa7bb9327211-rec.wav')
+        //.output('-p')
+        .output('test.wav')
         .outputSampleRate(44100)
         .outputChannels(2)
-        .outputFileType('wav');
+        .outputFileType('wav')
+        .addEffect('fade', 'l 3');
+        //.addEffect('delay', '+3');
 
         var command = SoxCommand()
         .inputSubCommand(subCommand)
-        .input('_2014_.wav')
+        .input('backingtracks/_2014_.wav')
         .combine('mix')
-        .output('mix.wav')
-        .outputBits(16)
-        .outputEncoding('signed-integer')
-        .outputFileType('wav')
+        .output('mix.mp3')
+        .outputFileType('mp3')
         .trim(0, endTimeFormatted);
 
         var errorThrow = function(err, stdout, stderr) {
@@ -36,7 +37,7 @@ function runTest() {
         command.on('error', errorThrow);
         subCommand.on('error', errorThrow);
 
-        command.run();
+        subCommand.run();
     })
     .catch((err) => {
         console.log("Promise error!",err);
