@@ -8,7 +8,7 @@ import {IntlMixin} from 'riot-intl'
 import {withTimezone} from '../../app/i18n/i18n'
 
 let ALARMS_IN_QUEUE = 1;
-const FIELDS_TO_RETURN = "_id time name prompt locales"
+const FIELDS_TO_RETURN = "_id time name prompt locales country pronoun"
 
 const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;
@@ -155,6 +155,7 @@ export default class AlarmManager {
             let query  = {
                 assignedTo: params.user._id,
                 'recording.finalized': false,
+                deleted: false,
                 time: {$gt: new Date()}
             };
             return Alarm.find(query).select(FIELDS_TO_RETURN)
@@ -196,6 +197,7 @@ export default class AlarmManager {
                                 {$and : [{
                                     assignedTo: params.user._id,
                                     'recording.finalized': false,
+                                    deleted: false,
                                     time: {$gt: new Date()}
                                 }]}]
                             }
@@ -283,7 +285,7 @@ export default class AlarmManager {
             }
         })
         .catch((err) => {
-            console.log("Unexpected error in routine tasks", err);
+            console.log("Unexsleeper/alarms#pected error in routine tasks", err);
         })
     }
 

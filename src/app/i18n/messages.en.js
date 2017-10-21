@@ -11,6 +11,13 @@ const Messages =
     CONTACT_PRONOUN: "I would like to be referred to as a...",
     SLEEPER:  'SLEEPER',
     ROUSER:  'ROUSER',
+    ROUSER_FOUND_SLEEPER: 'We found a Sleeper in need of a wakeup message.',
+    ROUSER_SLEEPER_EXPLANATION: 'Once you record a message for your assigned Sleeper, we’ll give you the option to record a message for another Sleeper.',
+    ROUSER_NO_SLEEPERS: 'There are currently no Sleepers in need of a wakeup message.',
+    ROUSER_NO_SLEEPERS_EXPLANATION: 'We’ll text you when we have a Sleeper who needs a message so you can help us bring them into the new day.',
+    WAKE_he: 'Wake him',
+    WAKE_she: 'Wake her',
+    WAKE_they: 'Wake them',
     SLEEPER_NOTIFY: 'Hi {name}, this is a reminder from STIR. You have a wakeup call set for {time, time, short}.'
 };
 

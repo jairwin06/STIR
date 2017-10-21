@@ -181,7 +181,11 @@ app.service('/alarms/sleeper').hooks({
     before: {
         create: [
           authHooks.associateCurrentUser(),
-          (hook) => { hook.data.locales = hook.params.user.alarmLocales },
+          (hook) => { 
+              hook.data.locales = hook.params.user.alarmLocales,
+              hook.data.country = hook.params.user.country, 
+              hook.data.pronoun = hook.params.user.pronoun 
+          },
           (hook) => { 
               if (hook.data.analysis == 'questions') {
                   console.log("Pulling questions from session!");

@@ -20,6 +20,8 @@ const AlarmSchema = new mongoose.Schema({
     notifiedRousers: {type: Boolean, default: false},
     locales: [String],
     timezone: String,
+    country: String,
+    pronoun: String,
     questions: [String],
     recording: {
         rouserId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
