@@ -5,7 +5,7 @@ import MTurkUtil from '../util/mturk'
 import Session from '../models/session-persistent'
 import Errors from 'feathers-errors'
 import {IntlMixin} from 'riot-intl'
-import {withTimezone} from '../../app/i18n/i18n'
+import {BaseI18n, withTimezone} from '../../app/i18n/i18n'
 
 let ALARMS_IN_QUEUE = 1;
 const FIELDS_TO_RETURN = "_id time name prompt locales country pronoun"
@@ -14,7 +14,7 @@ const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;
 const NOTIFY_SLEEPERS_HOURS = 12;
 const MTURK_TRIGGER_HOURS = 3;
-const ROUSERS_TO_NOTIFY = 5;
+const ROUSERS_TO_NOTIFY = 2;
 
 export default class AlarmManager {
     constructor() {
@@ -134,9 +134,10 @@ export default class AlarmManager {
             query: {_id: id}
         })
         .then((result) => {
+            console.log(result);
             if (result.length > 0) {
                 let user = result[0];
-                TwilioUtil.sendMessage(user.phone, message);
+                return TwilioUtil.sendMessage(user.phone, message);
             }
         })
     }
@@ -281,7 +282,13 @@ export default class AlarmManager {
         })
         .then((result) => {
             if (result.n > 0) {
-                console.log("Dispatched MTurk" + result.n);
+                console.log("Dispatched MTurkL " + result.n);
+            }
+            return this.notifyRousers();
+        })
+        .then((result) => {
+            if (result.n > 0) {
+                console.log("Notified rousers: " + result.n);
             }
         })
         .catch((err) => {
@@ -355,8 +362,7 @@ export default class AlarmManager {
     }
     notifyRousers() {
         if (process.env.NODE_ENV == 'production') {
-            let notifyTime = new Date();
-            return Alarm.count({
+            return Alarm.find({
                 time: {$gt: new Date()},
                 deleted: false,
                 notifiedRousers: false,
@@ -364,41 +370,87 @@ export default class AlarmManager {
                 assignedTo: null,
                 analyzed: true
             })
-            .then((alarms) => {
-                let action = (alarm) => {
-                    return this.app.service('users').get(alarm.userId)
-                    .then((user) => {
-                        let message = IntlMixin.formatMessage('SLEEPER_NOTIFY',{
-                            name: user.name,
-                            time: alarm.time
-                        },withTimezone(alarm.timezone),user.locale);
-
-                        return this.messageUser(user._id, message);
-                    })
+            .then( async (alarms) => {
+                console.log(alarms.length + " alarms not yet notified to rousers");
+                let rousersNotified = 0;
+                let action = async (alarm) => {
+                    let notified;
+                    return this.notifyWaitingRousers(alarm)
                     .then((result) => {
-                        return this.app.service('alarms/sleeper').patch(alarm._id, {notifiedSleeper: true});
+                        notified = result;
+                        console.log("This alarm Notified " + notified + " rousers");
+                        if (notified > 0) {
+                            return this.app.service('alarms/sleeper').patch(alarm._id, {notifiedRousers: true})
+                            .then(() => {
+                                return notified;
+                            })
+                        } else {
+                            return notified;
+                        }
                     })
                     .catch((err) => {
-                        console.log("Error notifying sleeper", err);
+                        console.log("Error notifying rousers!", err);
                     })
                 }
                 let actions = [];
                 for (let alarm of alarms) {
-                    actions.push(action(alarm));
+                   rousersNotified += await action(alarm);
                 }
-                return Promise.all(actions);
-            })
-            .then((results) => {
-                return {n: results.length}
+                return rousersNotified;
             })
             .catch((err) => {
-                console.log("Error notifying sleepers!", err);
+                console.log("Error notifying rousers!", err);
                 return Promise.resolve({n: 0});
             });
         }
         else {
             return Promise.resolve({n: 0});
         }
+    }
+
+    notifyWaitingRousers(alarm) {
+        console.log("Get waiting rousers");        
+        return User.count({
+            waitingForAlarms: true,
+            phone: {$ne: null},
+            alarmLocales: {$elemMatch: {$in: alarm.locales}}
+        })
+        .then(async (totalWaiting) => {
+            console.log(totalWaiting + " rousers waiting");
+
+            let numToNotify = Math.min(ROUSERS_TO_NOTIFY, totalWaiting);
+
+            let numNotified = 0;
+
+            for (let i = 0; i < numToNotify; i++) {
+                let random = Math.floor(Math.random()*totalWaiting);                
+                let rousers = await User.find({
+                    waitingForAlarms: true,
+                    phone: {$ne: null},
+                    alarmLocales: {$elemMatch: {$in: alarm.locales}}
+                }).skip(random).limit(1);
+
+                let rouser = rousers[0];
+                console.log("Rouser", rouser);
+
+                try {
+                    let message = IntlMixin.formatMessage('ROUSER_NOTIFY',{
+                        url: process.env.SERVER_URL + "/rouser/alarms"
+                    },BaseI18n,rouser.locale);
+
+                    console.log(message);
+
+                    await this.messageUser(rouser._id, message);
+                    numNotified++;
+                }
+                catch(err) {
+                    console.log("Error notifying rouser " + rouser._id, err);
+                }
+                await this.app.service("users").patch(rouser._id, {waitingForAlarms: false});
+            }
+
+            return numNotified;
+        });
     }
 
     dispathMturk() {

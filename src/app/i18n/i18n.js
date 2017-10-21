@@ -1,13 +1,12 @@
 import Messages from './messages'
 import Formats from './formats'
 
-const base = {
+export const BaseI18n = {
     messages : Messages,
     formats: Formats,
     locales: ['en','fr','de']
 }
 
-export default base;
 
 export function withTimezone(tz) {
     let formats = Object.assign({}, Formats);
