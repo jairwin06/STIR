@@ -93,7 +93,7 @@
     "riot-intl": "git+https://github.com/Avnerus/riot-intl.git",
     "socket.io-client": "^2.0.3",
     "sox": "^0.1.0",
-    "sox-audio": "^0.3.0",
+    "sox-audio": "git+https://github.com/Avnerus/sox-audio.git",
     "tracery-grammar": "^2.7.3",
     "twilio": "^3.6.4",
     "twitter": "^1.7.1",

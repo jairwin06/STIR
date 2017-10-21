@@ -1,6 +1,10 @@
 import sox from 'sox'
 import SoxCommand from 'sox-audio';
 
+const DELAY_BEFORE_REC = 3;
+const FADE_OUT_TIME = 5;
+const DELAY_AFTER_REC = 3;
+
 class SoxUtil {
     constructor() {
     }
@@ -10,28 +14,24 @@ class SoxUtil {
         .then((waveInfo) => {
             return new Promise((resolve, reject) => {
                 console.log("Wave info", waveInfo);
-                
-                let endTimeFormatted = TimeFormat.formatTimeRelativeToEnd(waveInfo[1].duration - waveInfo[0].duration);
+
+                let startTimeFormatted = TimeFormat.formatTimeAbsolute(waveInfo[0].duration + DELAY_BEFORE_REC + DELAY_AFTER_REC);
 
                 let subCommand = SoxCommand(recording)
                 .output('-p')
                 .outputSampleRate(44100)
                 .outputChannels(2)
-                .outputFileType('wav');
+                .outputFileType('wav')
+                .addEffect('delay', '+' + DELAY_BEFORE_REC);
 
                 let command = SoxCommand()
                 .inputSubCommand(subCommand)
                 .input(backingTrack)
                 .combine('mix')
                 .output(output)
-                // TODO: Test this on iPhone/Android
                 .outputFileType('mp3')
-                /*
-                .outputBits(16)
-                .outputEncoding('signed-integer')
-                .outputFileType('wav')
-                */
-                .trim(0, endTimeFormatted);
+                .trim(0, startTimeFormatted)
+                .addEffect('fade', 't 0 0 ' + FADE_OUT_TIME);
 
                 let errorThrow = function(err, stdout, stderr) {
                   console.log('Cannot process audio: ' + err.message);

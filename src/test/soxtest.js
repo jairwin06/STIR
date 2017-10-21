@@ -8,16 +8,16 @@ function runTest() {
     .then((waveInfo) => {
         console.log("Wave info", waveInfo);
         
-        var endTimeFormatted = TimeFormat.formatTimeRelativeToEnd(waveInfo[1].duration - waveInfo[0].duration);
+    //    var endTimeFormatted = TimeFormat.formatTimeRelativeToEnd(waveInfo[1].duration - waveInfo[0].duration - 3);
+        var startTimeFormatted = TimeFormat.formatTimeAbsolute(waveInfo[0].duration + 3 + 3);
 
         var subCommand = SoxCommand('public/recordings/59ea026846bcaa7bb9327211-rec.wav')
-        //.output('-p')
-        .output('test.wav')
+        .output('-p')
+        //.output('test.wav')
         .outputSampleRate(44100)
         .outputChannels(2)
         .outputFileType('wav')
-        .addEffect('fade', 'l 3');
-        //.addEffect('delay', '+3');
+        .addEffect('delay', '+3');
 
         var command = SoxCommand()
         .inputSubCommand(subCommand)
@@ -25,7 +25,8 @@ function runTest() {
         .combine('mix')
         .output('mix.mp3')
         .outputFileType('mp3')
-        .trim(0, endTimeFormatted);
+        .trim(0, startTimeFormatted)
+        .addEffect('fade', 't 0 0 5');
 
         var errorThrow = function(err, stdout, stderr) {
           console.log('Cannot process audio: ' + err.message);
@@ -37,7 +38,7 @@ function runTest() {
         command.on('error', errorThrow);
         subCommand.on('error', errorThrow);
 
-        subCommand.run();
+        command.run();
     })
     .catch((err) => {
         console.log("Promise error!",err);
