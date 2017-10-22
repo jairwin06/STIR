@@ -1,7 +1,7 @@
 <rouser-alarm-record>
 <header class="header-bar">
     <div class="pull-left">
-        <h1 class="title">STIR - Rouser</h1>
+       <a href="/"><h1 class="title">STIR - Rouser</h1></a>
     </div>
 </header>
 <div class="content">

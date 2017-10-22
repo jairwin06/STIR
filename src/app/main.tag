@@ -3,7 +3,7 @@
     <div if="{!state.main.role}">
             <header class="header-bar">
                 <div class="pull-left">
-                    <h1 class="title">STIR</h1>
+                    <a href="/"><h1 class="title">STIR</h1></a>
                 </div>
                 <!--div class="pull-right">
                     <span class="title arrow pull-right" data-popover-id="lang-popover">{state.auth.locale.toUpperCase()}</span>
