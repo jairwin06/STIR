@@ -111,8 +111,15 @@
                     font-size: 16px;
                     margin-bottom: 5px;
                 }
+
+            }
         }
-    }
+
+        #arte-footer {
+            position: absolute;
+            bottom: -80%;
+            z-index: 2;
+        }
     </style>
 
     <script>

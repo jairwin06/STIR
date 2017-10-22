@@ -361,18 +361,17 @@ app.use(async function (req, res, next) {
         res.status(404).send('Nothing to see here!');
     } else {
         try {
-            let nfbSettings = null;
-            if (!req.query.assignmentId) {
-                nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip, req.forceLocale);
-            }
-
-            console.log(nfbSettings);
-
             for (let i = 0; i < req.populateQueue.length; i++) {
                 let taskObj = req.populateQueue[i];
                 console.log("Runnint task", taskObj);
                 await req.appState[taskObj.store][taskObj.task].apply(req.appState[taskObj.store], taskObj.args);
             }
+            
+            let nfbSettings = null;
+            if (!req.query.assignmentId) {
+                nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip, req.forceLocale || req.appState.auth.user.locale);
+            }
+
             if (req.appState.auth.user.locale && !req.forceLocale) {
                 req.appState.auth.locale = req.appState.auth.user.locale;
             }
@@ -403,6 +402,7 @@ app.use(async function (req, res, next) {
                     nfbShare: nfbSettings.share,
                     nfbDeps: nfbSettings.dependencies,
                     nfbHeader: nfbSettings.header
+                    //nfbFooter: nfbSettings.footer
                 });
             } 
             res.render('index', renderOpts);
