@@ -29,7 +29,12 @@ export default class SleeperStore extends Store {
 
             catch (e) {
                 this.gettingAlarms = false;
-                console.log("Error getting alarms  ", e);                    
+                if (e.code == 401) {
+                    this.alarms = [];
+                    this.trigger('alarms_updated');
+                } else {
+                    console.log("Error getting alarms  ", e);                    
+                }
             }
         }
     }

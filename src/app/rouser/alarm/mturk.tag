@@ -28,7 +28,7 @@
                 </ul>
               </div>
               <div class="row length-requirement">
-                <b>Please record a message between 30 and 90 seconds long</b>
+                <b>Please record a message between 45 and 60 seconds long</b>
               </div>
               <div id="prompt">
                     <div class="intro row">
