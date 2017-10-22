@@ -143,6 +143,7 @@ page('*', function(ctx,next) {
         phonon.navigator().changePage(ctx.page);
     }
     else if (path == "/") {
+         console.log("Phonon page main");
          phonon.navigator().changePage('main');
     } 
     else if (path.indexOf('auth/') == -1)  {

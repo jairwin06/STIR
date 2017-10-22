@@ -153,6 +153,10 @@
             }
         });
 
+        this.on('ready', () => {
+            this.update();
+        })
+
         this.on('update', () => {
             console.log("Main update");
         })
