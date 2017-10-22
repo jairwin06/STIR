@@ -4,6 +4,7 @@ import SoxUtil from '../util/sox'
 import formidable from 'formidable'
 import MTurkUtil from '../util/mturk'
 import DownloadUtil from '../util/download'
+import S3Util from '../util/s3'
 
 export default class RecordingsService {
     constructor() {
@@ -43,9 +44,11 @@ export default class RecordingsService {
         })
         .then((result) => {
             if (data['recording.finalized'] == true) {
-                console.log("Alarm set!", result);
+                console.log("Alarm recorded!", result);
                 this.emit('finalized', result);
                 this.app.service("users").patch(params.user._id, {$inc: {alarmsRecorded: 1}});
+                // Upload to S3
+                S3Util.uploadRecordings(result, this.app);
                 return {status: "success"}
             }
         });
@@ -123,7 +126,7 @@ export default class RecordingsService {
             }
         })
         .then(() => {
-            SoxUtil.mixBackingTrack(
+            return SoxUtil.mixBackingTrack(
                 'public/' + destinationPath,
                 'backingtracks/_2014_.wav',
                 'public/' + mixPath
@@ -137,8 +140,9 @@ export default class RecordingsService {
                 'recording.mixUrl': '/' + mixPath,
             });
         })
-        .then(() => {
-            res.send(process.env['SERVER_URL'] + '/' + destinationPath)
+        .then((result) => {
+            S3Util.uploadRecordings(result, this.app);
+            res.send(process.env['S3_URL'] + '/' + destinationPath)
         })
         .catch((err) => {
             console.log("Error receiving upload!", err);

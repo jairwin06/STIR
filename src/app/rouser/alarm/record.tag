@@ -80,13 +80,13 @@
 
     onRecordingReady() {
         this.loading = false;
-        console.log("Recording ready!", this.state.rouser.recording);
-        if (this.state.rouser.recording.status == "success") {
+        console.log("Recording ready!", this.state.rouser.currentAlarm.recording);
+        if (this.state.rouser.currentAlarm.recording.status == "success") {
             if (IS_CLIENT) {
                 page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/mix")
             }
         } else {
-            console.error(this.state.rouser.recording.message);
+            console.error(this.state.rouser.currentAlarm.recording.message);
         }
     }
  </script>

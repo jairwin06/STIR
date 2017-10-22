@@ -8,7 +8,7 @@ import {IntlMixin} from 'riot-intl'
 import {BaseI18n, withTimezone} from '../../app/i18n/i18n'
 
 let ALARMS_IN_QUEUE = 1;
-const FIELDS_TO_RETURN = "_id time name prompt locales country pronoun"
+const FIELDS_TO_RETURN = "_id time name prompt locales country pronoun recording"
 
 const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;

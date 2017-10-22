@@ -12,7 +12,10 @@ export default class RouserStore extends Store {
         this.currentAlarm = null;
 
         SocketUtil.socket.on('recordings ready', (data) => {
-            this.recording = data;
+            if (!this.currentAlarm) {
+                this.currentAlarm.recording = {};
+            }
+            this.currentAlarm.recording = data;
             this.trigger('recording_ready', data);
         })
     }

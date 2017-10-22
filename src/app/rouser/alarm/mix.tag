@@ -19,12 +19,12 @@
        <div>
         <p>
             <audio ref="audio" controls="controls">
-                <source src={state.rouser.recording.mixUrl} type="audio/wav">
+                <source src={state.rouser.currentAlarm.recording.mixUrl} type="audio/wav">
             </audio>
         </p>
         <button class="btn primary raised" type="button" click="{recordAgain}">Rerecord</button>
         <form action="" onsubmit="{finalize}">
-           <button class="btn positive raised" type="submit" click="{recordAgain}">Submit Message</button>
+           <button class="btn positive raised" type="submit">Submit Message</button>
         </form>
         </div>
     </div>

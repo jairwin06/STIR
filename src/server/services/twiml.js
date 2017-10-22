@@ -52,7 +52,11 @@ export default {
             let sessionData = Session.getFor(user._id);
 
             if (sessionData && sessionData.pendingAlarm) {
-                response.play({},SERVER_URL + sessionData.pendingAlarm.recording.mixUrl);
+                if (sessionData.pendingAlarm.recording.mixUrl.match(/^http.*/)) {
+                    response.play({},sessionData.pendingAlarm.recording.mixUrl);
+                } else {
+                    response.play({},SERVER_URL + sessionData.pendingAlarm.recording.mixUrl);
+                }
 
                 req.app.service('alarms/rouser').alarmDelivered(sessionData.pendingAlarm);
             } else {
