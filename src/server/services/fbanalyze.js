@@ -2,6 +2,7 @@ import graph from 'fbgraph'
 import WastonUtil from '../util/watson'
 import Session from '../models/session-persistent'
 import translate from 'node-google-translate-skidz';
+import MSTranslateUtil from '../util/mstranslate'
 
 const FB_APP_ID = process.env['FB_APP_ID'];
 const FB_APP_SECRET = process.env['FB_APP_SECRET'];
@@ -25,8 +26,11 @@ const toTranslatedContentItem = async (post) => {
 
 const toEnglish = async (post) => {
     try {
+        /*
         let result = await translate({source: 'auto', text: post.message, target: 'en'});
-        return result.translation || "";
+        return result.translation || "";*/
+        let result = await MSTranslateUtil.translate(post.message,'en');
+        return result || "";
     } catch(e) {
         return "";
     }
@@ -75,6 +79,8 @@ export default class FBAnalyzeService {
             let contentItems = posts.map(toTranslatedContentItem);
             return Promise.all(contentItems)
             .then((translatedItems) => {
+                console.log("TRANSLATED ITEMS");
+                console.log(translatedItems);
                 return WastonUtil.profileItems(translatedItems)
             })
             .then((result) => {

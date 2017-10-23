@@ -76,6 +76,7 @@
     "jstimezonedetect": "^1.0.6",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.8",
+    "mstranslator": "^3.0.0",
     "nedb": "^1.8.0",
     "node-fetch": "^1.7.2",
     "node-google-translate-skidz": "^1.1.1",

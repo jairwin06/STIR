@@ -67,12 +67,14 @@
                     analysisStatus = await this.state.sleeper.twitterAnalyze();
                     this.state.sleeper.currentAlarm.analysis = 'twitter';
                     this.state.sleeper.pendingTwitter = false;
+                    this.loading = false;
                 } else if (this.state.sleeper.pendingFacebook){
                     this.loading = true;
                     this.update();
                     analysisStatus = await this.state.sleeper.analyzeFacebook();
                     this.state.sleeper.currentAlarm.analysis = 'facebook';
                     this.state.sleeper.pendingFacebook = false;
+                    this.loading = false;
                 }
 
                 if (analysisStatus) {
@@ -92,6 +94,7 @@
             catch (err) {
                 this.state.sleeper.pendingTwitter = false;
                 this.state.sleeper.pendingFacebook = false;
+                this.loading = false;
                 this.showError(err.message);
             }
         }
@@ -116,6 +119,10 @@
         this.state.sleeper.off('alarm_created', this.onAlarmCreated);
     });
 
+    this.on('ready', () => {
+        this.update();
+    });
+
 
     validateCheck() {
         if (!this.state.auth.user.status.phoneValidated) {
@@ -128,7 +135,11 @@
             }
         }
         else {
-            this.state.sleeper.addAlarm();
+            try {
+                this.state.sleeper.addAlarm();
+            } catch(err) {
+                this.showError(err);
+            }
         }
     }
     onAlarmCreated() {

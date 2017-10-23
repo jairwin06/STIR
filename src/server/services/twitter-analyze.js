@@ -1,9 +1,10 @@
 import WastonUtil from '../util/watson'
 import Session from '../models/session-persistent'
 import Twitter from 'twitter'
-import translate from 'node-google-translate-skidz';
+import translate from 'node-google-translate-skidz'
+import MSTranslateUtil from '../util/mstranslate'
 
-const MAX_TWEETS = 1000;
+const MAX_TWEETS = 500 //1000;
 const MAX_TWEETS_PER_FETCH = 200;
 
 const parentId = function(tweet) {
@@ -28,8 +29,16 @@ const toContentItem = (tweet) => {
 
 const toEnglish = async (tweet) => {
     try {
-        let result = await translate({source: 'auto', text: tweet.text.replace('[^(\\x20-\\x7F)]*',''), target: 'en'});
-        return result.translation || "";
+        let text = tweet.text.replace('[^(\\x20-\\x7F)]*','');
+        if (tweet.lang == 'en') {
+            return text;
+        } else {
+            /*
+            let result = await translate({source: 'auto', text: text, target: 'en'});
+            return result.translation || "";*/
+            let result = await MSTranslateUtil.translate(text,'en');
+            return result || "";
+        }
     } catch(e) {
         return "";
     }
