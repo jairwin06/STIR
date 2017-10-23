@@ -22,6 +22,16 @@ export default class AlarmManager {
     setup(app) {
         this.app = app;
         app.service('alarms/sleeper').on('patched', alarm => this.onAlarmPatched(alarm));
+
+        // Routine tasks
+        setInterval(() => {
+            this.routineTasks();            
+        },ROUTINE_TASKS_INTERVAL)
+        //
+        // Start the clock
+        setInterval(() => {
+            this.tick();
+        },1000);
     }
     getPendingAlarms() {
         console.log("Get pending alarms");
@@ -36,16 +46,6 @@ export default class AlarmManager {
             this.pendingAlarms = result;
             this.popAlarm();
         })
-
-        // Start the clock
-        setInterval(() => {
-            this.tick();
-        },1000);
-
-        // Routine tasks
-        setInterval(() => {
-            this.routineTasks();            
-        },ROUTINE_TASKS_INTERVAL)
     }
     tick() {
         if (this.nextAlarms.length > 0 && this.nextAlarms[0].time.getTime() <= new Date().getTime()) {
@@ -128,14 +128,35 @@ export default class AlarmManager {
         if (alarm.assignedTo) {
             this.messageUser(alarm.assignedTo, "Your wake-up call was just delieverd to the sleeper! Thank you from STIR");
         }
+        this.sendAlarmSummary(alarm._id, alarm.userId);
+    }
+    sendAlarmSummary(alarmId, userId) {
+        // In 2 minutes..
+        setTimeout(() => {
+            console.log("Sending summary message");
+            this.app.service('users').get(userId)
+            .then((user) => {
+                let message = IntlMixin.formatMessage('SLEEPER_SUMMARY_MESSAGE',{
+                    url: process.env.SERVER_URL + "/sleeper/alarm/" + alarmId + "/summary",
+                    name: user.name
+                },BaseI18n,user.locale);
+                return this.messageUser(userId, message);
+            })
+            .then((result) => {
+                console.log("Sent");
+            })
+            .catch((err) => {
+                console.log("Error sending alarm summary!", err);
+            })
+        }, 1000 * 60 * 2);
     }
     messageUser(id, message) {
         return this.app.service('users').find({
             query: {_id: id}
         })
         .then((result) => {
-            console.log(result);
             if (result.length > 0) {
+                console.log("Sending message: ", message);
                 let user = result[0];
                 return TwilioUtil.sendMessage(user.phone, message);
             }

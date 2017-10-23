@@ -59,7 +59,7 @@ class Routes {
             this.go(next, req, res);
         });
         app.route('/sleeper/alarm/:id/summary').get((req, res, next) => {
-            this.populate(req, 'sleeper', 'chooseAlarm', req.params.id);
+            this.populate(req, 'sleeper', 'getAlarm', req.params.id);
             req.page = "sleeper-alarm-summary";
             this.go(next, req, res);
         });

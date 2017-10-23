@@ -32,7 +32,8 @@ const Messages =
     WELCOME: 'Welcome',
     BEGIN: 'Begin',
     SLEEPER_SUMMARY_DESCRIPTION: 'Hi {name}, we hope you enjoyed your personalzied wakeup message from Stir.',
-    BE_A_ROUSER: 'Sign up to be a rouser'
+    BE_A_ROUSER: 'Sign up to be a rouser',
+    SLEEPER_SUMMARY_MESSAGE: 'Good morning {name}! Checkout your wakeup summary from Stir at {url}'
 };
 
 export default Messages;

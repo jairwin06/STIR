@@ -78,8 +78,14 @@ export default class SleeperStore extends Store {
         this.trigger("sleeper_add_alarm_stage", stage);
     }
 
-    async chooseAlarm(id) {
+    chooseAlarm(id) {
         console.log("Sleeper chooses alarm ", id);
+        this.currentAlarm = MiscUtil.findById(this.alarms,id);
+        console.log("Current sleeper alarm", this.currentAlarm);
+    }
+
+    async getAlarm(id) {
+        console.log("Sleeper gets alarm ", id);
         this.currentAlarm = await SocketUtil.rpc('alarms/sleeper::get', id,{
             accessToken: this._state.auth.accessToken,
         });

@@ -234,7 +234,7 @@ app.service('/alarms/sleeper').hooks({
         ],
         get: [
             (hook) => {
-                if (!hook.result.delivered) {
+                if (hook.params.provider && !hook.result.delivered) {
                     throw(new Errors.NotFound());
                 }
             },
