@@ -45,6 +45,29 @@ class MiscUtil {
         let item = arr[Math.floor(Math.random()*arr.length)];
         return item;
     }
+
+    initVideoPanel(panelId) {
+        let panel = $(panelId);
+        enableInlineVideo(panel.find('video'));
+
+        panel.find('.play-button').click((e) => {
+            e.preventDefault();
+            console.log("Play video!");
+            panel.find('.play-button').fadeOut("slow");
+            panel.find('.video-title').fadeOut("slow");
+            panel.find('video')[0].play();
+        })
+        panel.find('.skip-link').click((e) => {
+            e.preventDefault();
+            panel.find('video')[0].pause();
+            phonon.panel(panelId).close();                    
+        })
+
+        panel.find('video').on('ended', () => {
+            phonon.panel(panelId).close();                    
+        });
+
+    }
 };
 
 // Singleton

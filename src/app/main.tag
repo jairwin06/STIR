@@ -205,32 +205,15 @@
         import './admin/login.tag'
         import './admin/dashboard.tag'
 
+        import MiscUtil from './util/misc'
+
         this.on('mount', () => {
             console.log("Main mounted");
 
             if (IS_CLIENT && !this.state.auth.mturk) {
-               if (!this.state.auth.accessToken) {
+               if (1 || !this.state.auth.accessToken) {
                     console.log("Opening intro");
-                    let panel = $('#intro-panel');
-                    enableInlineVideo(panel.find('video'));
-
-                    panel.find('.play-button').click((e) => {
-                        e.preventDefault();
-                        console.log("Play video!");
-                        panel.find('.play-button').fadeOut("slow");
-                        panel.find('.video-title').fadeOut("slow");
-                        panel.find('video')[0].play();
-                    })
-                    panel.find('.skip-link').click((e) => {
-                        e.preventDefault();
-                        panel.find('video')[0].pause();
-                        phonon.panel('#intro-panel').close();                    
-                    })
-
-                    panel.find('video').on('ended', () => {
-                        phonon.panel('#intro-panel').close();                    
-                    });
-
+                    MiscUtil.initVideoPanel('#intro-panel');
                     phonon.panel('#intro-panel').open();                    
                }
                this.state.auth.loginRest();
