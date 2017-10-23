@@ -20,7 +20,7 @@ export default class UserContactService {
     patch(id,data,params) {
         console.log("update user contact!", data,params);
         // Only allow updating the locale or pronoun
-        if (!data.locale && !data.alarmLocales && !data.pronoun) {
+        if (Object.keys(data).length == 0) {
             return Promise.reject(new Error("No user data"));
         }
         else if (data.pronoun && data.pronoun != 'he' && data.pronoun != 'she' && data.pronoun != 'they') {

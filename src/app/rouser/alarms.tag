@@ -72,6 +72,15 @@
 
     this.on('ready', () => {
         this.update();
+        if (this.state.auth.user && !this.state.auth.user.status.suggestedRouserHome) {
+            $('#home-suggest-message').html(
+                this.formatMessage('HOME_SUGGEST', {
+                    role: this.formatMessage('ROUSER')
+                })
+            );
+            phonon.panel('#home-suggest').open();
+            this.state.auth.suggestedRouserHome();
+        }
     });
 
     queueUpdated() {

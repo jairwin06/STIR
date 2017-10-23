@@ -14,7 +14,9 @@ const UserSchema = new mongoose.Schema({
     waitingForAlarms: {type: Boolean, default: false},
     password: String,
     status : {
-        phoneValidated: {type: Boolean, default: false}
+        phoneValidated: {type: Boolean, default: false},
+        suggestedSleeperHome: {type: Boolean, default: false},
+        suggestedRouserHome: {type: Boolean, default: false}
     },
     verificationCode: Number,
     twitter: {

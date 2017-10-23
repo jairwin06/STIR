@@ -120,6 +120,24 @@
             bottom: -80%;
             z-index: 2;
         }
+
+        #home-suggest {
+            .padded-full {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                span {
+                    padding-right: 10px;
+                    font-weight: bold;
+                }
+                
+                a {
+                    position: relative;
+                    top: 3px;
+                }
+            }
+        }
     </style>
 
     <script>

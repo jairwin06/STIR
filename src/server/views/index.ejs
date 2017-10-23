@@ -47,6 +47,16 @@
     <%- typeof nfbHeader != 'undefined' ? nfbHeader.join('\n') : '' %>
     <%- body %>
 
+    <!--Home suggest panel-->
+    <div id="home-suggest" class="panel">
+            <div class="content">
+                <div class="padded-full">
+                    <span id="home-suggest-message">Add this page to your home screen!</span>
+                    <a href="" data-panel-close="true"><i class="material-icons">clear</i></a>
+                </div>
+            </div>
+    </div>
+
     <!--Language Popover-->
     <!--div class="popover" id="lang-popover">
         <ul class="list">

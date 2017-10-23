@@ -142,6 +142,30 @@ export default class AuthStore extends Store {
         return result;
     }
 
+    async suggestedSleeperHome() {
+        try {
+            console.log("set user suggestedSleeperHome");
+            let result = await SocketUtil.rpc('user/contact::patch', null, {'status.suggestedSleeperHome': true, 'status.phoneValidated': false});
+            this.user.status.suggestedSleeperHome = true;
+            return result;
+        }
+        catch(err) {
+            console.log("Error", err);
+        }
+    }
+
+    async suggestedRouserHome() {
+        try {
+            console.log("set user suggestedRouserHome");
+            let result = await SocketUtil.rpc('user/contact::patch', null, {'status.suggestedRouserHome': true});
+            this.user.status.suggestedRouserHome = true;
+            return result;
+        } 
+        catch(err) {
+            console.log("Error");
+        }
+    }
+
     async updateContact(contact) {
         console.log("Set contact", contact);
         let result = await SocketUtil.rpc('user/contact::patch',null,contact);

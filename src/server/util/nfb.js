@@ -12,7 +12,7 @@ class NFBUtil {
             {
                 language: locale, 
                 folder:"", 
-                ip: ip, //'18.221.138.114', 
+                ip: ip,// '18.221.138.114', 
                 settings: process.env.SERVER_URL + "/nfb_settings.json"
             }
         )

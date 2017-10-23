@@ -84,6 +84,15 @@
 
     this.on('ready', () => {
         this.update();
+        if (this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
+            $('#home-suggest-message').html(
+                this.formatMessage('HOME_SUGGEST', {
+                    role: this.formatMessage('SLEEPER')
+                })
+            );
+            phonon.panel('#home-suggest').open();
+            this.state.auth.suggestedSleeperHome();
+        }
     })
 
     this.on('unmount', () => {

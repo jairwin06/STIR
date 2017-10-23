@@ -51,6 +51,7 @@ import TooEarlyHook from './services/too-early-hook'
 import AlarmManager from './services/alarm-manager'
 import patchAlarmHook from './services/patch-alarm'
 import dispatchMTurkHook from './services/dispatch-mturk'
+import noDotPluck from './util/no-dot-pluck'
 
 import SocketUtil from '../app/util/socket'
 import TimeUtil from '../app/util/time'
@@ -255,7 +256,7 @@ app.service('/user/contact').hooks({
         authHooks.queryWithCurrentUser()
       ],
       patch: [
-        pluck('locale', 'alarmLocales','pronoun')
+        noDotPluck('locale', 'alarmLocales','pronoun','status.suggestedSleeperHome', 'status.suggestedRouserHome')
       ]
     }
 })

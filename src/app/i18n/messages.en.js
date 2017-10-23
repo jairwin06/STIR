@@ -21,7 +21,8 @@ const Messages =
     WAKE_she: 'Wake her',
     WAKE_they: 'Wake them',
     SLEEPER_NOTIFY: 'Hi {name}, this is a reminder from STIR. You have a wakeup call set for {time, time, short}.',
-    ROUSER_NOTIFY: 'This is a message from STIR. There are new sleepers in need of a wakeup message! Go now to {url}'
+    ROUSER_NOTIFY: 'This is a message from STIR. There are new sleepers in need of a wakeup message! Go now to {url}',
+    HOME_SUGGEST: 'Add this page to your home screen to get a dedicated {role} app!'
 };
 
 export default Messages;
