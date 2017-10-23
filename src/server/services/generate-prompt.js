@@ -45,7 +45,10 @@ function generatePrompt(app, alarm, analysis,  user, tryNumber) {
                 alarmData.debug = {
                     watson: JSON.stringify(result.personality)
                 }
-                alarmData.prompt = runLogic(promptData, result.personality, analysis);
+
+                let logicResult = runLogic(promptData, result.personality, analysis);
+                alarmData.prompt = logicResult.prompt;
+                alarmData.generatedFrom = logicResult.generatedFrom;
             } else {
                 throw new Error(result.message);
             }
@@ -65,6 +68,8 @@ function runLogic(promptData, data, analysis) {
     let promptParagraphs = [];
     let promptInstructions = [];
 
+    let generatedFrom = {};
+
     const PRONOUN = promptData.pronoun;
     let big5s;
 
@@ -79,6 +84,8 @@ function runLogic(promptData, data, analysis) {
     let biggestBig5 = big5s[0];
     console.log(biggestBig5.trait_id);
 
+    generatedFrom.big5 = biggestBig5.trait_id;
+
     let remaining = {
         highs : big5s.slice(1,3),
         lows  : big5s.slice(3,5),
@@ -91,6 +98,8 @@ function runLogic(promptData, data, analysis) {
     // Choose the big5
     let chosenBig5 = MiscUtil.getRandomElement(remaining[choice]);
     console.log(chosenBig5.trait_id)
+
+    generatedFrom[choice] = chosenBig5.trait_id;
 
     promptParagraphs.push(PromptLogic.big5s[biggestBig5.trait_id][choice][chosenBig5.trait_id].paragraph[PRONOUN]);
     promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id][choice][chosenBig5.trait_id].instruction[PRONOUN]);
@@ -114,6 +123,8 @@ function runLogic(promptData, data, analysis) {
 
     let facet = MiscUtil.getRandomElement(topFacets); 
     console.log(facet.trait_id);
+
+    generatedFrom.facet = facet.trait_id;
 
     promptParagraphs.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].paragraph[PRONOUN]);
     promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].instructions[0][PRONOUN]);
@@ -139,6 +150,8 @@ function runLogic(promptData, data, analysis) {
     let need = MiscUtil.getRandomElement(topNeeds); 
     console.log(need.trait_id);
 
+    generatedFrom.need = need.trait_id;
+
     promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].needs[need.trait_id].instruction[PRONOUN]);
 
     // Result
@@ -157,7 +170,10 @@ function runLogic(promptData, data, analysis) {
     }
 
     return {
-        paragraphs: resultParagraphs,
-        instructions: resultInstructions
+        prompt: {
+            paragraphs: resultParagraphs,
+            instructions: resultInstructions
+        },
+        generatedFrom: generatedFrom
     }
 }

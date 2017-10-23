@@ -30,7 +30,9 @@ const Messages =
     ROUSER_WELCOME_4: 'From time to time, we’ll text you when the call center queue has Sleepers in need of a message.',
     ROUSER_WELCOME_5: 'Thank you for joining our global network of individuals giving people a fresh start to their day.',
     WELCOME: 'Welcome',
-    BEGIN: 'Begin'
+    BEGIN: 'Begin',
+    SLEEPER_SUMMARY_DESCRIPTION: 'Hi {name}, we hope you enjoyed your personalzied wakeup message from Stir.',
+    BE_A_ROUSER: 'Sign up to be a rouser'
 };
 
 export default Messages;

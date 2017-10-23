@@ -189,6 +189,7 @@
         import './sleeper/add-alarm/personality.tag'
         import './sleeper/add-alarm/questions.tag'
         import './sleeper/clock.tag'
+        import './sleeper/alarm-summary.tag'
     
 
         import './rouser/alarms.tag'

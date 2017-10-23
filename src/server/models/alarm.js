@@ -29,6 +29,13 @@ const AlarmSchema = new mongoose.Schema({
         mixUrl: {type: String, default: null},
         finalized: {type: Boolean, default: false},
     },
+    generatedFrom: {
+        big5: String,
+        highs: String,
+        lows: String,
+        facet: String,
+        need: String
+    },
     debug: {
         watson: String
     }

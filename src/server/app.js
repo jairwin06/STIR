@@ -214,6 +214,10 @@ app.service('/alarms/sleeper').hooks({
             TooEarlyHook,
             patchAlarmHook
         ],
+        get: [
+            authentication.hooks.authenticate(['jwt']),
+            authHooks.restrictToOwner({ ownerField: 'userId' }),
+        ],
         remove: disallow('external')
     },
     after: {
@@ -223,10 +227,18 @@ app.service('/alarms/sleeper').hooks({
         ],
         patch: [
           (hook) => {
-            if (!hook.result) {
+            if (!hook.result.status) {
                 return pluck('_id', 'time')(hook);
             }
           }
+        ],
+        get: [
+            (hook) => {
+                if (!hook.result.delivered) {
+                    throw(new Errors.NotFound());
+                }
+            },
+            pluck('_id', 'time', 'generatedFrom') 
         ]
     }
 });
