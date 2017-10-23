@@ -58,17 +58,27 @@
             </div>
     </div>
 
-    <!-- Intro Panel -->
-    <div id="intro-panel" class="panel-full">
+    <!-- Intro Panels -->
+    <div id="intro-panel" class="intro-panel panel-full">
         <div class="content">
-            <h1 class="video-title" id="intro-title"> Welcome to STIR</h1>
+            <h1 class="video-title"> Welcome to STIR</h1>
             <video 
-                id="intro-video"
                 playsinline="" 
                 src="https://rawgit.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4">
             </video>
-            <a class="play-button" id="intro-play" href=""><i class="material-icons">play_arrow</i></a>
-            <a class="skip-link" id="intro-skip" href="">Skip</a>
+            <a class="play-button" href=""><i class="material-icons">play_arrow</i></a>
+            <a class="skip-link" href="">Skip</a>
+        </div>
+    </div>
+    <div id="rouser-intro-panel" class="intro-panel panel-full">
+        <div class="content">
+            <h1 class="video-title">Welcome</h1>
+            <video 
+                playsinline="" 
+                src="https://rawgit.com/bower-media-samples/big-buck-bunny-480p-30s/master/video.mp4">
+            </video>
+            <a class="play-button" href=""><i class="material-icons">play_arrow</i></a>
+            <a class="skip-link" href="">Skip</a>
         </div>
     </div>
 
@@ -97,6 +107,7 @@
     <rouser-alarm-mix data-page="true"></rouser-alarm-mix>
     <rouser-alarm-thankyou data-page="true"></rouser-alarm-thankyou>
     <rouser-alarm-mturk data-page="true"></rouser-alarm-mturk>
+    <rouser-welcome data-page="true"></rouser-welcome>
     <admin-login data-page="true"></admin-login>
     <admin-dashboard data-page="true"></admin-dashboard>
 

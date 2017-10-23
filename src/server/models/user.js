@@ -16,7 +16,8 @@ const UserSchema = new mongoose.Schema({
     status : {
         phoneValidated: {type: Boolean, default: false},
         suggestedSleeperHome: {type: Boolean, default: false},
-        suggestedRouserHome: {type: Boolean, default: false}
+        suggestedRouserHome: {type: Boolean, default: false},
+        shownRouserVideo: {type: Boolean, default: false}
     },
     verificationCode: Number,
     twitter: {

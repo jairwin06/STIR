@@ -63,6 +63,7 @@ import {IntlMixin} from 'riot-intl'
 
 import Messages from '../app/i18n/messages'
 import Formats from '../app/i18n/formats'
+import Errors from 'feathers-errors'
 
 
 global.fetch = require('node-fetch');
@@ -256,7 +257,9 @@ app.service('/user/contact').hooks({
         authHooks.queryWithCurrentUser()
       ],
       patch: [
-        noDotPluck('locale', 'alarmLocales','pronoun','status.suggestedSleeperHome', 'status.suggestedRouserHome')
+        noDotPluck(
+            'locale', 'alarmLocales','pronoun','status.suggestedSleeperHome', 'status.suggestedRouserHome', 'status.shownRouserVideo'
+        )
       ]
     }
 })
@@ -359,7 +362,7 @@ Routes.runRoutingTable(app);
 app.use(async function (req, res, next) {
     console.log("Render middleware");
     if (!req.handledRoute) {
-        res.status(404).send('Nothing to see here!');
+        return next(new Errors.NotFound());
     } else {
         try {
             for (let i = 0; i < req.populateQueue.length; i++) {

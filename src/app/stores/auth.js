@@ -165,6 +165,17 @@ export default class AuthStore extends Store {
             console.log("Error");
         }
     }
+    async shownRouserVideo() {
+        try {
+            console.log("set user shownRouserVideo");
+            let result = await SocketUtil.rpc('user/contact::patch', null, {'status.shownRouserVideo': true});
+            this.user.status.shownRouserVideo = true;
+            return result;
+        } 
+        catch(err) {
+            console.log("Error");
+        }
+    }
 
     async updateContact(contact) {
         console.log("Set contact", contact);

@@ -22,7 +22,15 @@ const Messages =
     WAKE_they: 'Wake them',
     SLEEPER_NOTIFY: 'Hi {name}, this is a reminder from STIR. You have a wakeup call set for {time, time, short}.',
     ROUSER_NOTIFY: 'This is a message from STIR. There are new sleepers in need of a wakeup message! Go now to {url}',
-    HOME_SUGGEST: 'Add this page to your home screen to get a dedicated {role} app!'
+    HOME_SUGGEST: 'Add this page to your home screen to get a dedicated {role} app!',
+    ROUSER_WELCOME: 'Hello, and welcome to Stir. We’re thrilled to have you join us as a Rouser.',
+    ROUSER_WELCOME_1: 'Once you sign up, you’ll be directed to a call queue where you’ll find a Sleeper ready for a personalized wakeup message.',
+    ROUSER_WELCOME_2: 'We’ll provide you with some information about your Sleeper and guidelines for how to gently bring them into the new day.',
+    ROUSER_WELCOME_3: 'When you’re ready, you’ll receive a phone call you to record your message. You can listen and rerecord as many times as you wish. Stir will then deliver the message to your Sleeper.',
+    ROUSER_WELCOME_4: 'From time to time, we’ll text you when the call center queue has Sleepers in need of a message.',
+    ROUSER_WELCOME_5: 'Thank you for joining our global network of individuals giving people a fresh start to their day.',
+    WELCOME: 'Welcome',
+    BEGIN: 'Begin'
 };
 
 export default Messages;

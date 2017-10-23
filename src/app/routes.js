@@ -69,7 +69,19 @@ class Routes {
             req.appState.main.setRole("rouser");
 
             if (IS_CLIENT) {
-                if (req.appState.auth.user.status && !req.appState.auth.user.status.phoneValidated && !req.appState.auth.mturk) {
+                if (req.appState.auth.user.status &&
+                    !req.appState.auth.user.status.shownRouserVideo && 
+                    req.appState.rouser.action != 'welcome' &&
+                    !req.appState.auth.mturk 
+                ) {
+                    req.appState.rouser.setAction("welcome");
+                    page.show("/rouser/welcome");
+                }
+                else if (
+                    req.appState.auth.user.status &&
+                    !req.appState.auth.user.status.phoneValidated && 
+                    req.appState.rouser.action != 'welcome' &&
+                    !req.appState.auth.mturk) {
                     page.show("/sign-up/contact");
                 }
             } else {
@@ -77,6 +89,13 @@ class Routes {
             }
             this.next(next, req, res);
         });
+
+        app.route('/rouser/welcome').get((req, res, next) => {
+            console.log("Rouser welcome route");
+            req.appState.rouser.setAction("welcome");
+            this.go(next, req, res);
+        });
+
 
         app.route('/rouser/alarms').get((req, res, next) => {
             console.log("Rouser alarms route", req.query);

@@ -139,7 +139,7 @@
             }
         }
 
-        #intro-panel {
+        .intro-panel {
             z-index: 9999;
             .content {
                 display: flex;
@@ -192,6 +192,7 @@
     
 
         import './rouser/alarms.tag'
+        import './rouser/welcome.tag'
         import './rouser/alarm/mix.tag'
         import './rouser/alarm/record.tag'
         import './rouser/alarm/thankyou.tag'
@@ -211,7 +212,7 @@
             console.log("Main mounted");
 
             if (IS_CLIENT && !this.state.auth.mturk) {
-               if (1 || !this.state.auth.accessToken) {
+               if (!this.state.auth.accessToken) {
                     console.log("Opening intro");
                     MiscUtil.initVideoPanel('#intro-panel');
                     phonon.panel('#intro-panel').open();                    

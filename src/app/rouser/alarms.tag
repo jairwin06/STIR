@@ -67,7 +67,8 @@
         this.state.rouser.on('queue_updated', this.queueUpdated);
     });
 
-    this.on('unmount', () => {
+    this.off('unmount', () => {
+        this.state.rouser.on('queue_updated', this.queueUpdated);
     });
 
     this.on('ready', () => {
