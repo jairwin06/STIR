@@ -9,7 +9,7 @@ const FB_APP_SECRET = process.env['FB_APP_SECRET'];
 
 const FB_APP_TOKEN = FB_APP_ID + '|' + FB_APP_SECRET;
 
-const MAX_POSTS = 1000;
+const MAX_POSTS = 500;
 const MAX_POSTS_PER_FETCH = 200;
 
 
