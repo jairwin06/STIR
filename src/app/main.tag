@@ -138,6 +138,48 @@
                 }
             }
         }
+
+        #intro-panel {
+            z-index: 9999;
+            .content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                h1 {
+                    color: white;
+                    position: absolute;
+                    top: 30%;
+                }
+
+                video {
+                    height: 100%;
+                }
+                
+                .play-button {
+                    position: absolute;
+                    i {
+                        color: white;
+                        font-size: 72px;
+                    }
+                }
+
+                .skip-link {
+                    position: absolute;
+                    bottom: 10%;
+                    font-size: 22px;
+                    font-weight: bold;
+                }
+                
+            }
+        }
+        .IIV::-webkit-media-controls-play-button,
+        .IIV::-webkit-media-controls-start-playback-button {
+              opacity: 0;
+                   pointer-events: none;
+                        width: 5px;
+                         
+         }
     </style>
 
     <script>
@@ -167,6 +209,30 @@
             console.log("Main mounted");
 
             if (IS_CLIENT && !this.state.auth.mturk) {
+               if (!this.state.auth.accessToken) {
+                    console.log("Opening intro");
+                    let panel = $('#intro-panel');
+                    enableInlineVideo(panel.find('video'));
+
+                    panel.find('.play-button').click((e) => {
+                        e.preventDefault();
+                        console.log("Play video!");
+                        panel.find('.play-button').fadeOut("slow");
+                        panel.find('.video-title').fadeOut("slow");
+                        panel.find('video')[0].play();
+                    })
+                    panel.find('.skip-link').click((e) => {
+                        e.preventDefault();
+                        panel.find('video')[0].pause();
+                        phonon.panel('#intro-panel').close();                    
+                    })
+
+                    panel.find('video').on('ended', () => {
+                        phonon.panel('#intro-panel').close();                    
+                    });
+
+                    phonon.panel('#intro-panel').open();                    
+               }
                this.state.auth.loginRest();
             }
         });
