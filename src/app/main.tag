@@ -228,7 +228,7 @@
             console.log("Main mounted");
 
             if (IS_CLIENT && !this.state.auth.mturk) {
-               if (1 || !this.state.auth.accessToken) {
+               if (!this.state.auth.accessToken) {
                     console.log("Opening intro");
                     MiscUtil.initVideoPanel('#intro-panel');
                     phonon.panel('#intro-panel').open();                    

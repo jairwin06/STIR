@@ -188,14 +188,19 @@ export default class AlarmManager {
 
                     console.log("Still need to find " + alarmsToGo + " more alarms");
                     console.log("Capable languages ", params.user.alarmLocales);
-                    // TODO: Not your own alarms
-                    return Alarm.find({
+                    let query = {
                         assignedTo: null,
                         mturk: false,
                         analyzed: true,
                         locales: {$elemMatch: {$in: params.user.alarmLocales}},
                         time: {$gt: new Date()}
-                    }).select("_id").limit(alarmsToGo)
+                    };
+
+                    if (process.env.NODE_ENV == 'production') {
+                        // Don't wake yourself
+                        query.userId = {$ne: params.user._id};
+                    }
+                    return Alarm.find(query).select("_id").limit(alarmsToGo)
                     .then((newIds) => {
                         alarmIds = newIds;
                         console.log("We have " + alarmIds.length + " alarms to assign");
