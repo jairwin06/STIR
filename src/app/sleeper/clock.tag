@@ -96,7 +96,7 @@
         }
         let manifestLink = $('link[href="manifest.json"]');
         if (manifestLink.length == 0) {
-            $('head').append('<link rel="manifest" href="manifest.json">');
+            $('head').append('<link rel="manifest" href="/sleeper/manifest.json">');
         }
     })
 

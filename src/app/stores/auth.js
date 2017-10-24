@@ -156,24 +156,24 @@ export default class AuthStore extends Store {
 
     async suggestedRouserHome() {
         try {
+            this.user.status.suggestedRouserHome = true;
             console.log("set user suggestedRouserHome");
             let result = await SocketUtil.rpc('user/contact::patch', null, {'status.suggestedRouserHome': true});
-            this.user.status.suggestedRouserHome = true;
             return result;
         } 
         catch(err) {
-            console.log("Error");
+            console.log("Error",err);
         }
     }
     async shownRouserVideo() {
         try {
             console.log("set user shownRouserVideo");
-            let result = await SocketUtil.rpc('user/contact::patch', null, {'status.shownRouserVideo': true});
             this.user.status.shownRouserVideo = true;
+            let result = await SocketUtil.rpc('user/contact::patch', null, {'status.shownRouserVideo': true});
             return result;
         } 
         catch(err) {
-            console.log("Error");
+            console.log("Error",err);
         }
     }
 

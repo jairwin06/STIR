@@ -17,7 +17,7 @@
                 <p><formatted-message id='ROUSER_WELCOME_5'/></p>
             </div>
             <div class="action">
-                <a class="btn raised primary" href="/rouser/alarms">
+                <button class="btn raised primary" click="{begin}">
                     <formatted-message id='BEGIN'/>
                 </a>
             </div>
@@ -49,14 +49,18 @@
 
     this.on('ready', () => {
         this.state.rouser.setAction("alarms");
-        if (IS_CLIENT && !this.state.auth.mturk) {
+        if (!MiscUtil.isStandaone() && IS_CLIENT && !this.state.auth.mturk) {
             console.log("Opening intro");
             MiscUtil.initVideoPanel('#rouser-intro-panel');
             phonon.panel('#rouser-intro-panel').open();                    
-            this.state.auth.shownRouserVideo();
         }
         this.update();
     });
+
+    begin(e) {
+        this.state.auth.shownRouserVideo();
+        page.show("/rouser/alarms");
+    }
 
  </script>
 </rouser-welcome>

@@ -62,6 +62,8 @@
      }
  </style>
  <script>
+    import MiscUtil from '../util/misc'
+
     this.on('mount', () => {
         console.log("alarm-queue mounted");
         this.state.rouser.on('queue_updated', this.queueUpdated);
@@ -73,7 +75,7 @@
 
     this.on('ready', () => {
         this.update();
-        if (this.state.auth.user && !this.state.auth.user.status.suggestedRouserHome) {
+        if (!MiscUtil.isStandaone() && this.state.auth.user && !this.state.auth.user.status.suggestedRouserHome) {
             $('#home-suggest-message').html(
                 this.formatMessage('HOME_SUGGEST', {
                     role: this.formatMessage('ROUSER')
@@ -81,6 +83,10 @@
             );
             phonon.panel('#home-suggest').open();
             this.state.auth.suggestedRouserHome();
+        }
+        let manifestLink = $('link[href="manifest.json"]');
+        if (manifestLink.length == 0) {
+            $('head').append('<link rel="manifest" href="/rouser/manifest.json">');
         }
     });
 
