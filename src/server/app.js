@@ -385,7 +385,7 @@ app.use(async function (req, res, next) {
             
             let nfbSettings = null;
             if (!req.query.assignmentId) {
-                nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip, req.forceLocale || req.appState.auth.user.locale);
+              //  nfbSettings = await NFBUtil.getSettings(process.env.NFB_ENDPOINT, req.ip, req.forceLocale || req.appState.auth.user.locale);
             }
 
             if (req.appState.auth.user.locale && !req.forceLocale) {

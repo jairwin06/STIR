@@ -74,6 +74,7 @@
  </style>
  <script>
     import './alarm-time.tag'
+    import MiscUtil from '../util/misc'
 
     this.mixin('TimeUtil');
 
@@ -84,7 +85,7 @@
 
     this.on('ready', () => {
         this.update();
-        if (this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
+        if (!MiscUtil.isStandaone() && this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
             $('#home-suggest-message').html(
                 this.formatMessage('HOME_SUGGEST', {
                     role: this.formatMessage('SLEEPER')
@@ -92,6 +93,10 @@
             );
             phonon.panel('#home-suggest').open();
             this.state.auth.suggestedSleeperHome();
+        }
+        let manifestLink = $('link[href="manifest.json"]');
+        if (manifestLink.length == 0) {
+            $('head').append('<link rel="manifest" href="manifest.json">');
         }
     })
 

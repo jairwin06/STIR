@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/css/style.css">
 
   <!-- ANDROID WEB APP-->
-  <link rel="manifest" href="manifest.json">
+  <!--link rel="manifest" href="manifest.json"-->
 
   <!-- IPHONE WEB APP-->
   <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
@@ -27,7 +27,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 
-  <%- typeof nfbDeps != 'undefined' ? nfbDeps.join('\n') : '' %>
+  <%- typeof nfbDeps != 'undefined' ? nfbDeps.join('\n') : '<script src="/lib/jquery-3.2.1.min.js"></script>' %>
 
   <script src="/lib/socket.io.slim.js"></script>
   <script src="/lib/jquery-ui.min.js"></script>

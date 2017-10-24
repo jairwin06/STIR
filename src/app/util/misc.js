@@ -66,7 +66,10 @@ class MiscUtil {
         panel.find('video').on('ended', () => {
             phonon.panel(panelId).close();                    
         });
+    }
 
+    isStandaone() {
+        return (navigator.standalone || (window.matchMedia('(display-mode: standalone)').matches));
     }
 };
 
