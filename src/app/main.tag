@@ -142,18 +142,33 @@
         .intro-panel {
             z-index: 9999;
             .content {
+                background-color: black;
+                video {
+                    height: 100%;
+                }
+            }
+            .overlay {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                flex-direction: column;
 
                 h1 {
                     color: white;
                     position: absolute;
                     top: 30%;
+                    width: 100%;
+                    text-align: center;
                 }
 
-                video {
-                    height: 100%;
+                a {
+                    width: 100%;
+                    text-align: center;
                 }
                 
                 .play-button {
@@ -213,7 +228,7 @@
             console.log("Main mounted");
 
             if (IS_CLIENT && !this.state.auth.mturk) {
-               if (!this.state.auth.accessToken) {
+               if (1 || !this.state.auth.accessToken) {
                     console.log("Opening intro");
                     MiscUtil.initVideoPanel('#intro-panel');
                     phonon.panel('#intro-panel').open();                    
