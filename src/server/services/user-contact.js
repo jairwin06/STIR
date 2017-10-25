@@ -47,9 +47,7 @@ export default class UserContactService {
             return Promise.reject(new Error("Data does not contain a phone number"));
         }
         data.verificationCode = this.get4DigitCode();
-        data.status = {
-            phoneValidated: false,
-        }
+        data['status.phoneValidated'] = false;
         
         // Check that nobody already has that phone
         return this.app.service("users").find({query: {phone: data.phone}})
@@ -60,9 +58,7 @@ export default class UserContactService {
                 // Remove the phone field
                 return this.app.service("users").patch(user._id, {
                      $unset: { phone: "" } ,
-                     status: {
-                         phoneValidated: false
-                     }
+                     'status.phoneValidated': false
                 })
             }            
             else {
@@ -95,7 +91,7 @@ export default class UserContactService {
     verify(data,params) {
         console.log("Verify code service", data,params);
         if (data.code == params.user.verificationCode) {
-            return this.app.service("users").patch(params.user._id, {status: {phoneValidated: true}})
+            return this.app.service("users").patch(params.user._id, {'status.phoneValidated': true})
             .then((result) => {
                return {status: "success"}
             })

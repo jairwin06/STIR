@@ -36,6 +36,7 @@ const AlarmSchema = new mongoose.Schema({
         facet: String,
         need: String
     },
+    dummy: {type: Boolean, default: false},
     debug: {
         watson: String
     }

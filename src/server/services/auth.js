@@ -110,7 +110,7 @@ function createNewUser(app, mturk, ip) {
 }
 export function createFixtures(app) {
     let users = app.service('users');
-    users.find({query: {role: "admin"}})
+    return users.find({query: {role: "admin"}})
     .then((result) => {
         if (result.length == 0) {
             return users.create({
@@ -119,17 +119,7 @@ export function createFixtures(app) {
                 password: process.env['ADMIN_PASSWORD']
             })
         }
-    })
-    /*
-    users.find({query: {role: "mturk"}})
-    .then((result) => {
-        if (result.length == 0) {
-            return users.create({
-                role: "mturk",
-                name: "mturk"
-            })
-        }
-    })*/
+    });
 }
 
 export function verifyUser(accessToken, app, mturk = null) {

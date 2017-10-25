@@ -93,7 +93,11 @@ export default {
             let sessionData = Session.getFor(req.params.userId);
             if (sessionData.pendingRecording) {
                 console.log("Downloading recording!");
-                let recordingUrl = '/recordings/' + sessionData.pendingRecording.alarmId + '-rec.wav';
+                let recordingUrl = 
+                    '/recordings/' + 
+                    sessionData.pendingRecording.alarmId + '-' + 
+                    sessionData.pendingRecording.rouserId +
+                    '-rec.wav';
                 DownloadUtil.saveUrl(req.body.RecordingUrl, 'public' + recordingUrl)
                 .then(() => {
                     console.log("Finished download!");

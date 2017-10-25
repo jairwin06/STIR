@@ -6,9 +6,10 @@ import Session from '../models/session-persistent'
 import Errors from 'feathers-errors'
 import {IntlMixin} from 'riot-intl'
 import {BaseI18n, withTimezone} from '../../app/i18n/i18n'
+import DummyAlarms from '../models/dummy-alarms'
 
 let ALARMS_IN_QUEUE = 1;
-const FIELDS_TO_RETURN = "_id time name prompt locales country pronoun recording"
+const FIELDS_TO_RETURN = "_id time name prompt locales country pronoun recording dummy"
 
 const ROUTINE_TASKS_INTERVAL = 1000 * 60 * 0.5;
 const STALLLING_TIMEOUT_HOURS = 1;
@@ -39,6 +40,7 @@ export default class AlarmManager {
             time: {$gt: new Date()},
             'recording.finalized': true,
             delivered: false,
+            dummy: false,
             deleted: false
         }).sort({time: -1})
         .then((result) => {
@@ -192,6 +194,7 @@ export default class AlarmManager {
                         assignedTo: null,
                         mturk: false,
                         analyzed: true,
+                        dummy: false,
                         locales: {$elemMatch: {$in: params.user.alarmLocales}},
                         time: {$gt: new Date()}
                     };
@@ -205,7 +208,23 @@ export default class AlarmManager {
                         alarmIds = newIds;
                         console.log("We have " + alarmIds.length + " alarms to assign");
                         if (alarmIds.length == 0) {
-                            // TODO: Backup alarms , only on first usage
+                            if (process.env.NODE_ENV == 'production' && params.user.alarmsRecorded == 0) {
+                                // ASSIGNING DUMMY ALARM
+                                console.log("ASSIGNING DUMMY ALARM!!!");
+                                return Alarm.count({
+                                    dummy: true
+                                })
+                                .then((totalDummyAlarms) => {
+                                    let random = Math.floor(Math.random()*totalDummyAlarms);                
+                                    return Alarm.find({
+                                        dummy: true
+                                    }).skip(random).limit(1);
+                                })
+                                .then((result) => {
+                                    console.log("Got dummy alarm for " + result[0].name);
+                                    alarmIds.push(result[0]._id);
+                                })
+                            }
                         } else {
                             console.log("Assigning " ,alarmIds);
                             return Alarm.update(
@@ -247,7 +266,10 @@ export default class AlarmManager {
             _id: id,
             'recording.finalized': false,
             analyzed: true,
-            time: {$gt: new Date()}
+            $or: [
+                {time: {$gt: new Date()}},
+                {dummy: true}
+            ]
         }).select(FIELDS_TO_RETURN + " assignedTo mturk")
         .then((alarm) => {
             console.log("Alarm:", alarm);
@@ -274,8 +296,15 @@ export default class AlarmManager {
                     }
                 })
             }
-            else if (params.user && params.user._id.toString() == alarm.assignedTo.toString()) {
+            else if (params.user && (alarm.dummy || (params.user._id.toString() == alarm.assignedTo.toString()))) {
                 console.log("Rouser alarm");
+                if (alarm.dummy) {
+                    console.log("Dummy alarm so dummy mixUrl");
+                    alarm.recording.mixUrl = 
+                        '/recordings/' + 
+                        alarm._id + '-' + 
+                        params.user._id + '-mix.mp3'
+                }
                 return alarm;
             } else {
                 return Promise.reject(new Errors.NotFound());
@@ -330,6 +359,7 @@ export default class AlarmManager {
             { 
                'recording.finalized' : false,
                'deleted': false,
+               'dummy': false,
                'assignedTo': {$ne: null},
                'assignedAt': {$lt: timeout}
             }, 
@@ -347,6 +377,7 @@ export default class AlarmManager {
                     {time: {$gt: new Date()}}
                 ],
                 deleted: false,
+                dummy: false,
                 notifiedSleeper: false,
                 analyzed: true
             })
@@ -391,6 +422,7 @@ export default class AlarmManager {
             return Alarm.find({
                 time: {$gt: new Date()},
                 deleted: false,
+                dummy: false,
                 notifiedRousers: false,
                 mturk: false,
                 assignedTo: null,
@@ -489,6 +521,7 @@ export default class AlarmManager {
                     {time: {$gt: new Date()}}
                 ],
                 deleted: false,
+                dummy: false,
                 analyzed: true,
                 assignedTo: null,
                 mturk: false
@@ -514,5 +547,33 @@ export default class AlarmManager {
         else {
             return Promise.resolve({n: 0});
         }
+    }
+
+    createDummyAlarms() {
+        console.log("Creating dummy alarms");
+
+        let adminUser;
+        return User.findOne({
+            role: 'admin'
+        })
+        .then((user) => {
+            adminUser = user;
+            // Remove existing ones first
+            return Alarm.remove({ dummy: true })
+        })
+        .then(() => {
+            let actions = [];
+            for (let dummyAlarm of DummyAlarms) {
+                dummyAlarm.userId = adminUser._id;
+                actions.push(Alarm.create(dummyAlarm));
+            }
+            return Promise.all(actions);
+        })
+        .then((result) => {
+            console.log("Created");
+        })
+        .catch((err) => {
+            console.log("Error while creating dummy alarms!", err);
+        })
     }
 }

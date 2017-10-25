@@ -61,16 +61,15 @@ export default class RecordingsService {
         Session.setFor(data.rouserId, {pendingRecording : null});
         // Mix
         SoxUtil.mixBackingTrack(
-            'public/recordings/' + data.alarmId + '-rec.wav',
+            'public/recordings/' + data.alarmId + '-' + data.rouserId + '-rec.wav',
             'backingtracks/_2014_.wav',
-            'public/recordings/' + data.alarmId + '-mix.mp3'
+            'public/recordings/' + data.alarmId + '-' + data.rouserId + '-mix.mp3'
         )
         .then((result) => {
             console.log("Mixing result", result);
-            data.mixUrl = '/recordings/' + data.alarmId + '-mix.mp3?t=' + new Date().getTime();
+            data.mixUrl = '/recordings/' + data.alarmId + '-' + data.rouserId + '-mix.mp3?t=' + new Date().getTime();
             let recording = Object.assign({}, data);
             recording.finalized = false;
-            data.mixUrl = '/recordings/' + data.alarmId + '-mix.mp3?t=' + new Date().getTime();
             data.status = "success";
             delete recording.alarmId;
             this.app.service('/alarms/sleeper').patch(data.alarmId,{recording: recording})

@@ -350,8 +350,13 @@ app.service('/alarms/admin').hooks({
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env['MONGO_CONNECTION'], {useMongoClient: true})
 .then(() => {
-    createFixtures(app);
-    app.service('alarms/rouser').getPendingAlarms();
+    return createFixtures(app);
+})
+.then(() => {
+    return app.service('alarms/rouser').createDummyAlarms();
+})
+.then(() => {
+    return app.service('alarms/rouser').getPendingAlarms();
 })
 
 // Client routes
