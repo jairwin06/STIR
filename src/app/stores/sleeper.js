@@ -49,6 +49,10 @@ export default class SleeperStore extends Store {
         }
     }
 
+    invalidateAlarms() {
+        this.alarms = null;
+    }
+
     async addAlarm() {
         try {
             console.log("Create the alarm!", this.currentAlarm);

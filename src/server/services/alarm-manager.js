@@ -363,7 +363,8 @@ export default class AlarmManager {
                'assignedTo': {$ne: null},
                'assignedAt': {$lt: timeout}
             }, 
-            { $set: { assignedTo: null  } }
+            { $set: { assignedTo: null  } },
+            { multi: true  }
         );
     }
 

@@ -1,4 +1,7 @@
 import TwilioUtil from '../util/twilio'
+import STIRError from '../../app/stir-error'
+import Session from '../models/session-persistent'
+import Alarm from '../models/alarm'
 
 export default class UserContactService {
     setup(app) {
@@ -34,9 +37,10 @@ export default class UserContactService {
 
     create(data,params) {
         console.log("set user contact", data,params);
+        let contact = Session.getFor(params.user._id).contact;
 
-        if (data.code && params.user.verificationCode) {
-            return this.verify(data,params)
+        if (data.code && contact.verificationCode) {
+            return this.verify(data,params,contact)
         } else {
             return this.generateVerficationCode(data,params);
         }
@@ -47,32 +51,16 @@ export default class UserContactService {
             return Promise.reject(new Error("Data does not contain a phone number"));
         }
         data.verificationCode = this.get4DigitCode();
-        data['status.phoneValidated'] = false;
+
+        // Save in the session
+        Session.setFor(params.user._id, {contact: data});
         
-        // Check that nobody already has that phone
-        return this.app.service("users").find({query: {phone: data.phone}})
-        .then((result) => {
-            if (result.length > 0) {
-                let user = result[0];
-                console.log("There is already a user with this phone!", user._id);
-                // Remove the phone field
-                return this.app.service("users").patch(user._id, {
-                     $unset: { phone: "" } ,
-                     'status.phoneValidated': false
-                })
-            }            
-            else {
-                return;
-            }
-        })
-        .then(() => {
-            return this.app.service("users").patch(params.user._id, data)
-        })
+        return this.app.service("users").patch(params.user._id, {'status.phoneValidated' : false})
         .then((result) => {
            console.log("User updated sending text");
            return TwilioUtil.client.messages.create({
-                body: 'Your STIR code is ' + result.verificationCode,
-                to: result.phone,  
+                body: 'Your STIR code is ' + data.verificationCode,
+                to: data.phone,  
                 from: TwilioUtil.TWILIO_PHONE_NUMBER
            })
         })
@@ -88,13 +76,64 @@ export default class UserContactService {
         }) 
     }
 
-    verify(data,params) {
+    verify(data,params,contact) {
         console.log("Verify code service", data,params);
-        if (data.code == params.user.verificationCode) {
-            return this.app.service("users").patch(params.user._id, {'status.phoneValidated': true})
+        console.log("User contact", contact);
+
+        if (data.code == contact.verificationCode) {
+            // Check that nobody already has that phone
+            return this.app.service("users").find({query: {
+                phone: contact.phone,
+                _id: {$ne: params.user._id}
+            }})
             .then((result) => {
+                if (result.length > 0) {
+                    let user = result[0];
+                    console.log("There is already a user with this phone!", user._id);
+                    if (!data.force) {
+                        throw new STIRError("EXISTS");
+                    } else {
+                        // Remove the phone field
+                        return this.app.service("users").patch(user._id, {
+                             $unset: { phone: "" } ,
+                             'status.phoneValidated': false
+                        })
+                        .then(() => {
+                            return Alarm.update(
+                                { 
+                                   'userId': user._id,
+                                }, 
+                                { $set: { userId: params.user._id  }},
+                                { multi: true  }
+                            );
+                        })
+                        .then(() => {
+                            // Refersh alarms
+                            this.app.service('alarms/rouser').getPendingAlarms();
+                            return;
+                        })
+                    }
+                }            
+                else {
+                    return;
+                }
+            })
+            .then((result) => {
+                contact['status.phoneValidated'] = true;
+                return this.app.service("users").patch(params.user._id, contact)
+            })
+            .then((result) => {
+               console.log("Patched contact", result);
                return {status: "success"}
             })
+            .catch((err) => {
+                console.log("Error updating contact", err);
+                if (err.code && err.code == "EXISTS") {
+                    return {status: "EXISTS"};
+                } else {
+                    throw (err);
+                }
+            });
         } else {
             return Promise.reject(new Error("Code is incorrect"));
         }

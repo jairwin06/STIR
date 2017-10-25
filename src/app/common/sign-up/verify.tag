@@ -35,13 +35,23 @@
             let result = await this.state.auth.verifyCode(this.refs.code.value);
             if (result.status == "success") {
                 page("/sign-up/locale");
+            } else if (result.status == "EXISTS") {
+                let confirm = phonon.confirm(this.formatMessage('PHONE_EXISTS'), this.formatMessage('NOTICE'), true, "Ok", "Cancel");
+                confirm.on('confirm', async () => {
+                    console.log("Forcing!");
+                    let result = await this.state.auth.verifyCode(this.refs.code.value, true);
+                    console.log("Result", result);
+                    if (result.status == "success") {
+                        this.state.sleeper.invalidateAlarms();
+                        page("/sign-up/locale");
+                    }
+                });
             } else {
                 throw new Error("Internal error");
             }
         }
         catch (err) {
-           this.error = err.message;
-           this.update();
+           phonon.alert(err.message, "Oops!", false, "Ok");
         }
     }
  </script>
