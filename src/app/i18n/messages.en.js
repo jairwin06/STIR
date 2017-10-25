@@ -35,7 +35,8 @@ const Messages =
     BE_A_ROUSER: 'Sign up to be a rouser',
     SLEEPER_SUMMARY_MESSAGE: 'Good morning {name}! Checkout your wakeup summary from Stir at {url}',
     NOTICE: 'Notice',
-    PHONE_EXISTS: 'There is already a registered device with this phone number, switch to this device?'
+    PHONE_EXISTS: 'There is already a registered device with this phone number, switch to this device?',
+    FAIL_NOTIFY: 'This is a message from STIR. we\'r sorry {name}, but due to an analysis failture you wakeup at {time, time, short} will not be delivered'
 };
 
 export default Messages;

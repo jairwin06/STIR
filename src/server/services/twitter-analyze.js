@@ -99,7 +99,6 @@ export default class TwitterAnalyzeService {
               access_token_secret: user.twitter.refreshToken
             });
 
-
             let tweets = [];
 
             let newTweets = await this.fetchTweets(client);
@@ -127,7 +126,6 @@ export default class TwitterAnalyzeService {
         }
         catch(err) {
             console.log("Twitter analyzer error!", err);
-            Session.setFor(params.user._id, {state: {pendingTwitter: false}});
             if (Array.isArray(err)) {
                 return Promise.reject(err[0]);
             } else {

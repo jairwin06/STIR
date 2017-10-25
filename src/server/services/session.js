@@ -29,7 +29,8 @@ export default class SessionService {
                     query: {
                         userId: params.user._id,
                         time: data.newAlarm.time,
-                        deleted: false
+                        deleted: false,
+                        failed: false
                     }
                 })
                 .then((result) => {

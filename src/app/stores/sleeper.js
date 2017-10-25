@@ -19,7 +19,8 @@ export default class SleeperStore extends Store {
                     {
                         accessToken: this._state.auth.accessToken,
                         delivered: false,
-                        deleted: false
+                        deleted: false,
+                        failed: false
                     });
                 this.gettingAlarms = false;
                 console.log("Alarms result", result);

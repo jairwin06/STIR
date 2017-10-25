@@ -12,6 +12,9 @@ const promptSyntax = {
   "pronoun": "he"
 };
 
+const RETRY_INTERVAL = 1000 * 60 * 5;
+const MAXIMUM_RETRIES = 5;
+
 export default function (hook) {
     console.log("Generate prompt!");
 
@@ -32,7 +35,7 @@ function generatePrompt(app, alarm, analysis,  user, tryNumber) {
     Promise.resolve({})
     .then(() => {
         if (analysis == 'twitter') {
-            return app.service('twitter-analyze').analyze(user)
+            return app.service('twitter-analyze').analyze(user, tryNumber)
         } else if (analysis == 'facebook') {
             return app.service('fbanalyze').analyze(user)
         } else {
@@ -58,8 +61,19 @@ function generatePrompt(app, alarm, analysis,  user, tryNumber) {
         return app.service('alarms/sleeper').patch(alarm._id,alarmData);
     })
     .catch((err) => {
-        // TODO: Retry when twitter is not available, and any other error?
         console.log("Error generating prompt!", err);
+        if (tryNumber < MAXIMUM_RETRIES) {
+            console.log("Retrying in " + RETRY_INTERVAL);
+            setTimeout(() => {
+                generatePrompt(app, alarm, analysis, user, tryNumber + 1);
+            },RETRY_INTERVAL);
+        } else {
+            console.log("Giving up");
+            app.service('alarms/sleeper').patch(alarm._id,{failed: true, deleted: true})
+            .then(() => {
+                app.service('alarms/rouser').failedAnalysis(alarm,user);
+            })
+        }
     })
 }
 

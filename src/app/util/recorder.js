@@ -50,10 +50,10 @@ export default class Recorder {
         })
     }
     isMimeTypeSupported(mimeType) {
-        // TODO: Using 8000 samplerate wav for now because it's same as Trilio. 
         // Firefox supports audio/ogg
         // Chrome supports audio/webm
         // Safari supports only audio/wav
+        // For now sticking to wav
         return false;
         ///
         //

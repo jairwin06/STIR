@@ -41,7 +41,8 @@ export default class AlarmManager {
             'recording.finalized': true,
             delivered: false,
             dummy: false,
-            deleted: false
+            deleted: false,
+            failed: false
         }).sort({time: -1})
         .then((result) => {
             console.log("Result:", result.length + " Alarms");
@@ -119,7 +120,7 @@ export default class AlarmManager {
 
     }
     onAlarmPatched(alarm) {
-        console.log("Alarm patched!");
+        console.log("Alarm patched!",alarm);
         this.getPendingAlarms();
     }
 
@@ -180,6 +181,7 @@ export default class AlarmManager {
                 assignedTo: params.user._id,
                 'recording.finalized': false,
                 deleted: false,
+                failed: false,
                 time: {$gt: new Date()}
             };
             return Alarm.find(query).select(FIELDS_TO_RETURN)
@@ -244,6 +246,7 @@ export default class AlarmManager {
                                     assignedTo: params.user._id,
                                     'recording.finalized': false,
                                     deleted: false,
+                                    failed: false,
                                     time: {$gt: new Date()}
                                 }]}]
                             }
@@ -315,6 +318,14 @@ export default class AlarmManager {
             return Promise.reject(new Errors.NotFound());
         });
     }
+    failedAnalysis(alarm,user) {
+        let message = IntlMixin.formatMessage('FAIL_NOTIFY',{
+                name: user.name,
+                time: alarm.time
+        },withTimezone(alarm.timezone),user.locale);
+
+        this.messageUser(user._id, message);
+    }
 
 
     // Routine tasks
@@ -359,6 +370,7 @@ export default class AlarmManager {
             { 
                'recording.finalized' : false,
                'deleted': false,
+               'failed': false,
                'dummy': false,
                'assignedTo': {$ne: null},
                'assignedAt': {$lt: timeout}
@@ -378,6 +390,7 @@ export default class AlarmManager {
                     {time: {$gt: new Date()}}
                 ],
                 deleted: false,
+                failed: false,
                 dummy: false,
                 notifiedSleeper: false,
                 analyzed: true
@@ -423,6 +436,7 @@ export default class AlarmManager {
             return Alarm.find({
                 time: {$gt: new Date()},
                 deleted: false,
+                failed: false,
                 dummy: false,
                 notifiedRousers: false,
                 mturk: false,
@@ -522,6 +536,7 @@ export default class AlarmManager {
                     {time: {$gt: new Date()}}
                 ],
                 deleted: false,
+                failed: false,
                 dummy: false,
                 analyzed: true,
                 assignedTo: null,
