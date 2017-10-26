@@ -34,13 +34,29 @@ class Routes {
 
         app.route('/sleeper*').get((req, res, next) => {
             req.appState.main.setRole("sleeper");
-            this.populate(req, 'auth', 'getStatus');
-            this.populate(req, 'sleeper', 'getAlarms');
+            if (
+                    IS_CLIENT &&
+                    req.appState.auth.user.status &&
+                    !req.appState.auth.user.status.shownSleeperIntro && 
+                    req.appState.sleeper.action != 'welcome' &&
+                    !req.appState.auth.mturk 
+            ) {
+                    req.appState.sleeper.setAction("welcome");
+                    page.show("/sleeper/welcome");
+
+            } else {
+                this.populate(req, 'auth', 'getStatus');
+                this.populate(req, 'sleeper', 'getAlarms');
+            }
             this.next(next, req, res);
             
         });
         app.route('/sleeper/alarms').get((req, res, next) => {
             req.appState.sleeper.setAction("clock");
+            this.go(next, req, res);
+        });
+        app.route('/sleeper/welcome').get((req, res, next) => {
+            req.appState.sleeper.setAction("welcome");
             this.go(next, req, res);
         });
         app.route('/sleeper/alarms/add*').get((req, res, next) => {

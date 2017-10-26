@@ -7,7 +7,7 @@
   <div class="content">
       <div class="padded-full">
            <div class="description row">
-                When would you like to wake up?
+                <formatted-message id='SLEEPER_TIME_WHEN'/>
             </div>
             <alarm-time
               data="{ state.sleeper.currentAlarm }"
@@ -16,9 +16,14 @@
               verifying={verifying}
              >
              </alarm-time>
-          <div id="next-container">
-              <button class="btn primary raised" click="{next}">Next</button>
-          </div>
+            <div id="next-container">
+                  <button class="btn primary raised" click="{next}">Next</button>
+            </div>
+            <div class="disclaimer">
+                <formatted-message id='SLEEPER_TIME_DISCLAMER' 
+                    hours="{state.auth.user.env.tooEarlyHours}"
+                />
+            </div>
       </div>
       <div class="stepper-container">
           <stepper size="5" current="1"></stepper>
@@ -34,6 +39,10 @@
             a {
                 width: 100px;
             }
+        }
+        .disclaimer {
+            margin-top: 40px;
+            color: red;
         }
     }
  </style>

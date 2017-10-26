@@ -1,6 +1,10 @@
 const Messages =
 {
-    HOME_CHOICE:  'What would you like to be today?',
+    HOME_TITLE:  'Welcome, we’re glad you’re here.',
+    HOME_EXPLANATION: 'Stir is a personalized wakeup service that brings people gently into the new day to the sound of a human voice.',
+    HOME_CHOICE1:  'Sign up as a Sleeper if you’d like to have Stir replace your alarm clock with a personalized wakeup message.',
+    HOME_CHOICE2:  'Sign up as a Rouser if you’d like to join our global network and leave wakeup messages for Sleepers.',
+    HOME_ACTION:  'Would you like to join Stir as a Sleeper or a Rouser?',
     CLOCK_WELCOME:  'Welcome back, {name}',
     CLOCK_DESC:  "Here are the alarms you currently have scheduled. You'll be woken up:",
     ALARM_DATE:  "{date, date, short}",
@@ -36,7 +40,19 @@ const Messages =
     SLEEPER_SUMMARY_MESSAGE: 'Good morning {name}! Checkout your wakeup summary from Stir at {url}',
     NOTICE: 'Notice',
     PHONE_EXISTS: 'There is already a registered device with this phone number, switch to this device?',
-    FAIL_NOTIFY: 'This is a message from STIR. we\'r sorry {name}, but due to an analysis failture you wakeup at {time, time, short} will not be delivered'
+    FAIL_NOTIFY: 'This is a message from STIR. we\'r sorry {name}, but due to an analysis failture you wakeup at {time, time, short} will not be delivered',
+    SLEEPER_WELCOME: 'If you\'re like nearly half of the other humans in the world, you woke up this morning underslept. Our aim is to make that transition just a little bit better.',
+    SLEEPER_WELCOME_1: 'As a Sleeper, you\'ll replace your digital alarm with a Stir message. Put your morning in our hands, we\'ve got you.',
+    HOW_IT_WORKS: 'How it works:',
+    HOW_WORKS_1: 'Set your wakeup time.',
+    HOW_WORKS_2: 'Sign up with your Facebook or Twitter. Our algorithms will analyze your data to understand you and your morning needs*.',
+    HOW_WORKS_3: 'A Rouser will create a personalized wakeup message for you.',
+    HOW_WORKS_4: 'You’ll receive a call with your special wakeup message.',
+    HOW_DISCLAMER_1: '*No personally identifiable information will be stored or shared. Click ',
+    HOW_DISCLAMER_2: 'here',
+    HOW_DISCLAMER_3: ' for more info.',
+    SLEEPER_TIME_WHEN: 'When would you like to wake up?',
+    SLEEPER_TIME_DISCLAMER: 'Your wakeup message will be delivered to you in your local time zone. Stir needs at least {hours} hours to prepare your message.'
 };
 
 export default Messages;

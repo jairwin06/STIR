@@ -94,6 +94,7 @@ export default class AuthStore extends Store {
                 this.gettingStatus = false;
                 Object.assign(this.user, result);
                 Object.assign(this.user.status, result.status);
+                Object.assign(this.user.env, result.env);
                 console.log("User contact status", this.user);
                 this.trigger("status_updated");
             }
@@ -170,6 +171,17 @@ export default class AuthStore extends Store {
             console.log("set user shownRouserVideo");
             this.user.status.shownRouserVideo = true;
             let result = await SocketUtil.rpc('user/contact::patch', null, {'status.shownRouserVideo': true});
+            return result;
+        } 
+        catch(err) {
+            console.log("Error",err);
+        }
+    }
+    async shownSleeperIntro() {
+        try {
+            console.log("set user shownSleeperIntro");
+            this.user.status.shownSleeperIntro = true;
+            let result = await SocketUtil.rpc('user/contact::patch', null, {'status.shownSleeperIntro': true});
             return result;
         } 
         catch(err) {

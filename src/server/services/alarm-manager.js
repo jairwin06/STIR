@@ -16,6 +16,7 @@ const STALLLING_TIMEOUT_HOURS = 1;
 const NOTIFY_SLEEPERS_HOURS = 12;
 const MTURK_TRIGGER_HOURS = 3;
 const ROUSERS_TO_NOTIFY = 2;
+const TOO_EARLY_HOURS = 8;
 
 export default class AlarmManager {
     constructor() {
@@ -33,6 +34,9 @@ export default class AlarmManager {
         setInterval(() => {
             this.tick();
         },1000);
+    }
+    getTooEarlyHours() {
+        return TOO_EARLY_HOURS;
     }
     getPendingAlarms() {
         console.log("Get pending alarms");

@@ -10,21 +10,31 @@
                 </div-->
             </header>
             <div class="content">
-                <div>
-                </div>
-                <div id="choice" class="row text-center">
-                    <formatted-message id='HOME_CHOICE'/>
-                </div>
-                <div class="row text-center">
-                    <div class="phone-6 tablet-6 column">
-                        <a class="btn primary raised" href="/sleeper/alarms">
-                        <formatted-message id='SLEEPER'/>
-                        </a>
+                <div class="padded-full">
+                    <div class="title">
+                        <formatted-message id='HOME_TITLE'/>
                     </div>
-                    <div class="phone-6 tablet-6 column">
-                        <a class="btn primary" href="/rouser/alarms">
-                        <formatted-message id='ROUSER'/>
-                        </a>
+                    <div class="explanation">
+                        <formatted-message id='HOME_EXPLANATION'/>
+                    </div>
+                    <div class="choice">
+                        <p><formatted-message id='HOME_CHOICE1'/></p>
+                        <p><formatted-message id='HOME_CHOICE2'/></p>
+                    </div>
+                    <div class="action">
+                        <formatted-message id='HOME_ACTION'/>
+                    </div>
+                    <div class="row text-center">
+                        <div class="phone-6 tablet-6 column">
+                            <a class="btn primary raised" href="/sleeper/alarms">
+                            <formatted-message id='SLEEPER'/>
+                            </a>
+                        </div>
+                        <div class="phone-6 tablet-6 column">
+                            <a class="btn primary" href="/rouser/alarms">
+                            <formatted-message id='ROUSER'/>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,10 +52,21 @@
 
         }
         main {
-            #choice {
-                margin-top: 50px;
-                margin-bottom: 20px;
+            .title {
+                margin-bottom: 30px;
             }
+            .explanation {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            .choice {
+                font-size: 16px;
+                margin-bottom: 50px;
+            }
+            .action {
+                margin-bottom: 30px;
+            }
+
         }
 
         input::-webkit-outer-spin-button,
@@ -75,6 +96,10 @@
 
         .description {
             font-size: 18px;
+        }
+        .title {
+            font-size: 18px;
+
         }
 
         .popover {
@@ -205,7 +230,7 @@
         import './sleeper/add-alarm/questions.tag'
         import './sleeper/clock.tag'
         import './sleeper/alarm-summary.tag'
-    
+        import './sleeper/welcome.tag'
 
         import './rouser/alarms.tag'
         import './rouser/welcome.tag'

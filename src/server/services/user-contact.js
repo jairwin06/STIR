@@ -16,7 +16,10 @@ export default class UserContactService {
             country: params.user.country,
             countryCode: params.user.countryCode,
             locale: params.user.locale,
-            pronoun: params.user.pronoun
+            pronoun: params.user.pronoun,
+            env: {
+                tooEarlyHours: this.app.service('alarms/rouser').getTooEarlyHours()
+            }
         });
     }
 

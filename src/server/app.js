@@ -270,7 +270,13 @@ app.service('/user/contact').hooks({
       ],
       patch: [
         noDotPluck(
-            'locale', 'alarmLocales','pronoun','status.suggestedSleeperHome', 'status.suggestedRouserHome', 'status.shownRouserVideo'
+            'locale',
+            'alarmLocales',
+            'pronoun',
+            'status.suggestedSleeperHome', 
+            'status.suggestedRouserHome', 
+            'status.shownRouserVideo',
+            'status.shownSleeperIntro'
         )
       ]
     }
