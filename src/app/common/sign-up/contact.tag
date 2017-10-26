@@ -19,24 +19,20 @@
         <div class="explanation" class="row">
             <formatted-message id='CONTACT_EXPLANATION'/>
         </div>
-          <form action="" onsubmit="{setContact}">
+        <form action="" onsubmit="{setContact}">
             <input id="phone" ref="phone" type="tel" change="{onPhoneChange}" required>
-            <div>
+            <div class="action">
                 <button class="btn primary raised" type="submit">Next</button>
             </div>
-          </form>
-          <p>
-            <b>{phoneError}</b>
-          </p>
-          <p>
-          <b show"{error}" class="error">{error}</b>
-          </p>
+        </form>
+        <div class="disclaimer">
+            <formatted-message id='CONTACT_DISCLAIMER'/>
         </div>
       </div>
       <div show="{ !phonePluginLoaded || loading }" class="circle-progress center active">
         <div class="spinner"></div>
      </div>
-  </div>
+ </div>
  <style>
      sign-up-contact {
          .explanation {
@@ -44,16 +40,24 @@
             font-size: 16px;
          }
 
+         .disclaimer {
+            margin-top: 20px;
+            color: red;
+         }
+
+         .action {
+            margin-top: 15px;
+         }
+
          form {
             margin-top: 10px;
-
-            div {
-                margin-bottom: 15px;
-            }
          }
      }
  </style>
  <script>
+    
+    this.mixin('UIUtil');
+
     this.on('mount', () => {
         if (IS_CLIENT) {
             this.phonePluginLoaded = false;
@@ -76,6 +80,9 @@
     });
 
     this.on('unmount', () => {
+    });
+
+    this.on('ready', () => {
     });
 
    onPhoneChange() {
@@ -107,7 +114,7 @@
             }
             catch (err) {
                console.log("Setting contact error!", err);
-               this.phoneError = err.message;
+               UIUtil.showError(err.message);
                this.loading = false;
                this.update();
             }

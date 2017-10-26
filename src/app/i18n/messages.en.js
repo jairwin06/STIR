@@ -1,5 +1,6 @@
 const Messages =
 {
+    ERROR_TITLE: 'Something went wrong',
     HOME_TITLE:  'Welcome, we’re glad you’re here.',
     HOME_EXPLANATION: 'Stir is a personalized wakeup service that brings people gently into the new day to the sound of a human voice.',
     HOME_CHOICE1:  'Sign up as a Sleeper if you’d like to have Stir replace your alarm clock with a personalized wakeup message.',
@@ -66,7 +67,10 @@ const Messages =
     QUESTION_5: 'I am drawn to experience a variety of activities and value creative exploration.',
     SLEEPER_CONTACT_THANKS: 'Thanks, {name}',
     SLEEPER_CONTACT_EXPLANATION: 'We’ll need your phone number to deliver your wakeup message.',
-    CONTACT_EXPLANATION: 'After this, you’ll be asked to verify your number with a 4-digit code.'
+    CONTACT_EXPLANATION: 'After this, you’ll be asked to verify your number with a 4-digit code.',
+    CONTACT_DISCLAIMER: '*Calls and SMS messages from Stir will be free of charge to you.',
+    CONTACT_VERIFY: 'Great. Please enter your verification code.',
+    CONTACT_VERIFY_NAME: 'Great. Please enter your verification code, {name}'
 };
 
 export default Messages;

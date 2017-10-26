@@ -6,12 +6,17 @@
   </header>
   <div class="content">
       <div class="padded-full">
-           <div id="choice" class="row">
-                Verify your phone number with a code
-           </div>
+           <div class="title" class="row">
+                <formatted-message if="{state.auth.user.name}" id='CONTACT_VERIFY_NAME'
+                    name="{state.auth.user.name}"
+                />
+                <formatted-message if="{!state.auth.user.name}" id='CONTACT_VERIFY'/>
+            </div>
            <form action="" onsubmit="{verifyCode}">
                 <input ref="code" type="number" min="1000" max="9999">
-                <input type="submit" value="Next">
+                <div class="action">
+                    <button class="btn primary raised" type="submit">Next</button>
+                </div>
            </form>
           <p>
           <b show"{error}" class="error">{error}</b>
@@ -19,6 +24,11 @@
       </div>
   </div>
  <style>
+     sign-up-verify {
+         .action {
+            margin-top: 15px;
+         }
+     }
  </style>
  <script>
     this.on('mount', () => {

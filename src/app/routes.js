@@ -126,6 +126,7 @@ class Routes {
             this.go(next, req, res);
         });
         app.route('/sign-up/verify').get((req, res, next) => {
+            this.populate(req, 'auth', 'getStatus');
             console.log("sign-up verify route");
             this.go(next, req, res);
         });
