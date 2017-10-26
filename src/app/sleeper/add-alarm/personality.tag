@@ -102,6 +102,7 @@
                 this.loading = false;
                 this.showError(err.message);
             }
+            this.update();
         }
 
         this.state.sleeper.on('alarm_created', this.onAlarmCreated);
@@ -109,7 +110,7 @@
 
     showError(err) {
         let errorText;
-        if (err.code == 130) {
+        if (err.code && err.code == 130) {
             errorText = "The twitter servers are currently over capacity, please try again in a few minutes!"
         } else {
             errorText = "We have encountred the following error: " + err.message + ". Please inform our developers!";

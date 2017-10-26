@@ -54,10 +54,12 @@ export default class FBAnalyzeService {
             return this.app.service("users").patch(params.user._id, {name: name})
         })
         .then(() => {
+            console.log("Setting sesstion");
             Session.setFor(params.user._id, {state: {pendingFacebook: false}});
             return {status: "success", userName: params.user.name};
         })
         .catch((err) => {
+            console.log("Error duing FBAnalyzerService::find!", err);
             Session.setFor(params.user._id, {state: {pendingFacebook: false}});
             return Promise.reject(err);
         });
