@@ -4,8 +4,18 @@ const AlarmSchema = new mongoose.Schema({
     time: {type: Date, required: true},
     name: {type: String, required: true},
     prompt: {
-        paragraphs: [String],
-        instructions: [String]
+        en: {
+            paragraphs: [String],
+            instructions: [String]
+        },
+        fr: {
+            paragraphs: [String],
+            instructions: [String]
+        },
+        de: {
+            paragraphs: [String],
+            instructions: [String]
+        }
     },
     analysis: {type: String, required: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},

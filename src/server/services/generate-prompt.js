@@ -1,7 +1,9 @@
 import Session from '../models/session-persistent'
 import tracery from 'tracery-grammar'
 import WatsonUtil from '../util/watson'
-import PromptLogic from '../models/prompt-logic'
+import PromptLogicEN from '../models/prompt-logic/en'
+import PromptLogicFR from '../models/prompt-logic/fr'
+import PromptLogicDE from '../models/prompt-logic/de'
 import MiscUtil from '../../app/util/misc'
 
 const promptSyntax = {
@@ -11,6 +13,12 @@ const promptSyntax = {
   "name": "Sleeper",
   "pronoun": "he"
 };
+
+const PromptLogics = {
+    en: PromptLogicEN,
+    fr: PromptLogicFR,
+    de: PromptLogicDE
+}
 
 const RETRY_INTERVAL = 1000 * 60 * 5;
 const MAXIMUM_RETRIES = 5;
@@ -48,10 +56,16 @@ function generatePrompt(app, alarm, analysis,  user, tryNumber) {
                 alarmData.debug = {
                     watson: JSON.stringify(result.personality)
                 }
+                alarmData.generatedFrom = chooseTraits(result.personality, analysis, PromptLogics.en);
+                console.log("Generated From:", alarmData.generatedFrom);
 
-                let logicResult = runLogic(promptData, result.personality, analysis);
-                alarmData.prompt = logicResult.prompt;
-                alarmData.generatedFrom = logicResult.generatedFrom;
+                alarmData.prompt = {};
+
+                for (lang in PromptLogics) {
+                    let promptLogic = PromptLogics[lang];
+                    let logicResult = runLogic(promptData, alarmData.generatedFrom, promptLogic);
+                    alarmData.prompt[lang] = logicResult.prompt;
+                }
             } else {
                 throw new Error(result.message);
             }
@@ -78,13 +92,9 @@ function generatePrompt(app, alarm, analysis,  user, tryNumber) {
 }
 
 
-function runLogic(promptData, data, analysis) {
-    let promptParagraphs = [];
-    let promptInstructions = [];
-
+function chooseTraits(data, analysis, promptLogic) {
     let generatedFrom = {};
 
-    const PRONOUN = promptData.pronoun;
     let big5s;
 
     if (analysis == 'questions') {
@@ -115,16 +125,13 @@ function runLogic(promptData, data, analysis) {
 
     generatedFrom[choice] = chosenBig5.trait_id;
 
-    promptParagraphs.push(PromptLogic.big5s[biggestBig5.trait_id][choice][chosenBig5.trait_id].paragraph[PRONOUN]);
-    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id][choice][chosenBig5.trait_id].instruction[PRONOUN]);
-
     // Choose the facet
     let topFacets;
     
     if (analysis == 'questions') {
         // All that we have
         topFacets = [];
-        for (let facet in PromptLogic.big5s[biggestBig5.trait_id].facets) {
+        for (let facet in promptLogic.big5s[biggestBig5.trait_id].facets) {
             topFacets.push({
                 trait_id: facet
             });
@@ -140,17 +147,13 @@ function runLogic(promptData, data, analysis) {
 
     generatedFrom.facet = facet.trait_id;
 
-    promptParagraphs.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].paragraph[PRONOUN]);
-    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].instructions[0][PRONOUN]);
-    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].facets[facet.trait_id].instructions[1][PRONOUN]);
-
     // Choose the need
     let topNeeds;
 
     if (analysis == 'questions') {
         // All that we have
         topNeeds = [];
-        for (let need in PromptLogic.big5s[biggestBig5.trait_id].needs) {
+        for (let need in promptLogic.big5s[biggestBig5.trait_id].needs) {
             topNeeds.push({
                 trait_id: need
             });
@@ -166,7 +169,25 @@ function runLogic(promptData, data, analysis) {
 
     generatedFrom.need = need.trait_id;
 
-    promptInstructions.push(PromptLogic.big5s[biggestBig5.trait_id].needs[need.trait_id].instruction[PRONOUN]);
+    return generatedFrom;
+}
+
+function runLogic(promptData, generatedFrom, promptLogic) {
+    let promptParagraphs = [];
+    let promptInstructions = [];
+
+    const PRONOUN = promptData.pronoun;
+
+    let choice = generatedFrom.highs ? 'highs' : 'lows';
+
+    promptParagraphs.push(promptLogic.big5s[generatedFrom.big5][choice][generatedFrom[choice]].paragraph[PRONOUN]);
+    promptInstructions.push(promptLogic.big5s[generatedFrom.big5][choice][generatedFrom[choice]].instruction[PRONOUN]);
+
+    promptParagraphs.push(promptLogic.big5s[generatedFrom.big5].facets[generatedFrom.facet].paragraph[PRONOUN]);
+    promptInstructions.push(promptLogic.big5s[generatedFrom.big5].facets[generatedFrom.facet].instructions[0][PRONOUN]);
+    promptInstructions.push(promptLogic.big5s[generatedFrom.big5].facets[generatedFrom.facet].instructions[1][PRONOUN]);
+
+    promptInstructions.push(promptLogic.big5s[generatedFrom.big5].needs[generatedFrom.need].instruction[PRONOUN]);
 
     // Result
     let resultParagraphs = [];
@@ -187,7 +208,6 @@ function runLogic(promptData, data, analysis) {
         prompt: {
             paragraphs: resultParagraphs,
             instructions: resultInstructions
-        },
-        generatedFrom: generatedFrom
+        }
     }
 }

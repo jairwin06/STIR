@@ -34,10 +34,10 @@
                     <div class="intro row">
                         Today you'll be waking {state.rouser.currentAlarm.name}.
                     </div> 
-                    <p each="{text, i in state.rouser.currentAlarm.prompt.paragraphs}">{text}</p>
+                    <p each="{text, i in state.rouser.currentAlarm.prompt.en.paragraphs}">{text}</p>
                     <p><i>For your message to {state.rouser.currentAlarm.name}, consider the following, and feel free to elaborate:</i></p>
                     <ul class="">
-                      <li each="{text, i in state.rouser.currentAlarm.prompt.instructions}">
+                      <li each="{text, i in state.rouser.currentAlarm.prompt.en.instructions}">
                         {text}
                       </li>
                     </ul>
@@ -242,7 +242,7 @@
             this.done = true;
             this.refs.assignmentId.value = this.state.auth.mturk.assignmentId;
             this.refs.recordingPath.value = result || "unknown";
-            this.refs.prompt.value = this.state.rouser.currentAlarm.prompt;
+            this.refs.prompt.value = this.state.rouser.currentAlarm.prompt.en;
             this.refs.locales.value = this.state.rouser.currentAlarm.locales.join(',');
             this.update();
             // Submit the form

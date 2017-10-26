@@ -18,10 +18,10 @@
             <div class="intro row">
                 Today you'll be waking {state.rouser.currentAlarm.name}.
             </div> 
-            <p each="{text, i in state.rouser.currentAlarm.prompt.paragraphs}">{text}</p>
+            <p each="{text, i in state.rouser.currentAlarm.prompt[state.auth.locale].paragraphs}">{text}</p>
             <p><i>For your message to {state.rouser.currentAlarm.name}, consider the following, and feel free to elaborate:</i></p>
             <ul class="">
-              <li each="{text, i in state.rouser.currentAlarm.prompt.instructions}">
+              <li each="{text, i in state.rouser.currentAlarm.prompt[state.auth.locale].instructions}">
                 {text}
               </li>
             </ul>
