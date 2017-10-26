@@ -32,6 +32,7 @@ const toEnglish = async (post) => {
         let result = await MSTranslateUtil.translate(post.message,'en');
         return result || "";
     } catch(e) {
+        console.log("Translation Error!", e);
         return "";
     }
 };

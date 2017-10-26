@@ -52,7 +52,21 @@ const Messages =
     HOW_DISCLAMER_2: 'here',
     HOW_DISCLAMER_3: ' for more info.',
     SLEEPER_TIME_WHEN: 'When would you like to wake up?',
-    SLEEPER_TIME_DISCLAMER: 'Your wakeup message will be delivered to you in your local time zone. Stir needs at least {hours} hours to prepare your message.'
+    SLEEPER_TIME_DISCLAMER: 'Your wakeup message will be delivered to you in your local time zone. Stir needs at least {hours} hours to prepare your message.',
+    PERSONALITY_DESCRIPTION: 'Stir uses data analysis methods to personalize your wakeup experience.',
+    PERSONALITY_DISCLAIMER_1: '**For best results, select the service you use most often.',
+    PERSONALITY_DISCLAIMER_2: 'No personally identifiable information will be stored or shared.',
+    QUESTIONS_DESCRIPTION: 'In order to personalize your wakeup experience, we’ll need a bit more information.',
+    QUESTIONS_NAME: 'First, what’s your name?',
+    QUESTIONS_ORDER: 'Please order the following by how relevant they are to you:',
+    QUESTION_1: 'I put other people’s needs before my own and value cooperation and harmony.',
+    QUESTION_2: 'I am determined and organized in my approach to life’s tasks and value hard work',
+    QUESTION_3: 'I am stimulated by the company of others and value my relationships.',
+    QUESTION_4: 'I am sensitive to my environment and have a depth of emotional experiences.',
+    QUESTION_5: 'I am drawn to experience a variety of activities and value creative exploration.',
+    SLEEPER_CONTACT_THANKS: 'Thanks, {name}',
+    SLEEPER_CONTACT_EXPLANATION: 'We’ll need your phone number to deliver your wakeup message.',
+    CONTACT_EXPLANATION: 'After this, you’ll be asked to verify your number with a 4-digit code.'
 };
 
 export default Messages;

@@ -7,31 +7,31 @@
   <div class="content">
     <div class="padded-full">
        <form action="" onsubmit="{submitQuestions}">
+           <div class="description">
+                <formatted-message id='QUESTIONS_DESCRIPTION'/>
+           </div>
            <div id="name-input">
-                <label class="description">First, what's your name?</label>
+                <b><label><formatted-message id='QUESTIONS_NAME'/></label></b>
                 <input type="text" name="name" ref="name" required>
           </div>
-           <div class="description">
-                Please order the following by how relevant they are to you:
-           </div>
+           <b><formatted-message id='QUESTIONS_ORDER'/></b>
            <div id="paragraphs">
                 <ul ref="questions" id="sortable" class="list">
                   <li data-question-id="1" class="padded-list ui-state-default">
-                  <i class="pull-left material-icons">reorder</i><span class="">I put other people’s needs before my own and value cooperation and harmony.
-                 </span>
+                  <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_1'/>
                   </li>
                   <li data-question-id="2" class="padded-list ui-state-default">
-                  <i class="pull-left material-icons">reorder</i><span class="">I am determined and organized in my approach to life’s tasks and value hard work</span>
+                  <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_2'/>
                   </li>
                   <li data-question-id="3", class="padded-list ui-state-default">
-                  <i class="pull-left material-icons">reorder</i><span class="">i am stimulated by the company of others and value my relationships.
+                  <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_3'/>
                   </span>
                   </li>
                   <li data-question-id="4" class="padded-list ui-state-default">
-                  <i class="pull-left material-icons">reorder</i><span class="">I am sensitive to my environment and have a depth of emotional experiences. </span>
+                  <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_4'/>
                   </li>
                   <li data-question-id="5" class="padded-list ui-state-default">
-                  <i class="pull-left material-icons">reorder</i><span class="">I am drawn to experience a variety of activities and value creative exploration.</span>
+                  <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_5'/>
                   </li>
                 </ul>
            </div>
@@ -49,7 +49,7 @@
              input {
                 height: 35px;
              }
-             margin-bottom: 15px;
+             margin-bottom: 20px;
          }
          .list {
              li {
@@ -58,15 +58,14 @@
                  line-height: unset;
                  align-items: center;
                  margin-bottom: 15px;
-
-                 span {
-                    margin-left: 10px;
-                 }
              }
          }
         #paragraphs {
-            margin-top: 15px;
+            margin-top: 5px;
             margin-bottom: 30px;
+            margin-right: 10px;
+            margin-left: 5px;
+
         }
      }
  </style>

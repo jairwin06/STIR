@@ -6,13 +6,24 @@
   </header>
   <div class="content">
       <div show="{ phonePluginLoaded }" class="padded-full">
-           <div id="choice" class="row">
-                {state.auth.user.name ? state.auth.user.name + ', what' : 'What'} is your phone number?
+        <div if="{state.main.role == 'sleeper'}">
+           <div class="title" class="row">
+                <formatted-message id='SLEEPER_CONTACT_THANKS'
+                    name="{state.auth.user.name}"
+                />
             </div>
-
+            <div class="explanation" class="row">
+                <formatted-message id='SLEEPER_CONTACT_EXPLANATION'/>
+            </div>
+        </div>
+        <div class="explanation" class="row">
+            <formatted-message id='CONTACT_EXPLANATION'/>
+        </div>
           <form action="" onsubmit="{setContact}">
             <input id="phone" ref="phone" type="tel" change="{onPhoneChange}" required>
-            <input type="submit" value="Next">
+            <div>
+                <button class="btn primary raised" type="submit">Next</button>
+            </div>
           </form>
           <p>
             <b>{phoneError}</b>
@@ -20,12 +31,27 @@
           <p>
           <b show"{error}" class="error">{error}</b>
           </p>
+        </div>
       </div>
       <div show="{ !phonePluginLoaded || loading }" class="circle-progress center active">
         <div class="spinner"></div>
      </div>
   </div>
  <style>
+     sign-up-contact {
+         .explanation {
+            margin-top: 15px;
+            font-size: 16px;
+         }
+
+         form {
+            margin-top: 10px;
+
+            div {
+                margin-bottom: 15px;
+            }
+         }
+     }
  </style>
  <script>
     this.on('mount', () => {

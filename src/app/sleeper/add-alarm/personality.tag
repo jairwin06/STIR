@@ -7,7 +7,7 @@
   <div class="content">
     <div class="padded-full">
        <div class="description">
-            How do you want to personalize your experience?
+            <formatted-message id='PERSONALITY_DESCRIPTION'/>
         </div>
         <div id="choose-text" class="row">
             Choose the social media account you post on most frequently
@@ -19,10 +19,10 @@
         <div class="row">
             <a id="questions-link" href="/sleeper/alarms/add/questions">Not on social media?</a>
         </div>
-        <div style="margin-top:30px;"></div>
-          <p>
-            <a href="/sleeper/alarms/add/time" class="button">Back to alarm time</a>
-          </p>
+        <div class="disclaimer">
+            </p><formatted-message id='PERSONALITY_DISCLAIMER_1'/></p>
+            </p><formatted-message id='PERSONALITY_DISCLAIMER_2'/></p>
+        </div>
       </div>
       <div class="stepper-container">
           <stepper size="5" current="2"></stepper>
@@ -49,6 +49,11 @@
          }
          #questions-link {
             font-size: 12px;     
+         }
+
+         .disclaimer {
+             margin-top: 30px;
+             color: red;
          }
      }
  </style>
