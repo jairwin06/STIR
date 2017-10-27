@@ -7,14 +7,12 @@
 <div class="content">
     <div class="padded-full">
        <div class="row description">
-          <b>Here’s a preview of your wakeup message</b>
+          <b><formatted-message id='ROUSER_MIX_DESCRIPTION'/></b>
        </div>
        <div class="row explanation">
-            <p>We mixed your message with some personalized music for the Sleeper.</p>
-
-            <p>If you’re happy, submit your message and we’ll deliver it to your Sleeper at their chosen wakeup time.</p>
-
-            <p>If you’d like to rerecord, we’ll call you back.</p>
+            <p><formatted-message id='ROUSER_MIX_1'/></p>
+            <p><formatted-message id='ROUSER_MIX_2'/></p>
+            <p><formatted-message id='ROUSER_MIX_3'/></p>
        </div>
        <div>
         <p>

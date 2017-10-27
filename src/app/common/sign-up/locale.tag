@@ -53,6 +53,11 @@
               <stepper size="{state.sleeper.getSteps()}" current="{state.auth.user.pronoun ? state.sleeper.getSteps() : state.sleeper.getSteps() - 1}"></stepper>
           </div>
      </div>
+     <div if="{state.main.role == 'rouser'}">
+          <div class="stepper-container">
+              <stepper size="3" current="3"></stepper>
+          </div>
+     </div>
   </div>
  <style>
      sign-up-locale {

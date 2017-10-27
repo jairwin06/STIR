@@ -40,10 +40,10 @@ export default class UserContactService {
 
     create(data,params) {
         console.log("set user contact", data,params);
-        let contact = Session.getFor(params.user._id).contact;
+        let session = Session.getFor(params.user._id);
 
-        if (data.code && contact.verificationCode) {
-            return this.verify(data,params,contact)
+        if (data.code && session && session.contact && session.contact.verificationCode) {
+            return this.verify(data,params,session.contact)
         } else {
             return this.generateVerficationCode(data,params);
         }

@@ -69,11 +69,18 @@ const Messages =
     SLEEPER_CONTACT_THANKS: 'Thanks, {name}',
     SLEEPER_CONTACT_EXPLANATION: 'We’ll need your phone number to deliver your wakeup message.',
     CONTACT_EXPLANATION: 'After this, you’ll be asked to verify your number with a 4-digit code.',
+    ROUSER_CONTACT: 'First, enter your phone number.*',
+    ROUSER_CONTACT_DISCLAIMER: '*Why do we need this info? We give you a call when you’re ready to record your wakeup messages. Just follow the steps on the following screens.',
     CONTACT_DISCLAIMER: '*Calls and SMS messages from Stir will be free of charge to you.',
     CONTACT_VERIFY: 'Great. Please enter your verification code.',
     CONTACT_VERIFY_NAME: 'Great. Please enter your verification code, {name}',
     ALARM_LOCALES_DISCLAIMER_SLEEPER: 'We recommend selecting all the languages you speak to enhance your chances of a great wakeup message.',
-    ALARM_LOCALES_DISCLAIMER_ROUSER: 'Select all the languages you speak to wake up Rousers all around the world'
+    ALARM_LOCALES_DISCLAIMER_ROUSER: 'Select all the languages you speak to wake up Sleepers all around the world',
+    ROUSER_RECORD_DESCRIPTION: 'Once you’ve read the prompt below, press the button to record your message.',
+    ROUSER_RECORD_NOTICE: 'We’ll give you a call to do the recording, so have your phone close by',
+    PROMPT_INTRO: 'Today you\'ll be waking {name}.',
+    PROMPT_INSTRUCTION: 'For your message to {name}, consider the following, and feel free to elaborate:',
+    RECORD_ACTION: 'Receive a call to leave a message'
     
 };
 

@@ -16,6 +16,11 @@
                 <formatted-message id='SLEEPER_CONTACT_EXPLANATION'/>
             </div>
         </div>
+        <div if="{state.main.role == 'rouser'}">
+           <div class="title" class="row">
+                <formatted-message id='ROUSER_CONTACT'/>
+            </div>
+        </div>
         <div class="explanation" class="row">
             <formatted-message id='CONTACT_EXPLANATION'/>
         </div>
@@ -26,7 +31,8 @@
             </div>
         </form>
         <div class="disclaimer">
-            <formatted-message id='CONTACT_DISCLAIMER'/>
+            <p if="{state.main.role == 'rouser'}"><formatted-message id='ROUSER_CONTACT_DISCLAIMER'/></p>
+            <span if="{state.main.role == 'rouser'}">*</span><formatted-message id='CONTACT_DISCLAIMER'/>
         </div>
       </div>
       <div show="{ !phonePluginLoaded || loading }" class="circle-progress center active">
@@ -37,18 +43,17 @@
               <stepper size="{state.sleeper.getSteps()}" current="3"></stepper>
           </div>
      </div>
-
+     <div if="{state.main.role == 'rouser'}">
+          <div class="stepper-container">
+              <stepper size="3" current="1"></stepper>
+          </div>
+     </div>
  </div>
  <style>
      sign-up-contact {
          .explanation {
             margin-top: 15px;
             font-size: 16px;
-         }
-
-         .disclaimer {
-            margin-top: 20px;
-            color: red;
          }
 
          .action {

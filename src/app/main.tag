@@ -109,7 +109,7 @@
             margin-top: 20px;
 
         }
-        .disclaimer {
+        .disclaimer, .disclaimer > p  {
             color: red;
             margin-top: 30px;
         }

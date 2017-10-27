@@ -7,19 +7,19 @@
 <div class="content">
   <div class="padded-full">
       <div class="description row">
-            <b>Once you’ve read the prompt below, press the button to record your message.</b>
+            <b><formatted-message id='ROUSER_RECORD_DESCRIPTION'/></b>
       </div>
       <p>
       <div class="row notice">
-          We’ll give you a call to do the recording, so have your phone close by.
+         <formatted-message id='ROUSER_RECORD_NOTICE'/>
       </div>
       </p>
       <div id="prompt">
             <div class="intro row">
-                Today you'll be waking {state.rouser.currentAlarm.name}.
+               <formatted-message id='PROMPT_INTRO' name="{state.rouser.currentAlarm.name}"/>
             </div> 
             <p each="{text, i in state.rouser.currentAlarm.prompt[state.auth.locale].paragraphs}">{text}</p>
-            <p><i>For your message to {state.rouser.currentAlarm.name}, consider the following, and feel free to elaborate:</i></p>
+            <p><i><formatted-message id='PROMPT_INSTRUCTION' name="{state.rouser.currentAlarm.name}"/></i></p>
             <ul class="">
               <li each="{text, i in state.rouser.currentAlarm.prompt[state.auth.locale].instructions}">
                 {text}
@@ -27,7 +27,7 @@
             </ul>
        </div>
        <form show="{!loading}" action="" onsubmit="{requestCall}">
-            <button class="btn primary raised" type="submit">Receive a call to leave a message</button>
+            <button class="btn primary raised" type="submit"><formatted-message id='RECORD_ACTION'/></button>
        </form>
        <img show="{loading}" src="/images/loading.gif">
        <b show"{error}" class="error">{error}</b>

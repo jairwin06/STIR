@@ -27,6 +27,11 @@
               <stepper size="{state.sleeper.getSteps()}" current="4"></stepper>
           </div>
       </div>
+     <div if="{state.main.role == 'rouser'}">
+          <div class="stepper-container">
+              <stepper size="3" current="2"></stepper>
+          </div>
+     </div>
   </div>
  <style>
      sign-up-verify {
