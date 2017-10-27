@@ -1,6 +1,15 @@
 const Messages =
 {
+    OK: 'Ok',
+    CANCEL: 'Cancel',
+    NOTICE: 'Notice',
     ERROR_TITLE: 'Something went wrong',
+    OOPS: 'Oops!',
+    PLEASE_CONFIRM: 'Please Confirm',
+    CANCEL_ALARM: 'Cancel this wakeup?',
+    YES: 'Yes',
+    NO: 'No',
+    ALARM_EXISTS: 'There is already a wakeup set for this time!',
     HOME_TITLE:  'Welcome, we’re glad you’re here.',
     HOME_EXPLANATION: 'Stir is a personalized wakeup service that brings people gently into the new day to the sound of a human voice.',
     HOME_CHOICE1:  'Sign up as a Sleeper if you’d like to have Stir replace your alarm clock with a personalized wakeup message.',
@@ -84,7 +93,11 @@ const Messages =
     ROUSER_MIX_DESCRIPTION: 'Here’s a preview of your wakeup message.',
     ROUSER_MIX_1: 'We mixed your message with some personalized music for the Sleeper.',
     ROUSER_MIX_2: 'If you’re happy, submit your message and we’ll deliver it to your Sleeper at their chosen wakeup time.',
-    ROUSER_MIX_3: 'If you’d like to rerecord, we’ll call you back.'
+    ROUSER_MIX_3: 'If you’d like to rerecord, we’ll call you back.',
+    RERECORD: 'Rerecord',
+    SUBMIT_MESSAGE: 'Submit Message',
+    TOO_EARLY_CONFIRM: 'STIR needs at least {hours} hours to prepare your message. We can set your wakeup for the follwing day.',
+
 };
 
 export default Messages;

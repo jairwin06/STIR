@@ -77,6 +77,7 @@
     import MiscUtil from '../util/misc'
 
     this.mixin('TimeUtil');
+    this.mixin('UIUtil');
 
     this.on('mount', () => {
         console.log("alarms mounted");
@@ -122,7 +123,13 @@
             let result = await this.state.sleeper.saveAlarmTime(alarmTime,timezone);
             console.log("Save result", result);
             if (result.status == "too_early") {
-                let confirm = phonon.confirm("STIR needs at least " + result.hours + " hours to prepare your message, your alarm will be set for the follwing day day", "Notice", true, "Ok", "Cancel");
+                let confirm = phonon.confirm(
+                    this.formatMessage('TOO_EARLY_CONFIRM', {hours: result.hours}), 
+                    this.formatMessage('NOTICE'),
+                    true, 
+                    this.formatMessage('OK'),
+                    this.formatMessage('CANCEL')
+                );
 
                 confirm.on('confirm', async () => {
                     alarmTime.setDate(alarmTime.getDate() + 1);
@@ -140,9 +147,14 @@
         } catch (e) {
             console.log("Error saving alarm!", e);
             if (e.name == "Conflict") {
-                phonon.alert("There is already an alarm set for this time!", "Oops!", false, "Ok");
+                phonon.alert(
+                    this.formatMessage('ALARM_EXISTS'),
+                    this.formatMessage('OOPS'),
+                    false, 
+                    this.formatMessage('OK')
+                    );
             } else {
-                phonon.alert("Something went wrong: " + e.message, "Oops!", false, "Ok");
+                this.UIUtil.showError(e.message);
             }
             this.update();
         }
@@ -151,7 +163,11 @@
         console.log("Cancel alarm!",item._id);
         this.state.sleeper.currentAlarm = item;
         let confirm = phonon.confirm(
-            "Cancel this alarm?", "Please confirm", false, "Yes", "No"
+            this.formatMessage('CANCEL_ALARM'),
+            this.formatMessage('PLEASE_CONFIRM'),
+            false, 
+            this.formatMessage('YES'),
+            this.formatMessage('NO')
         );
         confirm.on('confirm', async() => {
             try {

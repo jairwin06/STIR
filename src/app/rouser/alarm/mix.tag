@@ -20,9 +20,13 @@
                 <source src={state.rouser.currentAlarm.recording.mixUrl} type="audio/wav">
             </audio>
         </p>
-        <button class="btn primary raised" type="button" click="{recordAgain}">Rerecord</button>
+        <button class="btn primary raised" type="button" click="{recordAgain}">
+            <formatted-message id='RERECORD'/>
+        </button>
         <form action="" onsubmit="{finalize}">
-           <button class="btn positive raised" type="submit">Submit Message</button>
+           <button class="btn positive raised" type="submit">
+                <formatted-message id='SUBMIT_MESSAGE'/>
+            </button>
         </form>
         </div>
     </div>
@@ -59,7 +63,6 @@
         })
 
         recordAgain() {
-            //window.history.back();
             page("/rouser/alarm/" + this.state.rouser.currentAlarm._id + "/record")
         }
 

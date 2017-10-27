@@ -125,7 +125,7 @@
             }
             catch (err) {
                console.log("Setting contact error!", err);
-               UIUtil.showError(err.message);
+               this.UIUtil.showError(err.message);
                this.loading = false;
                this.update();
             }
