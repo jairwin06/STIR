@@ -80,7 +80,8 @@ const Messages =
     ROUSER_RECORD_NOTICE: 'We’ll give you a call to do the recording, so have your phone close by',
     PROMPT_INTRO: 'Today you\'ll be waking {name}.',
     PROMPT_INSTRUCTION: 'For your message to {name}, consider the following, and feel free to elaborate:',
-    RECORD_ACTION: 'Receive a call to leave a message'
+    RECORD_ACTION: 'Receive a call to leave a message',
+    ROUSER_MIX_DESCRIPTION: 'Here’s a preview of your wakeup message.'
     
 };
 
