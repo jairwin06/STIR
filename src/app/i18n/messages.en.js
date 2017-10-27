@@ -81,8 +81,10 @@ const Messages =
     PROMPT_INTRO: 'Today you\'ll be waking {name}.',
     PROMPT_INSTRUCTION: 'For your message to {name}, consider the following, and feel free to elaborate:',
     RECORD_ACTION: 'Receive a call to leave a message',
-    ROUSER_MIX_DESCRIPTION: 'Here’s a preview of your wakeup message.'
-    
+    ROUSER_MIX_DESCRIPTION: 'Here’s a preview of your wakeup message.',
+    ROUSER_MIX_1: 'We mixed your message with some personalized music for the Sleeper.',
+    ROUSER_MIX_2: 'If you’re happy, submit your message and we’ll deliver it to your Sleeper at their chosen wakeup time.',
+    ROUSER_MIX_3: 'If you’d like to rerecord, we’ll call you back.'
 };
 
 export default Messages;
