@@ -22,7 +22,7 @@ class SoxUtil {
                 .outputSampleRate(44100)
                 .outputChannels(2)
                 .outputFileType('wav')
-                .addEffect('delay', '+' + DELAY_BEFORE_REC);
+                .addEffect('delay',DELAY_BEFORE_REC);
 
                 let command = SoxCommand()
                 .inputSubCommand(subCommand)
