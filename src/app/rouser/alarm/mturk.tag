@@ -50,8 +50,11 @@
                     Start Recording
                     </button>
                     <div id="while-recording" class="row" show="{ready && recording}">
-                        <img src="/images/recording.gif"></img>
-                        <button class="btn primary raised" click="{stopRecording}">STOP</button>
+                        <div class="actions">
+                            <img src="/images/recording.gif"></img>
+                            <button class="btn primary raised" click="{stopRecording}">STOP</button>
+                        </div>
+                        <span class="counter">{counter}</span>
                     </div>
                     <div id="after-recording" show="{previewing && !loading}">
                         <div class="row">
@@ -144,13 +147,22 @@
 
     #while-recording {
         display: flex;
-        flex-direction: column;
-        width: 70px;
-           img {
+        flex-direction: row;
+        justify-content: center;
+           
+       .actions {
+            display: flex;
+            flex-direction: column;
+            img {
                 height: 40px;
                 width: 40px;
                 margin-bottom: 10px;
-           }
+            }
+       }
+       span {
+            font-weight: bold;
+            font-size: 36px;
+       }
     }
 
     #after-recording {
@@ -196,6 +208,14 @@
         console.log("Start recording!");
         this.recorder.startRecording()
         .then(() => {
+            this.counter = 0;
+            if (this.interval) {
+                clearInterval(this.interval);
+            }
+            this.interval = setInterval(() => {
+                this.counter++;
+                this.update();
+            },1000);
             console.log("Recording started");
             this.refs.preview.removeChild(this.refs.preview.lastChild);
             this.recording = true;
@@ -214,6 +234,10 @@
         this.recorder.stopRecording()
         .then((url) => {
             console.log("Recording stopped", url);
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
             this.recording = false;
             this.previewing = true;
             let source = document.createElement('source');
