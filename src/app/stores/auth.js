@@ -222,5 +222,4 @@ export default class AuthStore extends Store {
         let result = await SocketUtil.rpc('user/session::create',data);
         return result;
     }
-
 };

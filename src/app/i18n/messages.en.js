@@ -11,9 +11,10 @@ const Messages =
     ALARM_DATE:  "{date, date, short}",
     ALARM_TOMORROW:  "Tomorrow",
     ALARM_TODAY:  "Today",
-    ALARM_LOCALES_SLEEPER: "I would prefer to receive my wakeup message in...",
-    ALARM_LOCALES_ROUSER: "I can record wakeup messages in...",
-    CONTACT_PRONOUN: "I would like to be referred to as a...",
+    ALARM_LOCALES_SLEEPER: "I'd prefer to receive my wakeup message in:",
+    ALARM_LOCALES_ROUSER: "I can record wakeup message in:",
+    CONTACT_PRONOUN: "What is your preferred pronoun?",
+    CONTACT_PRONOUN_EXPLANATION: "We’ll use this information to brief your Rouser.",
     SLEEPER:  'SLEEPER',
     ROUSER:  'ROUSER',
     ROUSER_FOUND_SLEEPER: 'We found a Sleeper in need of a wakeup message.',
@@ -70,7 +71,10 @@ const Messages =
     CONTACT_EXPLANATION: 'After this, you’ll be asked to verify your number with a 4-digit code.',
     CONTACT_DISCLAIMER: '*Calls and SMS messages from Stir will be free of charge to you.',
     CONTACT_VERIFY: 'Great. Please enter your verification code.',
-    CONTACT_VERIFY_NAME: 'Great. Please enter your verification code, {name}'
+    CONTACT_VERIFY_NAME: 'Great. Please enter your verification code, {name}',
+    ALARM_LOCALES_DISCLAIMER_SLEEPER: 'We recommend selecting all the languages you speak to enhance your chances of a great wakeup message.',
+    ALARM_LOCALES_DISCLAIMER_ROUSER: 'Select all the languages you speak to wake up Rousers all around the world'
+    
 };
 
 export default Messages;

@@ -32,6 +32,12 @@
       <div show="{ !phonePluginLoaded || loading }" class="circle-progress center active">
         <div class="spinner"></div>
      </div>
+     <div if="{state.main.role == 'sleeper'}">
+          <div class="stepper-container">
+              <stepper size="{state.sleeper.getSteps()}" current="3"></stepper>
+          </div>
+     </div>
+
  </div>
  <style>
      sign-up-contact {

@@ -34,14 +34,24 @@
                     </label>
                 </li>
             </ul>
-            <input type="submit" value="Submit">
+            <div class="action text-center">
+                   <button class="btn primary raised" type="submit">Submit</button>
+            </div>
           </form>
+          <div class="disclaimer">
+            <formatted-message id="{getDisclaimerMessageId()}"/>
+          </div>
           <p>
           <b show"{error}" class="error">{error}</b>
           </p>
       </div>
       <div show="{ loading }" class="circle-progress center active">
         <div class="spinner"></div>
+     </div>
+     <div if="{state.main.role == 'sleeper'}">
+          <div class="stepper-container">
+              <stepper size="{state.sleeper.getSteps()}" current="{state.auth.user.pronoun ? state.sleeper.getSteps() : state.sleeper.getSteps() - 1}"></stepper>
+          </div>
      </div>
   </div>
  <style>
@@ -65,6 +75,13 @@
             return 'ALARM_LOCALES_ROUSER';
         } else {
             return 'ALARM_LOCALES_SLEEPER';
+        }
+    }
+    getDisclaimerMessageId() {
+        if (this.state.main.role == 'rouser') {
+            return 'ALARM_LOCALES_DISCLAIMER_ROUSER';
+        } else {
+            return 'ALARM_LOCALES_DISCLAIMER_SLEEPER';
         }
     }
     async setLocale(e) {

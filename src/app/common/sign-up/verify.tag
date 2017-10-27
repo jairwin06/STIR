@@ -22,6 +22,11 @@
           <b show"{error}" class="error">{error}</b>
           </p>
       </div>
+      <div if="{state.main.role == 'sleeper'}">
+          <div class="stepper-container">
+              <stepper size="{state.sleeper.getSteps()}" current="4"></stepper>
+          </div>
+      </div>
   </div>
  <style>
      sign-up-verify {

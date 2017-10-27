@@ -101,6 +101,18 @@
             font-size: 18px;
 
         }
+        .explanation {
+            margin-top: 15px;
+
+        }
+        .action {
+            margin-top: 20px;
+
+        }
+        .disclaimer {
+            color: red;
+            margin-top: 30px;
+        }
 
         .popover {
             width: 52px;
@@ -117,7 +129,7 @@
             display: flex;
             justify-content: center;
             position: absolute;
-            bottom: 10%;
+            bottom: 5%;
             width: 100%;
         }
         #prompt {

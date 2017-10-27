@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="stepper-container">
-          <stepper size="5" current="2"></stepper>
+          <stepper size="{state.sleeper.getSteps()}" current="2"></stepper>
       </div>
       <img show="{loading}" src="/images/loading.gif"></img>
   </div>

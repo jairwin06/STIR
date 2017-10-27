@@ -26,7 +26,7 @@
             </div>
       </div>
       <div class="stepper-container">
-          <stepper size="5" current="1"></stepper>
+          <stepper size="{state.sleeper.getSteps()}" current="1"></stepper>
       </div>
   </div>
  <style>
@@ -59,11 +59,14 @@
     });
 
     this.on('ready', () => {
+        this.state.sleeper.calculateSteps();
+
         if (this.state.sleeper.currentAlarm == null) {
             this.state.sleeper.currentAlarm = {};
         }
         this.state.sleeper.currentAlarm.timezone = this.TimeUtil.getTimezone();
         this.verified = false;
+        this.update();
     })
     this.on('update', () => {
         console.log("add-alarm-time update.");

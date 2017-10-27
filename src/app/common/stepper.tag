@@ -23,15 +23,23 @@
  </style>
  <script>
     // create the array for the needed size
-    console.log("Creating array",this.opts.size);
-    this.array = [];
-    for (let i = 0; i < this.opts.size; i++) {
-        if (i+1 == this.opts.current) {
-            this.array.push(true);
-        } else {
-            this.array.push(false);
+    getOpts() {
+        console.log("Creating array",this.opts.size);
+        this.array = [];
+        for (let i = 0; i < this.opts.size; i++) {
+            if (i+1 == this.opts.current) {
+                this.array.push(true);
+            } else {
+                this.array.push(false);
+            }
         }
+        console.log("done");
     }
-    console.log("done");
+    
+    this.on('update', () => {
+        this.getOpts();
+    })
+
+    this.getOpts();
  </script>
 </stepper>

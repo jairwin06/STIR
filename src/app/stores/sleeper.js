@@ -154,4 +154,21 @@ export default class SleeperStore extends Store {
         console.log("Questions result", result);
         return result;
     }
+    calculateSteps() {
+        this.steps = 2;
+        if (!this._state.auth.user.status.phoneValidated) {
+            this.steps += 3;
+        } 
+        if (!this._state.auth.user.pronoun) {
+            this.steps += 1;
+        }
+        console.log("Calculated steps", this.steps);
+    }
+    getSteps() {
+        if (!this.steps) {
+            this.calculateSteps();
+        }
+        return this.steps;
+    }
+    
 };

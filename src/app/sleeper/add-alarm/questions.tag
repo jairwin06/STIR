@@ -14,8 +14,8 @@
                 <b><label><formatted-message id='QUESTIONS_NAME'/></label></b>
                 <input type="text" name="name" ref="name" required>
           </div>
-           <b><formatted-message id='QUESTIONS_ORDER'/></b>
-           <div id="paragraphs">
+          <b><formatted-message id='QUESTIONS_ORDER'/></b>
+          <div id="paragraphs">
                 <ul ref="questions" id="sortable" class="list">
                   <li data-question-id="1" class="padded-list ui-state-default">
                   <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_1'/>
@@ -34,11 +34,17 @@
                   <i class="pull-left material-icons">reorder</i><formatted-message id='QUESTION_5'/>
                   </li>
                 </ul>
-           </div>
-           <button class="btn primary raised" type="submit">Submit</button>
+          </div>
+          <div class="action text-center">
+               <button class="btn primary raised" type="submit">Submit</button>
+          </div>
       </form>
       <img show="{loading}" src="/images/loading.gif"></img>
   </div>
+  <div class="stepper-container">
+      <stepper size="{state.sleeper.getSteps()}" current="2"></stepper>
+  </div>
+ </div>
   
  <style>
      sleeper-alarms-add-questions {

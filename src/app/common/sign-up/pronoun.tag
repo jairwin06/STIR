@@ -8,8 +8,10 @@
       <div class="padded-full">
            <div class="row description">
                 <formatted-message id="CONTACT_PRONOUN"/>
-            </div>
-
+           </div>
+           <div class="row explanation">
+                <formatted-message id="CONTACT_PRONOUN_EXPLANATION"/>
+           </div>
           <form ref="pronounForm" action="" onsubmit="{setPronoun}">
             <ul class="list">
                 <li class="padded-for-list">
@@ -34,7 +36,9 @@
                     </label>
                 </li>
             </ul>
-            <button click="this.form.submit();" disabled="{!refs.pronounForm.pronoun.value || refs.pronounForm.pronoun.value.length == 0}" class="btn fit-parent primary raised">Submit</button>
+            <div class="action text-center">
+                <button click="this.form.submit();" disabled="{!refs.pronounForm.pronoun.value || refs.pronounForm.pronoun.value.length == 0}" class="btn primary raised">Submit</button>
+            </div>
           </form>
           <p>
           <b show"{error}" class="error">{error}</b>
@@ -43,12 +47,19 @@
       <div show="{ loading }" class="circle-progress center active">
         <div class="spinner"></div>
      </div>
+     <div class="stepper-container">
+          <stepper size="{state.sleeper.getSteps()}" current="{state.sleeper.getSteps()}"></stepper>
+     </div>
   </div>
  <style>
      sign-up-pronoun {
          .description {
             font-size: 18px;
 
+         }
+
+         form {
+            margin-top: 30px;
          }
      }
  </style>
