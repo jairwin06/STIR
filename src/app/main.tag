@@ -1,56 +1,81 @@
 <main data-page="true">
     <!--role ref="role"></role-->
     <div if="{!state.main.role}">
-            <header class="header-bar">
-                <div class="pull-left">
-                    <a href="/"><h1 class="title">STIR</h1></a>
-                </div>
-                <!--div class="pull-right">
-                    <span class="title arrow pull-right" data-popover-id="lang-popover">{state.auth.locale.toUpperCase()}</span>
-                </div-->
-            </header>
             <div class="content">
                 <div class="padded-full">
-                    <div class="title">
-                        <formatted-message id='HOME_TITLE'/>
-                    </div>
-                    <div class="explanation">
-                        <formatted-message id='HOME_EXPLANATION'/>
-                    </div>
-                    <div class="choice">
-                        <p><formatted-message id='HOME_CHOICE1'/></p>
-                        <p><formatted-message id='HOME_CHOICE2'/></p>
-                    </div>
-                    <div class="action">
-                        <formatted-message id='HOME_ACTION'/>
-                    </div>
-                    <div class="row text-center">
-                        <div class="phone-6 tablet-6 column">
-                            <a class="btn primary raised" href="/sleeper/alarms">
-                            <formatted-message id='SLEEPER'/>
-                            </a>
-                        </div>
-                        <div class="phone-6 tablet-6 column">
-                            <a class="btn primary" href="/rouser/alarms">
-                            <formatted-message id='ROUSER'/>
-                            </a>
-                        </div>
-                    </div>
+                    <h1><formatted-message id='HOME_TITLE'/></h1>
+                    <p><formatted-message id='HOME_EXPLANATION'/></p>
+                    <p><formatted-message id='HOME_CHOICE1'/></p>
+                    <p><formatted-message id='HOME_CHOICE2'/></p>
+                    <h1><formatted-message id='HOME_ACTION'/></h1>
+                    <a class="btn primary" href="/sleeper/alarms">
+                        <formatted-message id='SLEEPER'/>
+                    </a>
+                    <a class="btn primary" href="/rouser/alarms">
+                        <formatted-message id='ROUSER'/>
+                    </a>
                 </div>
             </div>
     </div>
 
     <style>
         body {
-            font-family: Roboto, Helvetica;
+            font-family: Abel, Helvetica;
+            color: white;
+        }
+        .app-page {
+            background-color: #000;
         }
         .btn.raised {
                 box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)
                 }
-        a.btn {
-            line-height: 3;
-
+        .btn {
+            display: inline-block;
+            font-family: 'Abel', Helvetica, sans-serif;
+            text-transform: uppercase;
+            font-size: .9rem;
+            letter-spacing: .1rem;
+            border: 3px solid white;
+            padding: 20px;
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+            color: white !important;
         }
+       .btn:hover {
+         background: white !important;
+         color: black !important;
+         transition: all .5s;
+       }
+       .primary {
+            background-color: #000 !important;        
+        }
+        .padded-full {
+            font-size: 16px;
+            padding: 20px;
+            margin: 0;
+            p {
+                font-family: Abel, Helvetica;
+                font-size: 1rem;
+                margin-bottom: 10px;
+                color: #ebebeb;
+                margin-top: 16px;
+            }
+        }
+        h1 {
+            text-transform: uppercase;
+            font-size: 1.3rem;
+            letter-spacing: .1rem;
+            margin-top: 10px;
+            font-weight: 700;
+            line-height: unset;
+            margin: unset;
+            margin-bottom: 13.9333px;
+            margin-left: 0px;
+            margin-right: 0px;
+            margin-top: 13.9333px;
+        }
+
         main {
             .title {
                 margin-bottom: 30px;
