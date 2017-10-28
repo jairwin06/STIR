@@ -1,17 +1,13 @@
 <sign-up-pronoun>
   <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1 class="title">STIR - Contact</h1></a>
+            <a href="/"><h1>STIR - Contact</h1></a>
         </div>
   </header>
   <div class="content">
       <div class="padded-full">
-           <div class="row description">
-                <formatted-message id="CONTACT_PRONOUN"/>
-           </div>
-           <div class="row explanation">
-                <formatted-message id="CONTACT_PRONOUN_EXPLANATION"/>
-           </div>
+           <h1><formatted-message id="CONTACT_PRONOUN"/></h1>
+           <p><formatted-message id="CONTACT_PRONOUN_EXPLANATION"/></p>
           <form ref="pronounForm" action="" onsubmit="{setPronoun}">
             <ul class="list">
                 <li class="padded-for-list">

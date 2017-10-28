@@ -1,29 +1,24 @@
 <sign-up-contact>
   <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1 class="title">STIR - Contact</h1></a>
+            <a href="/"><h1>STIR | Contact</h1></a>
         </div>
   </header>
   <div class="content">
       <div show="{ phonePluginLoaded }" class="padded-full">
         <div if="{state.main.role == 'sleeper'}">
-           <div class="title" class="row">
-                <formatted-message id='SLEEPER_CONTACT_THANKS'
+            <p><formatted-message id='SLEEPER_CONTACT_THANKS'
                     name="{state.auth.user.name}"
                 />
-            </div>
-            <div class="explanation" class="row">
+            </p>
+            <p>
                 <formatted-message id='SLEEPER_CONTACT_EXPLANATION'/>
-            </div>
+            </p>
         </div>
         <div if="{state.main.role == 'rouser'}">
-           <div class="title" class="row">
-                <formatted-message id='ROUSER_CONTACT'/>
-            </div>
+            <p><formatted-message id='ROUSER_CONTACT'/></p>
         </div>
-        <div class="explanation" class="row">
-            <formatted-message id='CONTACT_EXPLANATION'/>
-        </div>
+        <p><formatted-message id='CONTACT_EXPLANATION'/></p>
         <form action="" onsubmit="{setContact}">
             <input id="phone" ref="phone" type="tel" change="{onPhoneChange}" required>
             <div class="action">
@@ -62,6 +57,10 @@
 
          form {
             margin-top: 10px;
+         }
+
+         .country-list {
+            background-color: #333 !important;
          }
      }
  </style>

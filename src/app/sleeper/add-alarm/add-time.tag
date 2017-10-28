@@ -1,14 +1,12 @@
 <sleeper-alarms-add-time>
     <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1 class="title">STIR - Sleeper</h1></a>
+            <a href="/"><h1>STIR | Sleeper</h1></a>
         </div>
     </header>
   <div class="content">
       <div class="padded-full">
-           <div class="description row">
-                <formatted-message id='SLEEPER_TIME_WHEN'/>
-            </div>
+            <h1><formatted-message id='SLEEPER_TIME_WHEN'/></h1>
             <alarm-time
               data="{ state.sleeper.currentAlarm }"
               on-change="{onAlarmTimeChange}"
@@ -39,10 +37,6 @@
             a {
                 width: 100px;
             }
-        }
-        .disclaimer {
-            margin-top: 40px;
-            color: red;
         }
     }
  </style>
@@ -112,11 +106,14 @@
                 this.update();
             }
             this.update();
+
+            return true;
         } catch (e) {
             console.log("Error saving progress", e);
             phonon.alert(e.message, "Oops!", false, "Ok");
             this.verifying = false;
             this.update();
+            return false;
         }
     }
 
@@ -125,9 +122,13 @@
             if (!this.state.sleeper.currentAlarm.time) {
                 this.state.sleeper.currentAlarm.time = this.TimeUtil.getDefaultTime();
             }
-            await this.onAlarmTimeChange(this.state.sleeper.currentAlarm, null);
+            let result = await this.onAlarmTimeChange(this.state.sleeper.currentAlarm, null);
+            if (result) {
+                page("/sleeper/alarms/add/personality")
+            }
+        } else {
+            page("/sleeper/alarms/add/personality")
         }
-        page("/sleeper/alarms/add/personality")
     }
 
     async saveProgress() {

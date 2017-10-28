@@ -1,17 +1,13 @@
 <sleeper-alarms-add-personality>
     <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1 class="title">STIR - Sleeper</h1></a>
+            <a href="/"><h1>STIR - Sleeper</h1></a>
         </div>
     </header>
   <div class="content">
     <div class="padded-full">
-       <div class="description">
-            <formatted-message id='PERSONALITY_DESCRIPTION'/>
-        </div>
-        <div id="choose-text" class="row">
-            Choose the social media account you post on most frequently
-        </div>
+        <h1><formatted-message id='PERSONALITY_DESCRIPTION'/></h1>
+        <p>Choose the social media account you post on most frequently</p>
         <div id="social-buttons" class="row">
           <a href="/auth/facebook" class="btn primary raised">Connect with Facebook</a>
           <a href="/auth/twitter" class="btn primary raised">Connect with Twitter</a>
@@ -49,11 +45,6 @@
          }
          #questions-link {
             font-size: 12px;     
-         }
-
-         .disclaimer {
-             margin-top: 30px;
-             color: red;
          }
      }
  </style>

@@ -1,15 +1,13 @@
 <sleeper-alarms-add-questions>
     <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1 class="title">STIR - Sleeper</h1></a>
+            <a href="/"><h1>STIR - Sleeper</h1></a>
         </div>
     </header>
   <div class="content">
     <div class="padded-full">
        <form action="" onsubmit="{submitQuestions}">
-           <div class="description">
-                <formatted-message id='QUESTIONS_DESCRIPTION'/>
-           </div>
+           <h1><formatted-message id='QUESTIONS_DESCRIPTION'/></h1>
            <div id="name-input">
                 <b><label><formatted-message id='QUESTIONS_NAME'/></label></b>
                 <input type="text" name="name" ref="name" required>
@@ -72,6 +70,9 @@
             margin-right: 10px;
             margin-left: 5px;
 
+        }
+       .action {
+            margin-bottom: 40px;        
         }
      }
  </style>

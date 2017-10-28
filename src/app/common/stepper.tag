@@ -14,10 +14,11 @@
         height: 8px;
         margin: 0 2px;
         border-radius: 50%;
-        background-color: rgba(0, 0, 0, 0.26);
+        //background-color: rgba(0, 0, 0, 0.26);
+        border: 1px solid white;
      }
      .current {
-        background-color: #2196f3;
+        background-color: white;
      }
  }
  </style>

@@ -1,18 +1,14 @@
 <sleeper-alarms>
 <header class="header-bar">
     <div class="pull-left">
-        <a href="/"><h1 class="title">STIR - Sleeper</h1></a>
+        <a href="/"><h1>STIR | Sleeper</h1></a>
     </div>
 </header>
 <div class="content">
      <div class="padded-full">
          <div show="{state.sleeper.alarms != null}">
-             <div class="welcome-back">
-                <formatted-message id="CLOCK_WELCOME" name="{state.auth.user.name}"/>            
-             </div>
-             <div class="clock-desc">
-                <formatted-message id="CLOCK_DESC"/>            
-             </div>
+             <h1><formatted-message id="CLOCK_WELCOME" name="{state.auth.user.name}"/></h1>
+             <p><formatted-message id="CLOCK_DESC"/></p>
               <alarm-time
                   each={ state.sleeper.alarms } 
                   data="{ {time: this.time, _id: this._id} }" 
@@ -36,13 +32,6 @@
 
  <style>
      sleeper-alarms {
-         .welcome-back {
-            font-size: 28px;
-         } 
-         .clock-desc {
-            margin-top: 10px;
-         }
-
          .add-alarm {
             display: flex;
             justify-content: center;
@@ -51,9 +40,9 @@
             bottom: 15%;
             right: 1px;
            .add-button {
-                background-color: #2196f3;
-                border-radius: 35px;
-                box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+                background-color: #f36b21;
+                border-radius: 40px;
+                // box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
                 width: 65px;
                 height: 65px;
                 display: flex;

@@ -31,7 +31,8 @@
          }
          .alarm-date {
             margin-top: 5px;
-            color: #ff5100;
+            color: #ff7500;
+            font-weight: 600px;
          }
          .alarm-date.verifying {
             color: lightsalmon;
@@ -40,13 +41,14 @@
             color: lightblue;         
          }
          .alarm {
-            background-color: #f9f9f9;
+            background-color: #333;
             margin-top: 15px;
             padding: 20px;
             margin-right: 20px;
             display: flex;
             flex-direction: row;
             align-items: center;
+            border-radius: 5px;
          }
          #alarm-container {
             display: flex;
@@ -56,7 +58,10 @@
             display: flex;
             flex-direction: row;
             align-items: baseline;
-            color: #1474e0;
+            color: #06c2ff;
+         .clock-desc {
+            margin-top: 10px;
+         }
          }
          .alarm-action {
             color: #ff6969;

@@ -42,11 +42,15 @@
             width: 100%;
             color: white !important;
         }
-       .btn:hover {
+       .btn:hover, .btn.btn-flat:hover {
          background: white !important;
          color: black !important;
          transition: all .5s;
        }
+        .btn.btn-flat {
+            border: none;
+            color: white !important;
+        }
        .primary {
             background-color: #000 !important;        
         }
@@ -75,6 +79,19 @@
             margin-right: 0px;
             margin-top: 13.9333px;
         }
+
+        a {
+            font-weight: 600;
+        }
+
+        label {
+            color: white;
+        }
+
+        input, select, textarea {
+            background-color: transparent !important;
+        }
+    
 
         main {
             .title {
@@ -105,12 +122,13 @@
         }
 
         .header-bar {
-            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),0px 4px 5px 0px rgba(0, 0, 0, 0.14),0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-            background-color: #2196f3;
-            height: 62px;
+            //box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),0px 4px 5px 0px rgba(0, 0, 0, 0.14),0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+            background-color: #000;
+            border-bottom: 3px solid white;
 
-            .title {
-                line-height: 62px;
+            h1 {
+                line-height: 26px;
+                color: white;
 
             }
 
@@ -135,8 +153,18 @@
 
         }
         .disclaimer, .disclaimer > p  {
-            color: red;
+            color: #ff5c5c;
             margin-top: 30px;
+        }
+
+        .dialog {
+            background-color: #333;
+            box-shadow: none
+        }
+
+        .circle-progress {
+            background-color: transparent;
+
         }
 
         .popover {
@@ -199,6 +227,9 @@
                     top: 3px;
                 }
             }
+        }
+        .panel {
+            background-color: #333;
         }
 
         .intro-panel {
