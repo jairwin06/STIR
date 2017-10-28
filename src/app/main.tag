@@ -234,6 +234,10 @@
         }
         .panel {
             background-color: #333;
+
+            .padded-full {
+                min-height: 0;
+            }
         }
 
         .intro-panel {

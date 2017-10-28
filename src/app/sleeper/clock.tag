@@ -35,9 +35,14 @@
          .add-alarm {
             display: flex;
             justify-content: center;
+            @media (max-height: 650px) {
+                position: relative;
+                top: 50px;
+                padding-bottom: 20px;
+            }
             position: absolute;
             width: 100%;
-            bottom: 15%;
+            bottom: 20px; 
             right: 1px;
            .add-button {
                 background-color: #f36b21;
@@ -75,7 +80,7 @@
 
     this.on('ready', () => {
         this.update();
-        if (!MiscUtil.isStandaone() && this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
+        if (1 || !MiscUtil.isStandaone() && this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
             $('#home-suggest-message').html(
                 this.formatMessage('HOME_SUGGEST', {
                     role: this.formatMessage('SLEEPER')
@@ -97,7 +102,6 @@
     onAlarmsUpdated() {
         this.update();
     }
-
     onAlarmTimeChange(item, time) {
         this.state.sleeper.chooseAlarm(item._id);
         this.saveAlarm(time);
