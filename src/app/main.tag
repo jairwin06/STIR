@@ -58,6 +58,7 @@
             font-size: 16px;
             padding: 20px;
             margin: 0;
+            min-height: 580px;
             p {
                 font-family: Abel, Helvetica;
                 font-size: 1rem;
@@ -181,6 +182,9 @@
         .stepper-container {
             display: flex;
             justify-content: center;
+            @media (max-height: 650px) {
+                position: relative;
+            }
             position: absolute;
             bottom: 5%;
             width: 100%;
