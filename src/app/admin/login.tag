@@ -1,7 +1,7 @@
 <admin-login>
   <header class="header-bar">
         <div class="pull-left">
-            <h1 class="title">STIR - Admin</h1>
+            <h1>STIR | Admin</h1>
         </div>
   </header>
   <div class="content">
@@ -12,7 +12,7 @@
            <div>
                 <form action="" onsubmit="{ login }">
                     <input ref="password" type="password" required>
-                    <input type="submit" value="Login">
+                    <button type="submit" class="btn primary">Login</button>
                 </form>
             </div>
             <b show"{error}" class="error">{error}</b>

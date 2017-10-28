@@ -42,7 +42,7 @@ class MTurkUtil {
         params.Question = `
             <ExternalQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd">
               <ExternalURL>` + process.env['SERVER_URL'] + '/rouser/alarm/' + id + '/mturk' + `</ExternalURL>
-              <FrameHeight>900</FrameHeight>
+              <FrameHeight>1000</FrameHeight>
             </ExternalQuestion>
         `
         params.RequesterAnnotation = id.toString();

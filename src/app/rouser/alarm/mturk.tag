@@ -3,14 +3,12 @@
     <div class="web-content">
         <header class="header-bar">
             <div class="pull-left">
-                <h1 class="title">STIR - MTurk</h1>
+                <h1>STIR | MTurk</h1>
             </div>
         </header>
         <div class="content">
           <div class="padded-full">
-              <div class="row stir-description">
-                    STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.
-              </div>
+                <h1>STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.</h1>
               <div class="row stir-details">
                 You’ve joined STIR as a Rouser, and today you’ll be leaving a pre-recorded wakeup message for a Sleeper. Keep the following guidelines in mind as you create your wakeup message:
                 <ul>
@@ -102,6 +100,7 @@
         .web-content {
             width: 768px;
             background: white;
+            color: #000;
 
             .header-bar {
                 position: relative;
@@ -111,8 +110,14 @@
                 margin-top: 10px;
                 position: relative;            
             }
+
+            font-weight: 700;
         }
     }
+   p {
+    color: black !important;
+    font-weight: 600 !important
+   }
    .stir-description {
         font-size: 20px;
         margin-bottom: 20px;

@@ -1,7 +1,7 @@
 <admin-dashboard>
   <header class="header-bar">
         <div class="pull-left">
-            <h1 class="title">STIR - Admin</h1>
+            <h1>STIR | Admin</h1>
         </div>
   </header>
   <div class="content">
@@ -31,7 +31,7 @@
                                 <source src="{recording.mixUrl}"></source>
                             </audio>
                         </span>
-                    <td>
+                    </td>
                     <td><button class="btn primary" disabled={!analyzed} click={parent.mturk}>Turk it</button></td>
                 </tr>
             </tbody>
@@ -44,6 +44,13 @@
   </div>
 
  <style>
+        admin-dashboard {
+            th {
+                background-color: #000 !important;
+                font-weight: 700 !important;
+                color: white;
+            }
+        }
  </style>
  <script>
     this.on('mount', () => {
