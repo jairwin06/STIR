@@ -42,7 +42,7 @@
             }
             position: absolute;
             width: 100%;
-            bottom: 20px; 
+            bottom: 60px; 
             right: 1px;
            .add-button {
                 background-color: #f36b21;

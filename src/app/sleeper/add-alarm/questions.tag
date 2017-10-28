@@ -1,7 +1,7 @@
 <sleeper-alarms-add-questions>
     <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1>STIR - Sleeper</h1></a>
+            <a href="/"><h1>STIR | Sleeper</h1></a>
         </div>
     </header>
   <div class="content">

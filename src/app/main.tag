@@ -51,8 +51,11 @@
             border: none;
             color: white !important;
         }
-       .primary {
+       .primary,.positive {
             background-color: #000 !important;        
+        }
+        .positive {
+            border-color: #0ae700 !important;
         }
         .padded-full {
             font-size: 16px;
@@ -186,7 +189,7 @@
                 position: relative;
             }
             position: absolute;
-            bottom: 5%;
+            bottom: 60px;
             width: 100%;
         }
         #prompt {

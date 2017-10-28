@@ -1,23 +1,19 @@
 <rouser-alarms>
 <header class="header-bar">
     <div class="pull-left">
-        <a href="/"><h1 class="title">STIR - Rouser</h1></a>
+        <a href="/"><h1>STIR | Rouser</h1></a>
     </div>
 </header>
 <div class="content">
      <div show="{state.rouser.alarms != null && state.rouser.alarms.length > 0}" class="padded-full">
-           <div class="row description">
-                <formatted-message id='ROUSER_FOUND_SLEEPER'/>
-            </div>
-           <div class="row explanation">
-                <formatted-message id='ROUSER_SLEEPER_EXPLANATION'/>
-            </div>
+            <h1><formatted-message id='ROUSER_FOUND_SLEEPER'/></h1>
+            <p><formatted-message id='ROUSER_SLEEPER_EXPLANATION'/></p>
             <article class="sleeper" each={ state.rouser.alarms }>
                 <div class="details">
                     <a href="/rouser/alarm/{_id}/record"><b>{name}</b></a>
                     <span>{country}</span>
                 </div>
-                <div class="action">
+                <div>
                         <a href="/rouser/alarm/{_id}/record">
                             <button class="btn primary raised">
                             <formatted-message id="{'WAKE_' + pronoun}"/>
@@ -27,12 +23,8 @@
             </article>
       </div>
      <div show="{state.rouser.alarms != null && state.rouser.alarms.length == 0}" class="padded-full">
-           <div class="row description">
-                <formatted-message id='ROUSER_NO_SLEEPERS'/>
-            </div>
-           <div class="row explanation">
-                <formatted-message id='ROUSER_NO_SLEEPERS_EXPLANATION'/>
-            </div>
+            <h1><formatted-message id='ROUSER_NO_SLEEPERS'/></h1>
+            <p><formatted-message id='ROUSER_NO_SLEEPERS_EXPLANATION'/></p>
       </div>
       <div show="{ state.rouser.alarms == null }" class="circle-progress center active">
         <div class="spinner"></div>
@@ -45,7 +37,7 @@
             margin-bottom: 10px;
          }
          .sleeper {
-            background-color: #f9f9f9;
+            background-color: #333;
             margin-top: 15px;
             padding: 20px;
             margin-right: 20px;
@@ -57,6 +49,10 @@
             .details {
                 display: flex;
                 flex-direction: column;
+            }
+
+            .btn {
+                margin-top: 0;
             }
          }
      }

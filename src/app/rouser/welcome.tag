@@ -1,15 +1,13 @@
 <rouser-welcome>
 <header class="header-bar">
     <div class="pull-left">
-        <a href="/"><h1 class="title">STIR - Rouser</h1></a>
+        <a href="/"><h1>STIR | Rouser</h1></a>
     </div>
 </header>
 <div class="content">
      <div class="padded-full">
-           <div class="row description">
-                <formatted-message id='ROUSER_WELCOME'/>
-            </div>
-           <div class="row explanation">
+            <h1><formatted-message id='ROUSER_WELCOME'/></h1>
+           <div>
                 <p><formatted-message id='ROUSER_WELCOME_1'/></p>
                 <p><formatted-message id='ROUSER_WELCOME_2'/></p>
                 <p><formatted-message id='ROUSER_WELCOME_3'/></p>

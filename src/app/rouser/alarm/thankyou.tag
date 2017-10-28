@@ -1,15 +1,15 @@
 <rouser-alarm-thankyou>
 <header class="header-bar">
     <div class="pull-left">
-        <a href="/"><h1 class="title">STIR - Rouser</h1></a>
+        <a href="/"><h1>STIR | Rouser</h1></a>
     </div>
 </header>
 <div class="content">
     <div class="padded-full">
        <div class="row description">
-          <b>Thank you!</b>
+          <h1>Thank you!</h1>
        </div>
-       <div class="row explanation">
+       <div>
             <p>If you would like, we can search for another sleeper in need of a wakeup.</p>
 
             <p>Or you can be a sleeper yourself.</p>
@@ -31,25 +31,6 @@
 
 <style>
     rouser-alarm-thankyou {
-        .description {
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-        .explanation {
-            p {
-                font-size: 16px;
-            }
-            margin-bottom: 20px;
-        }
-
-        .action {
-            display: flex;
-            button {
-               margin-right: 20px;
-
-            }
-        }
-
     }
 </style>
     <script>

@@ -1,15 +1,13 @@
 <rouser-alarm-mix>
 <header class="header-bar">
     <div class="pull-left">
-        <a href="/"><h1 class="title">STIR - Rouser</h1></a>
+        <a href="/"><h1>STIR | Rouser</h1></a>
     </div>
 </header>
 <div class="content">
     <div class="padded-full">
-       <div class="row description">
-          <b><formatted-message id='ROUSER_MIX_DESCRIPTION'/></b>
-       </div>
-       <div class="row explanation">
+       <h1><formatted-message id='ROUSER_MIX_DESCRIPTION'/></h1>
+       <div>
             <p><formatted-message id='ROUSER_MIX_1'/></p>
             <p><formatted-message id='ROUSER_MIX_2'/></p>
             <p><formatted-message id='ROUSER_MIX_3'/></p>
@@ -34,16 +32,9 @@
 
 <style>
     rouser-alarm-mix {
-        .description {
-            margin-bottom: 10px;
-        }
-        .explanation {
-            p {
-                font-size: 16px;
-            }
-        }
         form {
             display: inline-block;
+            width: 100%;
         }
 
     }

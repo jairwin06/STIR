@@ -1,7 +1,7 @@
 <sign-up-locale>
   <header class="header-bar">
         <div class="pull-left">
-            <a href="/"><h1>STIR - Contact</h1></a>
+            <a href="/"><h1>STIR | Contact</h1></a>
         </div>
   </header>
   <div class="content">

@@ -1,13 +1,13 @@
 <rouser-alarm-record>
 <header class="header-bar">
     <div class="pull-left">
-       <a href="/"><h1 class="title">STIR - Rouser</h1></a>
+       <a href="/"><h1>STIR | Rouser</h1></a>
     </div>
 </header>
 <div class="content">
   <div class="padded-full">
       <div class="description row">
-            <b><formatted-message id='ROUSER_RECORD_DESCRIPTION'/></b>
+            <h1><formatted-message id='ROUSER_RECORD_DESCRIPTION'/></h1>
       </div>
       <p>
       <div class="row notice">
@@ -42,6 +42,7 @@
         .notice {
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
+            font-weight: 600;
         }
      }
  </style>
