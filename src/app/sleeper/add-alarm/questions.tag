@@ -74,6 +74,11 @@
        .action {
             margin-bottom: 40px;        
         }
+
+       .stepper-container {
+            position: relative;
+            bottom: 20px;
+       }
      }
  </style>
  <script>
