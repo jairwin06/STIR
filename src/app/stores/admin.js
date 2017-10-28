@@ -16,7 +16,11 @@ export default class AdminStore extends Store {
                 let result = await SocketUtil.rpc(
                     'alarms/admin::find', 
                     {
-                        accessToken: this._state.auth.accessToken
+                        accessToken: this._state.auth.accessToken,
+                        query: {
+                            time: {$gt: new Date()},
+                            deleted: false
+                        }
                     });
                 this.gettingAlarms = false;
                 console.log("Alarms result", result);

@@ -153,6 +153,7 @@ app.configure(oauth2({
   })
 }));
 // For admin
+//
 app.configure(local({
   usernameField: "name"
 }));

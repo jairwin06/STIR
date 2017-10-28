@@ -80,7 +80,7 @@
 
     this.on('ready', () => {
         this.update();
-        if (1 || !MiscUtil.isStandaone() && this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
+        if (!MiscUtil.isStandaone() && this.state.auth.user && !this.state.auth.user.status.suggestedSleeperHome) {
             $('#home-suggest-message').html(
                 this.formatMessage('HOME_SUGGEST', {
                     role: this.formatMessage('SLEEPER')
