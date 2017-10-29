@@ -522,6 +522,7 @@ export default class AlarmManager {
         return User.count({
             waitingForAlarms: true,
             phone: {$ne: null},
+            _id: {$ne: alarm.userId},
             alarmLocales: {$elemMatch: {$in: alarm.locales}}
         })
         .then(async (totalWaiting) => {
@@ -536,6 +537,7 @@ export default class AlarmManager {
                 let rousers = await User.find({
                     waitingForAlarms: true,
                     phone: {$ne: null},
+                    _id: {$ne: alarm.userId},
                     alarmLocales: {$elemMatch: {$in: alarm.locales}}
                 }).skip(random).limit(1);
 
