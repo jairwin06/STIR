@@ -24,13 +24,13 @@
                         <span></span>
                     </label>
                 </li>
-                <li class="padded-for-list">
+                <!--li class="padded-for-list">
                     <label class="radio">
                         <input type="radio" change="{onChange}" name="pronoun" value="they" class="">
                         They
                         <span></span>
                     </label>
-                </li>
+                </li-->
             </ul>
             <div class="action text-center">
                 <button click="this.form.submit();" disabled="{!refs.pronounForm.pronoun.value || refs.pronounForm.pronoun.value.length == 0}" class="btn primary raised">Submit</button>
