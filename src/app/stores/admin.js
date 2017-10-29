@@ -13,15 +13,12 @@ export default class AdminStore extends Store {
             try {
                 this.gettingAlarms = true;
                 console.log("Getting alarms");
-                let now = new Date();
                 let result = await SocketUtil.rpc(
                     'alarms/admin::find', 
                     {
                         accessToken: this._state.auth.accessToken,
-                        query: {
-                            time: {$gt: now},
-                            deleted: false
-                        }
+                        time: {$gt: new Date()},
+                        deleted: false
                     });
                 this.gettingAlarms = false;
                 console.log("Alarms result", result);
