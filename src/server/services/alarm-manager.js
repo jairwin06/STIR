@@ -17,6 +17,7 @@ const NOTIFY_SLEEPERS_HOURS = 12;
 const MTURK_TRIGGER_HOURS = 3;
 const ROUSERS_TO_NOTIFY = 2;
 const TOO_EARLY_HOURS = 8;
+const CALL_RETRY_TIMEOUT = 1000 * 90;
 
 export default class AlarmManager {
     constructor() {
@@ -63,7 +64,7 @@ export default class AlarmManager {
                 // One retry after a minute
                 setTimeout(() => {
                     this.retryAlarm(activeAlarm.userId);
-                },1000 * 60);
+                },CALL_RETRY_TIMEOUT);
 
             }
             this.popAlarm();
@@ -104,6 +105,37 @@ export default class AlarmManager {
         if (sessionData.pendingAlarm) {
             console.log("RETRYING ALARM!", sessionData.pendingAlarm);
             this.activateAlarm(sessionData.pendingAlarm);
+            //
+            // failed after a minute
+            setTimeout(() => {
+                this.alarmFailed(userId);
+            },CALL_RETRY_TIMEOUT);
+        }
+    }
+    alarmFailed(userId) {
+        let sessionData = Session.getFor(userId);
+        if (sessionData.pendingAlarm) {
+            console.log("ALARM FAILED!", sessionData.pendingAlarm);
+            this.app.service('users').get(userId)
+            .then((user) => {
+                let message = IntlMixin.formatMessage('ALARM_FAILED_NOTIFY',{
+                    name: user.name,
+                    time: new Date(sessionData.pendingAlarm.time),
+                    url: process.env.SERVER_URL + "/sleeper/alarm/" + sessionData.pendingAlarm._id + "/summary",
+                },withTimezone(sessionData.pendingAlarm.timezone),user.locale);
+
+                return this.messageUser(user._id, message);
+            })
+            .then((result) => {
+                return this.app.service('alarms/sleeper').patch(sessionData.pendingAlarm._id, {failed: true});
+            })
+            .then(() => {
+                Session.setFor(userId, {pendingAlarm : null});
+            })
+            .catch((err) => {
+                console.log("Error notifying sleeper on failed alarm", err);
+                Session.setFor(userId, {pendingAlarm : null});
+            })
         }
     }
     popAlarm() {

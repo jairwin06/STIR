@@ -47,6 +47,7 @@ const Messages =
     WELCOME: 'Welcome',
     BEGIN: 'Begin',
     SLEEPER_SUMMARY_DESCRIPTION: 'Hi {name}, we hope you enjoyed your personalzied wakeup message from Stir.',
+    SLEEPER_SUMMARY_FAILED: 'Hi {name}, Sorry we couldn\'t deliver your wakeup message',
     BE_A_ROUSER: 'Sign up to be a rouser',
     SLEEPER_SUMMARY_MESSAGE: 'Good morning {name}! Checkout your wakeup summary from Stir at {url}',
     NOTICE: 'Notice',
@@ -97,7 +98,9 @@ const Messages =
     RERECORD: 'Rerecord',
     SUBMIT_MESSAGE: 'Submit Message',
     TOO_EARLY_CONFIRM: 'STIR needs at least {hours} hours to prepare your message. We can set your wakeup for the follwing day.',
-
+    ALARM_FAILED_NOTIFY: 'Hi {name}, This is a message from STIR. We tried to deliver your wakeup at {time, time, short}, but unfortunately the call didn\'t follow through. You can still hear your wakuep and get a review of your analysis in here: {url}',
+    LISTEN_ALARM: 'You can listen again to your wakeup message here:',
+    YOUR_TRAITS: 'Your personality analysis was based on the following traits:'
 };
 
 export default Messages;

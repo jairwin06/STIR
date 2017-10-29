@@ -6,15 +6,20 @@
 </header>
 <div class="content">
      <div class="padded-full">
-           <div class="row description">
+            <h1 if="{!state.sleeper.currentAlarm.failed}">
                 <formatted-message id='SLEEPER_SUMMARY_DESCRIPTION' name="{state.auth.user.name}"/>
-            </div>
-            <div class="row explanation">
-                <p><b>You Are:</b></p>
-                <p each="{traits}">
-                    {trait} : {value}
-                </p>
-            </div>
+            </h1>
+            <h1 if="{state.sleeper.currentAlarm.failed}">
+                <formatted-message id='SLEEPER_SUMMARY_FAILED' name="{state.auth.user.name}"/>
+            </h1>
+            <p><formatted-message id='LISTEN_ALARM'/></p>
+            <audio controls="controls">
+                <source src="{state.sleeper.currentAlarm.recording.mixUrl}"></source>
+            </audio>
+            <p><b><formatted-message id='YOUR_TRAITS'/></b></p>
+            <p each="{traits}">
+                {trait} : {value}
+            </p>
             <div class="action">
                 <a class="btn raised primary" href="/rouser/alarms">
                     <formatted-message id='BE_A_ROUSER'/>

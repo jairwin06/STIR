@@ -235,11 +235,11 @@ app.service('/alarms/sleeper').hooks({
         ],
         get: [
             (hook) => {
-                if (hook.params.provider && !hook.result.delivered) {
+                if (hook.params.provider && !hook.result.delivered && !hook.result.failed) {
                     throw(new Errors.NotFound());
                 }
             },
-            pluck('_id', 'time', 'generatedFrom') 
+            pluck('_id', 'time', 'failed', 'generatedFrom', 'recording.mixUrl') 
         ]
     }
 });
@@ -349,7 +349,7 @@ app.service('/alarms/admin').hooks({
   },
   after: {
     find: [
-      pluck('_id', 'createdAt','time', 'name', 'recording.finalized', 'delivered', 'assignedTo', 'mturk', 'analyzed', 'recording.mixUrl')
+      pluck('_id', 'createdAt','time', 'name', 'recording.finalized', 'delivered', 'assignedTo', 'mturk', 'analyzed', 'recording.mixUrl','failed')
     ]
   }
 });

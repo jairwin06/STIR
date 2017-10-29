@@ -163,7 +163,10 @@
 
         .dialog {
             background-color: #333;
-            box-shadow: none
+            box-shadow: none;
+            .padded-full {
+                min-height: 0px;
+            }
         }
 
         .circle-progress {

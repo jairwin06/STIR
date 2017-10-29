@@ -14,6 +14,7 @@
                 <th>Assigned to</th>
                 <th>Recorded</th>
                 <th>Delivered</th>
+                <th>Failed</th>
                 <th>Recording</th>
                 <th>Turk it</th>
             </thead>
@@ -25,9 +26,10 @@
                     <td>{mturk? "MTURK" : assignedTo}</td>
                     <td>{recording.finalized}</td>
                     <td>{delivered}</td>
+                    <td>{failed}</td>
                     <td>
                         <span if="{recording.mixUrl}">
-                            <audio ref="preview" controls="controls">
+                            <audio controls="controls">
                                 <source src="{recording.mixUrl}"></source>
                             </audio>
                         </span>
