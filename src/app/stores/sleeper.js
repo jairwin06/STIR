@@ -55,20 +55,13 @@ export default class SleeperStore extends Store {
     }
 
     async addAlarm() {
-        try {
-            console.log("Create the alarm!", this.currentAlarm);
-            let result = await SocketUtil.rpc('alarms/sleeper::create', this.currentAlarm);
-            console.log("Alarm create result", result);
-            this.alarms.push(result);
-            this.currentAlarm = null;
-            this.addAlarmStage = null;
-            this.trigger('alarm_created');
-        }
-
-        catch (e) {
-            console.log("Error creating alarm  ", e);                    
-            this.trigger("alarm_create_error", e.message);
-        }
+        console.log("Create the alarm!", this.currentAlarm);
+        let result = await SocketUtil.rpc('alarms/sleeper::create', this.currentAlarm);
+        console.log("Alarm create result", result);
+        this.alarms.push(result);
+        this.currentAlarm = null;
+        this.addAlarmStage = null;
+        this.trigger('alarm_created');
     }
 
     async saveAlarmTime(newTime, timezone) {

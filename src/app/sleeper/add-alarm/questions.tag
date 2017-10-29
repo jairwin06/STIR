@@ -123,7 +123,7 @@
         }
     }
 
-    validateCheck() {
+    async validateCheck() {
         if (!this.state.auth.user.status.phoneValidated) {
             if (IS_CLIENT) {
                 page("/sign-up/contact")
@@ -134,7 +134,11 @@
             }
         }
         else {
-            this.state.sleeper.addAlarm();
+            try {
+                await this.state.sleeper.addAlarm();
+            } catch (err) {
+                phonon.alert(err.message, "Something went wrong", false, "Ok");
+            }
         }
     }
 

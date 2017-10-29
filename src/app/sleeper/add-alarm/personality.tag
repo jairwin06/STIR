@@ -121,7 +121,7 @@
     });
 
 
-    validateCheck() {
+    async validateCheck() {
         if (!this.state.auth.user.status.phoneValidated) {
             if (IS_CLIENT) {
                 page("/sign-up/contact")
@@ -133,7 +133,7 @@
         }
         else {
             try {
-                this.state.sleeper.addAlarm();
+                await this.state.sleeper.addAlarm();
             } catch(err) {
                 this.showError(err);
             }
