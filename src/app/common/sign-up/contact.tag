@@ -73,6 +73,7 @@
             this.phonePluginLoaded = false;
 
             let deferred = $("#phone").intlTelInput({
+                autoPlaceholder: "off",
                 utilsScript: "/lib/intl-utils.js",
                 initialCountry: this.state.auth.user.countryCode || ""
             });
@@ -93,6 +94,7 @@
     });
 
     this.on('ready', () => {
+        $('#phone').focus();
     });
 
    onPhoneChange() {
@@ -102,6 +104,9 @@
    onPhonePluginLoaded() {
         console.log("Phone plugin loaded");
         this.phonePluginLoaded = true;
+        setTimeout(() => {
+            $('#phone').focus();
+        },0);
         this.update();
    }
 

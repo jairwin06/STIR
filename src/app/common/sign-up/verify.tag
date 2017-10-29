@@ -45,6 +45,10 @@
         console.log("sign-up contacts mounted");
     });
 
+    this.on('ready', () => {
+        $(this.refs.code).focus();
+    })
+
     this.on('unmount', () => {
     });
 

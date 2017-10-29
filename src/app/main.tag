@@ -94,9 +94,9 @@
 
         input, select, textarea {
             background-color: transparent !important;
+            color: white !important;
         }
     
-
         main {
             .title {
                 margin-bottom: 30px;
