@@ -13,27 +13,26 @@
                 <li class="padded-for-list">
                     <label class="radio">
                         <input type="radio" change="{onChange}" name="pronoun" value="he" class="">
-                        He
-                        <span></span>
+                           <formatted-message id="HE"/>
                     </label>
                 </li>
                 <li class="padded-for-list">
                     <label class="radio">
                         <input type="radio" change="{onChange}" name="pronoun" value="she" class="">
-                        She
-                        <span></span>
+                           <formatted-message id="SHE"/>
                     </label>
                 </li>
                 <!--li class="padded-for-list">
                     <label class="radio">
                         <input type="radio" change="{onChange}" name="pronoun" value="they" class="">
-                        They
-                        <span></span>
+                           <formatted-message id="THEY"/>
                     </label>
                 </li-->
             </ul>
             <div class="action text-center">
-                <button click="this.form.submit();" disabled="{!refs.pronounForm.pronoun.value || refs.pronounForm.pronoun.value.length == 0}" class="btn primary raised">Submit</button>
+                <button click="this.form.submit();" disabled="{!refs.pronounForm.pronoun.value || refs.pronounForm.pronoun.value.length == 0}" class="btn primary raised">
+                   <formatted-message id="SUBMIT"/>
+                </button>
             </div>
           </form>
           <p>
