@@ -9,11 +9,11 @@ class MTurkUtil {
             endpoint: process.env['MTURK_ENDPOINT']
         });
         this.params = {
-          AssignmentDurationInSeconds: 600, /* required */
+          AssignmentDurationInSeconds: 60 * 30, /* required */
           Description: 'STIR is a personalized waking service offering morning “gifts” for people around the world. Our service is their first encounter with a new day.', /* required */
-          Reward: '2', /* required */
+          Reward: '1.75', /* required */
           Title: 'STIR', /* required */
-          AutoApprovalDelayInSeconds: 60 * 60,
+          AutoApprovalDelayInSeconds: 60 * 60 * 12,
           Keywords: 'record, recording, alarm, wake-up, STIR',
         };
 
