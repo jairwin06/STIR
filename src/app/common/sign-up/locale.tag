@@ -15,27 +15,26 @@
                 <li class="">
                     <label class="checkbox">
                         <input type="checkbox" value="en" checked="{state.auth.locale == 'en'}" class="">
-                        English
-                        <span></span>
+                            <formatted-message id="ENGLISH"/>
                     </label>
                 </li>
                 <li class="">
                     <label class="checkbox">
                         <input type="checkbox" value="fr" checked="{state.auth.locale == 'fr'}" class="">
-                        French
-                        <span></span>
+                            <formatted-message id="FRENCH"/>
                     </label>
                 </li>
                 </li>
                     <label class="checkbox">
                         <input type="checkbox" value="de" checked="{state.auth.locale == 'de'}" class="">
-                        German
-                        <span></span>
+                            <formatted-message id="GERMAN"/>
                     </label>
                 </li>
             </ul>
             <div class="action text-center">
-                   <button class="btn primary raised" type="submit">Submit</button>
+                   <button class="btn primary raised" type="submit">
+                        <formatted-message id="NEXT"/>
+                   </button>
             </div>
           </form>
           <div class="disclaimer">

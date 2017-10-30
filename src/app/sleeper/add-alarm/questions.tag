@@ -34,7 +34,9 @@
                 </ul>
           </div>
           <div class="action text-center">
-               <button class="btn primary raised" type="submit">Submit</button>
+               <button class="btn primary raised" type="submit">
+                   <formatted-message id='SUBMIT'/>
+               </button>
           </div>
       </form>
       <img show="{loading}" src="/images/loading.gif"></img>

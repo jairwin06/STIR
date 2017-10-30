@@ -110,7 +110,11 @@
             return true;
         } catch (e) {
             console.log("Error saving progress", e);
-            phonon.alert(e.message, "Oops!", false, "Ok");
+            if (e.code && e.code == 'EXISTS') {
+                phonon.alert(this.formatMessage('ALARM_EXISTS'), "Oops!", false, "Ok");
+            } else {
+                phonon.alert(e.message, "Oops!", false, "Ok");
+            }
             this.verifying = false;
             this.update();
             return false;

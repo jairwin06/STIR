@@ -1,4 +1,5 @@
 import Session from '../models/session-persistent'
+import STIRError from '../../app/stir-error'
 
 // Uses the persisent session
 export default class SessionService {
@@ -35,7 +36,7 @@ export default class SessionService {
                 })
                 .then((result) => {
                     if (result.length > 0) {
-                        throw(new Error("There is already an alarm set at that time"));
+                        throw(new STIRError("EXISTS"));
                     }
                 })
             } else {

@@ -7,13 +7,18 @@
   <div class="content">
     <div class="padded-full">
         <h1><formatted-message id='PERSONALITY_DESCRIPTION'/></h1>
-        <p>Choose the social media account you post on most frequently</p>
         <div id="social-buttons" class="row">
-          <a href="/auth/facebook" class="btn primary raised">Connect with Facebook</a>
-          <a href="/auth/twitter" class="btn primary raised">Connect with Twitter</a>
+          <a href="/auth/facebook" class="btn primary raised">
+            <formatted-message id='CONNECT_FACEBOOK'/>
+          </a>
+          <a href="/auth/twitter" class="btn primary raised">
+            <formatted-message id='CONNECT_TWITTER'/>
+          </a>
         </div>
         <div class="row">
-            <a id="questions-link" href="/sleeper/alarms/add/questions">Not on social media?</a>
+            <a id="questions-link" href="/sleeper/alarms/add/questions">
+                <formatted-message id='NOT_SOCIAL'/>
+            </a>
         </div>
         <div class="disclaimer">
             </p><formatted-message id='PERSONALITY_DISCLAIMER_1'/></p>

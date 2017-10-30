@@ -22,7 +22,9 @@
         <form action="" onsubmit="{setContact}">
             <input id="phone" ref="phone" type="tel" change="{onPhoneChange}" required>
             <div class="action">
-                <button class="btn primary raised" type="submit">Next</button>
+                <button class="btn primary raised" type="submit">
+                    <formatted-message id='NEXT'/>
+                </button>
             </div>
         </form>
         <div class="disclaimer">

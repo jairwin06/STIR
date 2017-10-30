@@ -15,7 +15,9 @@
            <form action="" onsubmit="{verifyCode}">
                 <input ref="code" type="number" min="1000" max="9999">
                 <div class="action">
-                    <button class="btn primary raised" type="submit">Next</button>
+                    <button class="btn primary raised" type="submit">
+                        <formatted-message id='NEXT'/>
+                    </button>
                 </div>
            </form>
           <p>
