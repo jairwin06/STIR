@@ -85,7 +85,13 @@
         try {
             let result = await this.saveProgress();
             if (result.status == "too_early") {
-                let confirm = phonon.confirm("STIR needs at least " + result.hours + " hours to prepare your message, your alarm will be set for the follwing day day", "Notice", true, "Ok", "Cancel");
+                let confirm = phonon.confirm(
+                    this.formatMessage('TOO_EARLY_CONFIRM', {hours: result.hours}), 
+                    this.formatMessage('NOTICE'),
+                    true, 
+                    this.formatMessage('OK'),
+                    this.formatMessage('CANCEL')
+                );
 
                 confirm.on('confirm', async () => {
                     alarmTime.setDate(alarmTime.getDate() + 1);

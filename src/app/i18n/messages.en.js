@@ -103,7 +103,7 @@ const Messages =
     ROUSER_MIX_3: 'If you’d like to rerecord, we’ll call you back.',
     RERECORD: 'Rerecord',
     SUBMIT_MESSAGE: 'Submit Message',
-    TOO_EARLY_CONFIRM: 'STIR needs at least {hours} hours to prepare your message. We can set your wakeup for the follwing day.',
+    TOO_EARLY_CONFIRM: 'STIR needs at least {hours} hours to prepare your message. Your alarm will be set for the following day.',
     ALARM_FAILED_NOTIFY: 'Hi {name}, this is a message from STIR. We tried to deliver your wakeup at {time, time, short}, but unfortunately the call didn\'t go through. You can still hear your message and get a review of your analysis here: {url}',
     LISTEN_ALARM: 'You can listen to your wakeup message again here:',
     YOUR_TRAITS: 'Your personality analysis was based on the following traits:',
