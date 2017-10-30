@@ -95,6 +95,7 @@ export default class SleeperStore extends Store {
             console.log("Deleting alarm");
             let result = await SocketUtil.rpc('alarms/sleeper::patch', this.currentAlarm._id, {deleted: true});
             this.alarms.splice(MiscUtil.findIndexById(this.alarms, this.currentAlarm._id), 1);
+            this.currentAlarm = null;
             return {status: "success"};
         }
     }
