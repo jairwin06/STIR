@@ -1,7 +1,7 @@
 const Messages =
 {
     OK: 'Ok',
-    CANCEL: 'Cancel',
+    CANCEL: 'Annuler',
     NOTICE: 'Notice',
     ERROR_TITLE: 'Something went wrong',
     OOPS: 'Oops!',
@@ -69,7 +69,6 @@ const Messages =
     HOW_DISCLAMER_2: 'ici',
     HOW_DISCLAMER_3: ' pour plus d\'info.',
     SLEEPER_TIME_WHEN: 'À quelle heure voulez-vous vous réveiller?',
-    SLEEPER_TIME_DISCLAMER: 'Your wakeup message will be delivered to you in your local time zone. Stir needs at least {hours} hours to prepare your message.',
     SLEEPER_TIME_DISCLAMER: 'Votre message de réveil vous sera livré dans votre fuseau horaire. L\'appel du réveil a besoin d\'au moins {hours} heures pour préparer votre message.',
     PERSONALITY_DESCRIPTION: 'L\'appel du réveil utilise des méthodes d\'analyse de données pour personnaliser votre expérience de réveil.',
     PERSONALITY_DISCLAIMER_1: '**Pour des résultats optimaux, sélectionnez le service que vous utilisez le plus souvent.',
