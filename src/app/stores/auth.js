@@ -197,9 +197,7 @@ export default class AuthStore extends Store {
     }
 
     async verifyCode(code, force = false) {
-        console.log("Verify code ", code);
         let result = await SocketUtil.rpc('user/contact::create',{code: code, force: force});
-        console.log("Verify result", result);
         if (result.status == "success") {
             this.user.status.phoneValidated = true;
             this.trigger("user_code_verified");

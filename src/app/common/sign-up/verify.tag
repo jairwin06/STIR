@@ -59,10 +59,18 @@
         try {
             console.log("Verify code " + this.refs.code.value);
             let result = await this.state.auth.verifyCode(this.refs.code.value);
+            console.log("Verify code result status: " + result.status);
             if (result.status == "success") {
                 page("/sign-up/locale");
             } else if (result.status == "EXISTS") {
-                let confirm = phonon.confirm(this.formatMessage('PHONE_EXISTS'), this.formatMessage('NOTICE'), true, "Ok", "Cancel");
+                console.log("Phone exists!, asking confirmation");
+                let confirm = phonon.confirm(
+                    this.formatMessage('PHONE_EXISTS'), 
+                    this.formatMessage('NOTICE'), 
+                    true, 
+                    "Ok", 
+                    this.formatMessage('CANCEL')
+                );
                 confirm.on('confirm', async () => {
                     console.log("Forcing!");
                     let result = await this.state.auth.verifyCode(this.refs.code.value, true);
@@ -77,6 +85,7 @@
             }
         }
         catch (err) {
+           console.log("Error while verifying code!", err);
            phonon.alert(err.message, "Oops!", false, "Ok");
         }
     }
