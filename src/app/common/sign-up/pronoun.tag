@@ -9,23 +9,26 @@
            <h1><formatted-message id="CONTACT_PRONOUN"/></h1>
            <p><formatted-message id="CONTACT_PRONOUN_EXPLANATION"/></p>
           <form ref="pronounForm" action="" onsubmit="{setPronoun}">
-            <ul class="list">
+            <ul ref="pronounList" class="list">
                 <li class="padded-for-list">
                     <label class="radio">
+                         <formatted-message id="HE"/>
                         <input type="radio" change="{onChange}" name="pronoun" value="he" class="">
-                           <formatted-message id="HE"/>
+                        <span></span>
                     </label>
                 </li>
                 <li class="padded-for-list">
                     <label class="radio">
+                        <formatted-message id="SHE"/>
                         <input type="radio" change="{onChange}" name="pronoun" value="she" class="">
-                           <formatted-message id="SHE"/>
+                        <span></span>
                     </label>
                 </li>
                 <!--li class="padded-for-list">
                     <label class="radio">
+                         <formatted-message id="THEY"/>
                         <input type="radio" change="{onChange}" name="pronoun" value="they" class="">
-                           <formatted-message id="THEY"/>
+                        <span></span>
                     </label>
                 </li-->
             </ul>
@@ -61,6 +64,10 @@
  <script>
     this.on('mount', () => {
         console.log("sign-up pronoun mounted");
+        if (IS_CLIENT) {
+            // For phonon...
+            $(this.refs.pronounList).find('formatted-message > span').addClass('text');
+        }
     });
 
     this.on('unmount', () => {
@@ -76,6 +83,7 @@
             if (!this.refs.pronounForm.pronoun.value || this.refs.pronounForm.pronoun.value.length == 0) {
                 throw new Error("Please select a pronoun");
             }
+            console.log("Set pronoun!", this.refs.pronounForm.pronoun.value);
             let result = await this.state.auth.setPronoun(this.refs.pronounForm.pronoun.value);
             console.log(result);
             if (result.status == "success") {

@@ -9,8 +9,8 @@
          <div show="{state.sleeper.alarms != null}">
              <h1 if="{state.auth.user.name}"><formatted-message id="CLOCK_WELCOME_NAME" name="{state.auth.user.name}"/></h1>
              <h1 if="{!state.auth.user.name}"><formatted-message id="CLOCK_WELCOME"/></h1>
-             <p if="{state.sleeper.alarms.length > 0}"><formatted-message id="CLOCK_DESC"/></p>
-             <p if="{state.sleeper.alarms.length == 0}"><formatted-message id="CLOCK_DESC_NO_ALARMS"/></p>
+             <p if="{state.sleeper.alarms && state.sleeper.alarms.length > 0}"><formatted-message id="CLOCK_DESC"/></p>
+             <p if="{state.sleeper.alarms && state.sleeper.alarms.length == 0}"><formatted-message id="CLOCK_DESC_NO_ALARMS"/></p>
               <alarm-time
                   each={ state.sleeper.alarms } 
                   data="{ {time: this.time, _id: this._id} }" 

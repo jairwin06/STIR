@@ -14,20 +14,23 @@
             <ul ref="localeList" class="list">
                 <li class="">
                     <label class="checkbox">
+                        <formatted-message id="ENGLISH"/>
                         <input type="checkbox" value="en" checked="{state.auth.locale == 'en'}" class="">
-                            <formatted-message id="ENGLISH"/>
+                            <span></span>
                     </label>
                 </li>
                 <li class="">
                     <label class="checkbox">
+                        <formatted-message id="FRENCH"/>
                         <input type="checkbox" value="fr" checked="{state.auth.locale == 'fr'}" class="">
-                            <formatted-message id="FRENCH"/>
+                            <span></span>
                     </label>
                 </li>
                 </li>
                     <label class="checkbox">
+                        <formatted-message id="GERMAN"/>
                         <input type="checkbox" value="de" checked="{state.auth.locale == 'de'}" class="">
-                            <formatted-message id="GERMAN"/>
+                            <span></span>
                     </label>
                 </li>
             </ul>
@@ -69,6 +72,10 @@
  <script>
     this.on('mount', () => {
         console.log("sign-up locale mounted");
+        if (IS_CLIENT) {
+            // For phonon...
+            $(this.refs.localeList).find('formatted-message > span').addClass('text');
+        }
     });
 
     this.on('unmount', () => {
@@ -90,10 +97,10 @@
     }
     async setLocale(e) {
         e.preventDefault();
-        console.log("Set locale!");
         let locales = $(this.refs.localeList).find('input').toArray()
         .filter(cb => cb.checked).map(cb => cb.value);
         try {
+            console.log("Set locale!", locales);
             if (locales.length == 0) {
                 throw new Error("You need to select at least one languge!");
             }
